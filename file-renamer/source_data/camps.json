@@ -1,0 +1,32 @@
+[
+    {
+      "campaign_name": "Summer Splash Sale",
+      "date": "2023-06-15",
+      "views": 125000,
+      "clicks": 7500
+    },
+    {
+      "campaign_name": "Back to School Bonanza",
+      "date": "2023-08-01",
+      "views": 98500,
+      "clicks": 5200
+    },
+    {
+      "campaign_name": "Black Friday Blowout",
+      "date": "2023-11-24",
+      "views": 250000,
+      "clicks": 15000
+    },
+    {
+      "campaign_name": "New Year New You",
+      "date": "2023-01-01",
+      "views": 175000,
+      "clicks": 9800
+    },
+    {
+      "campaign_name": "Spring Cleaning Spectacular",
+      "date": "2023-03-20",
+      "views": 82000,
+      "clicks": 4100
+    }
+  ]
