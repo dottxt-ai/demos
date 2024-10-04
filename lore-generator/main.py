@@ -1,3 +1,5 @@
+import os
+
 from enum import Enum
 import random
 from typing import List
@@ -9,6 +11,36 @@ from pymilvus import model #for embeddings
 
 from rich import print
 from rich.panel import Panel
+
+from modal import Image, App, gpu
+
+# Model name
+LLM = "NousResearch/Hermes-3-Llama-3.1-8B"
+
+# Modal setup
+app = App(name="outlines-app")
+
+outlines_image = Image.debian_slim(python_version="3.11").pip_install(
+    "outlines",
+    "transformers",
+    "datasets",
+    "accelerate",
+    "sentencepiece",
+    "pymilvus"
+).env({
+    # This will pull in your HF_TOKEN environment variable if you have one.
+    'HF_TOKEN':os.environ['HF_TOKEN']
+
+    # To set the token directly in the code, uncomment the line below and replace
+    # 'YOUR_TOKEN' with the HuggingFace access token.
+    # 'HF_TOKEN':'YOUR_TOKEN'
+})
+
+def import_model():
+    import outlines
+    outlines.models.transformers(LLM)
+
+outlines_image.run_function(import_model)
 
 # load the milvus client
 client = MilvusClient("milvusdemo.db")
@@ -47,6 +79,14 @@ class LoreEntry(BaseModel):
             data=[dict_data],
             fields=["content"],
         )
+
+@app.function(image=outlines_image, gpu=gpu.GPU(L4, count=1))
+def lore_entry(prompt: str):
+    import outlines
+
+    model = outlines.models.transformers(LLM, device="cuda")
+    generator = outlines.generate.json(model, LoreEntry)
+    return generator(prompt)
 
 class SettingType(str, Enum):
     fantasy = "fantasy"
@@ -120,12 +160,27 @@ class World(BaseModel):
         <|im_start|>assistant
         """
 
+@app.function(image=outlines_image, gpu=gpu.GPU(L4, count=1))
+def generate_world(prompt: str):
+    import outlines
+
+    model = outlines.models.transformers(LLM, device="cuda")
+    generator = outlines.generate.json(model, LoreEntryCandidate)
+    return generator(prompt)
+
 class LoreEntryCandidate(BaseModel):
     proposal: str
     information_requests: List[str]
 
+@app.function(image=outlines_image, gpu=gpu.GPU(L4, count=1))
+def prompt_refine_proposal(lore_query: str):
+    import outlines
 
-def prompt_refine_proposal(lore_query):
+    model = outlines.models.transformers(LLM, device="cuda")
+    generator = outlines.generate.json(model, LoreEntry)
+    return generator(lore_query)
+
+def prompt_refine_proposal(lore_query: str):
     return f"""
     <|im_start|>system
     You are a world builder, designed to take a proposal for a lore entry and
@@ -156,16 +211,16 @@ def prompt_refine_proposal(lore_query):
 
 from outlines import models, generate
 
+@app.local_entrypoint()
 def main():
-    model = models.transformers("NousResearch/Hermes-3-Llama-3.1-8B", device="cpu")
+    world = generate_world.remote(World.world_proposal_prompt())
+    print(Panel.fit(world.world_description, title="World Description"))
 
-    # world_generator = generate.json(model, World)
-    # world = world_generator(World.world_proposal_prompt())
 
-    world = World(
-        setting=SettingType.fantasy,
-        world_description="A world with magic and dragons.",
-    )
+    # world = World(
+    #     setting=SettingType.fantasy,
+    #     world_description="A world with magic and dragons.",
+    # )
 
     seed_events = [
         LoreEntry(
@@ -250,3 +305,8 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+# @app.local_entrypoint()
+# def main():
+#     entry = lore_entry.remote("A dragon attacks a village.")
+#     print(entry)
