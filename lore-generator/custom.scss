@@ -1,0 +1,54 @@
+/*-- scss:defaults --*/
+
+$body-bg: #1d1d1b;
+$body-color: #fff;
+$link-color: #42affa;
+
+$font-family-sans-serif: "PP Neue Montreal", sans-serif;
+$font-family-monospace: monospace;
+/*-- scss:rules --*/
+
+.reveal .slide blockquote {
+  border-left: 3px solid $text-muted;
+  padding-left: 0.5em;
+}
+
+body {
+  font-family: "PP Neue Montreal", sans-serif;
+}
+
+code, pre, .sourceCode {
+    font-family: monospace;
+    border: none !important;
+    max-height: 100% !important;
+}
+
+.reveal pre {
+  font-family: monospace;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.reveal code {
+  width: fit-content;
+}
+
+// .sourceCode {
+//   // Centers the code blocks in the slides
+//   display: flex;
+//   justify-content: center;
+//   width: 100%;
+// }
+
+.quarto-title-affiliation {
+  font-size: 1.5em !important;
+  margin-bottom: 0 !important;
+  margin-top: 0 !important;
+}
+
+
+.title-slide {
+  text-align: center;
+}
+
