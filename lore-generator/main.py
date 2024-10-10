@@ -1,34 +1,53 @@
-import asyncio
-import os
-import httpx
-
 from enum import Enum
-import random
 from typing import List
 
-import httpx
-import llama_cpp
-import outlines
+import openai
+
 from pydantic import BaseModel
-from pydantic.tools import parse_obj_as
-from pymilvus import IndexType, MilvusClient, FieldSchema, DataType
-from pymilvus import model #for embeddings
 
-from outlines import models, generate
-
+import pymilvus
 
 from rich import print
 from rich.panel import Panel
 
-import api
+from typing import Optional, Dict, Any
+
+def generate(
+    client,
+    model,
+    pydantic_schema,
+    prompt,
+    system_prompt="You're a helpful assistant."
+):
+    # Make a request to the local LM Studio server
+    response = client.beta.chat.completions.parse(
+        model=model,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": prompt}
+        ],
+        response_format=pydantic_schema
+    )
+
+    return response.choices[0].message.parsed
+
+
+# ███╗   ███╗██╗██╗    ██╗   ██╗██╗   ██╗███████╗
+# ████╗ ████║██║██║    ██║   ██║██║   ██║██╔════╝
+# ██╔████╔██║██║██║    ██║   ██║██║   ██║███████╗
+# ██║╚██╔╝██║██║██║    ╚██╗ ██╔╝██║   ██║╚════██║
+# ██║ ╚═╝ ██║██║███████╗╚████╔╝ ╚██████╔╝███████║
+# ╚═╝     ╚═╝╚═╝╚══════╝ ╚═══╝   ╚═════╝ ╚══════╝
+
+# ███████╗████████╗██╗   ██╗███████╗███████╗
+# ██╔════╝╚══██╔══╝██║   ██║██╔════╝██╔════╝
+# ███████╗   ██║   ██║   ██║█████╗  █████╗
+# ╚════██║   ██║   ██║   ██║██╔══╝  ██╔══╝
+# ███████║   ██║   ╚██████╔╝██║     ██║
+# ╚══════╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝
 
 # load the milvus client
-client = MilvusClient("milvusdemo-2.db")
-
-# drop the collection if it already exists,
-# since this script bootstraps the databases
-# if client.has_collection(collection_name="lore"):
-    # client.drop_collection(collection_name="lore")
+client = pymilvus.MilvusClient("milvusdemo-3.db")
 
 # create the collection. default distance metric is "COSINE"
 client.create_collection(
@@ -38,38 +57,66 @@ client.create_collection(
 )
 
 # This will download a small embedding model "paraphrase-albert-small-v2" (~50MB).
-embedding_fn = model.DefaultEmbeddingFunction()
+from pymilvus import model as milvus_model
+embedding_fn = milvus_model.DefaultEmbeddingFunction()
+
+# ███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+# ██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+# ███████╗   ██║   ██║   ██║██████╔╝ ╚████╔╝
+# ╚════██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝
+# ███████║   ██║   ╚██████╔╝██║  ██║   ██║
+# ╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝
+#
+# ███████╗████████╗██████╗ ██╗   ██╗ ██████╗████████╗██╗   ██╗██████╗ ███████╗
+# ██╔════╝╚══██╔══╝██╔══██╗██║   ██║██╔════╝╚══██╔══╝██║   ██║██╔══██╗██╔════╝
+# ███████╗   ██║   ██████╔╝██║   ██║██║        ██║   ██║   ██║██████╔╝█████╗
+# ╚════██║   ██║   ██╔══██╗██║   ██║██║        ██║   ██║   ██║██╔══██╗██╔══╝
+# ███████║   ██║   ██║  ██║╚██████╔╝╚██████╗   ██║   ╚██████╔╝██║  ██║███████╗
+# ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝
+
 
 class LoreEntry(BaseModel):
+    """
+    A class representing a lore entry in the database.
+    Lore entries are descriptive pieces of information that
+    add color to a world.
+    """
     name: str
     content: str
     keywords: List[str]
     reasoning_steps: List[str]
+
+    # Embed the content of the lore entry
     def encode(self, embedding_fn):
         return embedding_fn.encode_documents([self.content])[0]
 
+    # Insert the lore entry into the database
     def insert(self, client, embedding_fn):
+        # Convert the lore entry to a dictionary and add the embedding
         dict_data = self.model_dump()
         dict_data["vector"] = self.encode(embedding_fn)
 
-        print(f"Inserting {self.name}")
-        print(f"Dimensions: {dict_data['vector'].shape}")
+        # milvus it, bay-bee
         client.insert(
             collection_name="lore",
             data=[dict_data],
             fields=["content", "reasoning_steps"],
         )
 
-def lore_entry(prompt: str):
-    import outlines
-
-    model = outlines.models.transformers(LLM, device="cuda")
-    generator = outlines.generate.json(model, LoreEntry)
-    return generator(prompt)
-
 class SettingType(str, Enum):
+    """
+    The setting of the world. This is an Enum, so
+    the language model must choose from one of the
+    following options.
+    """
+    science_fiction = "science fiction"
     fantasy = "fantasy"
-    science_fiction = "science_fiction"
+    horror = "horror"
+    cyberpunk = "cyberpunk"
+    steampunk = "steampunk"
+    post_apocalyptic = "post apocalyptic"
+    magical_realism = "magical realism"
+
 
 class World(BaseModel):
     setting: SettingType
@@ -79,44 +126,52 @@ class World(BaseModel):
         return f"""Genre: {self.setting}\nWorld Description: {self.world_description}"""
 
     def world_proposal_prompt():
-        return f"""
-        <|im_start|>system
+        """
+        This function returns the system prompt for the world proposal prompt.
+
+        Returns:
+            (system_prompt, user_prompt)
+        """
+
+        # System prompt is first, user prompt is second
+        return ("""
         You are a world builder. You are given a world description and a setting. Your job is to
         describe a brand new world with a setting and a description of the world.
 
-        The setting must be either "fantasy" or "science_fiction". Choose something interesting.
+        The setting may be one of the following:
+        - fantasy
+        - science fiction
+        - horror
+        - cyberpunk
+        - steampunk
+        - post-apocalyptic
+        - magical realism
 
         The world description should be comprehensive. It should describe the unique features of the world,
         focusing primarily on physical properties, geography, and culture.
 
         Be extremely brief. We'll add more information later.
-
-        <|im_end|>
-        <|im_start|>user
-
+        """,
+        # User prompt
+        """
         Please provide a world description and a setting. This should be the seed from which
         the rest of the lore of the world is built.
-        <|im_end|>
-        <|im_start|>assistant
         """
+        )
 
     def event_proposal_prompt(self):
-        return f"""
-        <|im_start|>system
+        system_prompt = """
         You propose entries for a lore database. These should be general plot points,
         characters, locations, etc. Focus on the abstraction like "a hero rises" or
         "the location of a battle".
 
         Lore entries are pieces of information that add color to a world.
-        They can be anything, including
-
+        They can be anything, including:
         - a historical event
         - a description of a character
         - a description of a location
         - a description of an object
         - a description of a concept
-
-        etc.
 
         You have access to all the lore of the world. To access this lore, you must
         provide a list of requests that will be used to further refine the proposal.
@@ -127,26 +182,31 @@ class World(BaseModel):
         of the world. They should try to understand whether the entry is plausible given
         the existing lore. Your queries should focus on existing lore --
         are there relevant characters? Conflicts? Locations?
-        <|im_end|>
-        <|im_start|>user
+        """
 
+        user_prompt = f"""
         # World Summary
 
         {self.to_text()}
 
-        Please provide
+        Please provide:
         - A proposal for a lore entry in natural language.
         - A list of information requests that will be used to refine the proposal.
           These should be in the form of natural language queries organized by the
           type of the query.
-
-        <|im_end|>
-        <|im_start|>assistant
         """
 
-def generate_world(model):
-    generator = generate.json(model, World)
-    return generator(World.world_proposal_prompt())
+        return system_prompt, user_prompt
+
+def generate_world(client, model_string):
+    system_prompt, user_prompt = World.world_proposal_prompt()
+    return generate(
+        client=client,
+        model=model_string,
+        pydantic_schema=World,
+        prompt=user_prompt,
+        system_prompt=system_prompt
+    )
 
 class LoreEntryCandidate(BaseModel):
     proposal: str
@@ -202,14 +262,6 @@ class InformationRequestAnswer(BaseModel):
         """
 
 def prompt_refine_proposal(lore_query: str):
-    import outlines
-
-    model = outlines.models.transformers(LLM, device="cuda")
-    generator = outlines.generate.json(model, LoreEntry)
-    return generator(lore_query)
-
-
-def prompt_refine_proposal(lore_query: str):
     return f"""
     <|im_start|>system
     You are a world builder, designed to take a proposal for a lore entry and
@@ -239,66 +291,56 @@ def prompt_refine_proposal(lore_query: str):
     <|im_start|>assistant
     """
 
-
 def main():
-    # Medium tempterature sampler
-    sampler = outlines.samplers.multinomial(temperature=0.5)
+    # Go grab whatever the first model we have in LM Studio
+    openai_client = openai.OpenAI(
+        base_url="http://0.0.0.0:1234/v1",
+        api_key="dopeness"
+    )
+    model = openai_client.models.list().data[0].id
 
     # Panel display width
     panel_width = 60
 
-    # Create a model for the world proposal prompt using llamacpp
-    # llm_model = outlines.models.llamacpp(
-    #     "NousResearch/Hermes-2-Pro-Llama-3-8B-GGUF",
-    #     "Hermes-2-Pro-Llama-3-8B-Q4_K_M.gguf",
-    #     tokenizer=llama_cpp.llama_tokenizer.LlamaHFTokenizer.from_pretrained(
-    #         "NousResearch/Hermes-2-Pro-Llama-3-8B"
-    #     ),
-    #     n_gpu_layers=-1,
-    #     verbose=True,
-    # )
-
-    llm_model = outlines.models.transformers(
-        "NousResearch/Hermes-2-Pro-Llama-3-8B",
-        # tokenizer=llama_cpp.llama_tokenizer.LlamaHFTokenizer.from_pretrained(
-        #     "NousResearch/Hermes-2-Pro-Llama-3-8B"
-        # ),
-        device="cpu",
-    )
-
-    world = generate_world(llm_model)
+    # Generate the world
+    world = generate_world(openai_client, model)
 
     # Print the world description
     print(Panel.fit(world.world_description, title="World Description", width=panel_width))
     print(Panel.fit(world.setting, title="Setting", width=panel_width))
 
-    # Answer generator
-    answer_generator = outlines.generate.json(
-        llm_model,
-        InformationRequestAnswer,
-        sampler=sampler
-    )
-
     while True:
-        # Have the model propose a historical event
-        historical_event_generator = outlines.generate.json(
-            llm_model,
-            LoreEntryCandidate,
-            sampler=sampler
+        # Propose a historical event
+        system_prompt, user_prompt = world.event_proposal_prompt()
+        historical_event = generate(
+            client=openai_client,
+            model=model,
+            pydantic_schema=LoreEntryCandidate,
+            prompt=user_prompt,
+            system_prompt=system_prompt
         )
 
-        historical_event = historical_event_generator(world.event_proposal_prompt())
-        print(Panel.fit(historical_event.proposal, title="Historical Event Proposal", width=panel_width))
+        # Print out the historical event proposal
+        print(Panel.fit(
+            historical_event.proposal + \
+                "\n\nNumber of information requests: " + \
+                str(len(historical_event.information_requests)),
+            title="Historical Event Proposal",
+            width=panel_width
+        ))
 
         # Ask the model to answer the information requests
-        print("Answering information requests...")
         responses = []
         for request in historical_event.information_requests:
             # Print a separator
             print("-" * panel_width)
 
             # Print the information request, so we know what we're looking for
-            print(Panel.fit(request, title="Information Request", width=panel_width))
+            print(Panel.fit(
+                request,
+                title="Information Request",
+                width=panel_width
+            ))
 
             # Search for similar events in the lore
             search_results = client.search(
@@ -322,7 +364,13 @@ def main():
                 ))
 
             # Have the model answer the information request
-            answer = answer_generator(InformationRequestAnswer.answer_prompt(historical_event.proposal, request, search_results))
+            answer = generate(
+                client=openai_client,
+                model=model,
+                pydantic_schema=InformationRequestAnswer,
+                prompt=InformationRequestAnswer.answer_prompt(historical_event.proposal, request, search_results),
+                system_prompt=system_prompt
+            )
 
             # Add the answer to the list of answers
             responses.append(answer.answer)
@@ -350,37 +398,29 @@ def main():
             lore_query += "\n\n"
 
         # Have the model refine the proposal
-        proposal_refiner = generate.json(
-            llm_model,
-            LoreEntry
-        )
-
-        print("Refining proposal...")
-        new_entry = proposal_refiner(
-            prompt_refine_proposal(
-                lore_query
-            )
+        proposal_refiner = generate(
+            client=openai_client,
+            model=model,
+            pydantic_schema=LoreEntry,
+            prompt=prompt_refine_proposal(lore_query),
+            system_prompt=system_prompt
         )
 
         # Display reasoning steps
-        print("Reasoning steps...")
-        for step in new_entry.reasoning_steps:
+        for step in proposal_refiner.reasoning_steps:
             print(Panel.fit(step, title="Reasoning Step", width=panel_width))
 
         # Insert the refined proposal into the collection
-        print("Inserting refined proposal...")
-        new_entry.insert(client, embedding_fn)
+        proposal_refiner.insert(client, embedding_fn)
 
-        print(Panel.fit(new_entry.content, title=new_entry.name, width=panel_width))
+        print(Panel.fit(
+            proposal_refiner.content,
+            title=proposal_refiner.name,
+            width=panel_width
+        ))
 
 if __name__ == "__main__":
     main()
-
-    # Make schema dir if it doesn't exist
-    # if not os.path.exists("schemas"):
-    #     os.makedirs("schemas")
-
-    # asyncio.run(main_async())
 
 
 
