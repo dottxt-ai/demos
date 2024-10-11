@@ -6,10 +6,11 @@ import openai
 from pydantic import BaseModel
 
 import pymilvus
+from pymilvus import model as milvus_model
 
 from rich import print
 from rich.panel import Panel
-
+from rich.markdown import Markdown
 from typing import Optional, Dict, Any
 
 def generate(
@@ -47,7 +48,11 @@ def generate(
 # ╚══════╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝
 
 # load the milvus client
-client = pymilvus.MilvusClient("milvusdemo-3.db")
+client = pymilvus.MilvusClient("milvusdemo-new.db")
+
+# Remove the collection if it already exists
+if client.has_collection("lore"):
+    client.drop_collection("lore")
 
 # create the collection. default distance metric is "COSINE"
 client.create_collection(
@@ -57,7 +62,6 @@ client.create_collection(
 )
 
 # This will download a small embedding model "paraphrase-albert-small-v2" (~50MB).
-from pymilvus import model as milvus_model
 embedding_fn = milvus_model.DefaultEmbeddingFunction()
 
 # ███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
@@ -125,7 +129,7 @@ class World(BaseModel):
     def to_text(self):
         return f"""Genre: {self.setting}\nWorld Description: {self.world_description}"""
 
-    def world_proposal_prompt():
+    def world_proposal_prompt(world_type=None):
         """
         This function returns the system prompt for the world proposal prompt.
 
@@ -134,9 +138,11 @@ class World(BaseModel):
         """
 
         # System prompt is first, user prompt is second
-        return ("""
+        return (f"""
         You are a world builder. You are given a world description and a setting. Your job is to
         describe a brand new world with a setting and a description of the world.
+
+        {"The user has offered this guidance to you: " + world_type if world_type else ""}
 
         The setting may be one of the following:
         - fantasy
@@ -156,6 +162,10 @@ class World(BaseModel):
         """
         Please provide a world description and a setting. This should be the seed from which
         the rest of the lore of the world is built.
+
+        Be brief.
+
+        Please provide your world description and setting in a JSON format.
         """
         )
 
@@ -194,12 +204,16 @@ class World(BaseModel):
         - A list of information requests that will be used to refine the proposal.
           These should be in the form of natural language queries organized by the
           type of the query.
+
+        Be brief.
+
+        Please provide your proposal and information requests in a JSON format.
         """
 
         return system_prompt, user_prompt
 
-def generate_world(client, model_string):
-    system_prompt, user_prompt = World.world_proposal_prompt()
+def generate_world(client, model_string, world_type=None):
+    system_prompt, user_prompt = World.world_proposal_prompt(world_type)
     return generate(
         client=client,
         model=model_string,
@@ -213,12 +227,11 @@ class LoreEntryCandidate(BaseModel):
     information_requests: List[str]
 
 class InformationRequestAnswer(BaseModel):
-    reasoning_steps: List[str]
+    reasoning_steps: List[str] # this forces the model to provide reasoning
     answer: str
 
     def answer_prompt(proposal: str, query: str, search_results: List[LoreEntry]):
-        return f"""
-        <|im_start|>system
+        system_prompt = """
         You are a world builder, designed to take a proposal for a lore entry and
         refine it based on information requests. An agent has already
         provided a proposal for a lore entry, a list of information
@@ -238,10 +251,9 @@ class InformationRequestAnswer(BaseModel):
 
         You may also provide a list of reasoning steps that lead from the available
         lore to the answer.
+        """
 
-        <|im_end|>
-        <|im_start|>user
-
+        user_prompt = f"""
         Proposal being refined:
 
         {proposal}
@@ -254,13 +266,13 @@ class InformationRequestAnswer(BaseModel):
 
         {search_results}
 
+        Be brief.
+
         Make sure your answer uses only information from the search results.
         Do not make up information.
-
-        <|im_end|>
-        <|im_start|>assistant
         """
 
+        return system_prompt, user_prompt
 def prompt_refine_proposal(lore_query: str):
     return f"""
     <|im_start|>system
@@ -287,11 +299,24 @@ def prompt_refine_proposal(lore_query: str):
 
     {lore_query}
 
+    Be brief.
+
     <|im_end|>
     <|im_start|>assistant
     """
 
+def separator():
+    print("\n")
+    print("─" * 60)
+    print("\n")
+
 def main():
+    # Ask the user what kind of world they want to generate
+    print("Tell me what world you want.")
+
+    # Get the world type from the user
+    world_type = input("> ")
+
     # Go grab whatever the first model we have in LM Studio
     openai_client = openai.OpenAI(
         base_url="http://0.0.0.0:1234/v1",
@@ -303,11 +328,15 @@ def main():
     panel_width = 60
 
     # Generate the world
-    world = generate_world(openai_client, model)
+    world = generate_world(openai_client, model, world_type)
 
     # Print the world description
-    print(Panel.fit(world.world_description, title="World Description", width=panel_width))
-    print(Panel.fit(world.setting, title="Setting", width=panel_width))
+    print(Panel.fit(
+        world.world_description + "\n\n[italic]Setting: " + world.setting + "[/italic]",
+        title="World Description",
+        width=panel_width,
+        border_style="bright_cyan"
+    ))
 
     while True:
         # Propose a historical event
@@ -321,25 +350,29 @@ def main():
         )
 
         # Print out the historical event proposal
+        separator()
         print(Panel.fit(
             historical_event.proposal + \
                 "\n\nNumber of information requests: " + \
                 str(len(historical_event.information_requests)),
-            title="Historical Event Proposal",
-            width=panel_width
+            title="New proposal",
+            width=panel_width,
+            border_style="bright_blue"
         ))
 
         # Ask the model to answer the information requests
         responses = []
         for request in historical_event.information_requests:
-            # Print a separator
-            print("-" * panel_width)
+            # Print a separator, horizontal line
+            separator()
 
             # Print the information request, so we know what we're looking for
             print(Panel.fit(
                 request,
                 title="Information Request",
-                width=panel_width
+                width=panel_width,
+                # style="on grey0"
+                border_style="red"
             ))
 
             # Search for similar events in the lore
@@ -351,24 +384,32 @@ def main():
             )[0]
 
             # Print out the search results
-            print("Search results:")
             for i, result in enumerate(search_results, 1):
                 entity = result['entity']
                 print(Panel.fit(
-                    f"[bold]Name:[/bold] {entity['name']}\n\n"
-                    f"[bold]Content:[/bold] {entity['content']}\n\n"
-                    f"[bold]Keywords:[/bold] {', '.join(entity['keywords'])}\n\n"
-                    f"[bold]Distance:[/bold] {result['distance']}",
+                    Markdown(
+                        f"**Name:** {entity['name']}\n\n"
+                        f"**Content:** {entity['content']}\n\n"
+                        f"**Keywords:** {', '.join(entity['keywords'])}\n\n"
+                        f"**Distance:** {result['distance']}"
+                    ),
                     title=f"Result {i}",
                     width=panel_width,
+                    border_style="bright_green"
                 ))
 
             # Have the model answer the information request
+            system_prompt, user_prompt = InformationRequestAnswer.answer_prompt(
+                historical_event.proposal,
+                request,
+                search_results
+            )
+
             answer = generate(
                 client=openai_client,
                 model=model,
                 pydantic_schema=InformationRequestAnswer,
-                prompt=InformationRequestAnswer.answer_prompt(historical_event.proposal, request, search_results),
+                prompt=user_prompt,
                 system_prompt=system_prompt
             )
 
@@ -376,14 +417,16 @@ def main():
             responses.append(answer.answer)
 
             # Print the reasoning steps and the answer
-            print("Reasoning steps:")
             for step in answer.reasoning_steps:
-                print(Panel.fit(step, title="Reasoning Step", width=panel_width))
+                print(Panel.fit(
+                    "[italic]" + step + "[/italic]",
+                    title="Reasoning Step",
+                    width=panel_width,
+
+                ))
 
             # Print the answer
-            print(Panel.fit(answer.answer, title="Information Request Answer", width=panel_width))
-
-        print("Constructing lore query...")
+            print(Panel.fit(answer.answer, title="Answer", width=panel_width))
 
         lore_query = world.to_text()
         lore_query += "\n\n"
@@ -398,7 +441,7 @@ def main():
             lore_query += "\n\n"
 
         # Have the model refine the proposal
-        proposal_refiner = generate(
+        proposal_refined = generate(
             client=openai_client,
             model=model,
             pydantic_schema=LoreEntry,
@@ -407,16 +450,18 @@ def main():
         )
 
         # Display reasoning steps
-        for step in proposal_refiner.reasoning_steps:
-            print(Panel.fit(step, title="Reasoning Step", width=panel_width))
+        separator()
+        for step in proposal_refined.reasoning_steps:
+            print(Panel.fit('[italic]' + step + '[/italic]', title="Reasoning Step", width=panel_width))
 
         # Insert the refined proposal into the collection
-        proposal_refiner.insert(client, embedding_fn)
+        proposal_refined.insert(client, embedding_fn)
 
         print(Panel.fit(
-            proposal_refiner.content,
-            title=proposal_refiner.name,
-            width=panel_width
+            proposal_refined.content,
+            title=proposal_refined.name,
+            width=panel_width,
+            border_style="green"
         ))
 
 if __name__ == "__main__":
