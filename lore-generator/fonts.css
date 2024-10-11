@@ -24,6 +24,7 @@
 /* Make monospace font 1em */
 .reveal .slides {
     font-size: 1.0em;
+    color: #dcd0b8;
 }
 
 .dottxt-logo {
@@ -41,23 +42,27 @@
 .bits {
     font-family: 'PP NeueBit Regular', sa   ns-serif;
     font-weight: 400;
+    color: #dcd0b8;
 }
 
 .bits-bold {
     font-family: 'PP NeueBit', sans-serif;
     font-weight: 700;
+    color: #dcd0b8;
 }
 
 .reveal .slides h1 {
     font-family: "PP NeueBit", sans-serif;
     font-size: 10em;
     text-align: center;
+    color: #dcd0b8;
 }
 
 .reveal .slides h2 {
-    font-family: "PP NeueBit Regular", sans-serif;
+    font-family: "PP Neue Montreal", sans-serif;
     font-size: 2em;
     text-align: center;
+    color: #dcd0b8;
 }
 
 /* Code comment color */
