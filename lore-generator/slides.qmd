@@ -154,6 +154,8 @@ Tell me what world you want.
 
 # <span class="bits">when we have more information, we get <span class="bits-bold">better answers</span> from Milvus</span>
 
+#
+
 ```
 ╭────────── Information Request ──────────╮
 │ What is the origin story of Prometheus? │
