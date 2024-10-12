@@ -1,18 +1,15 @@
+# Misc imports
 from enum import Enum
 from typing import List
-
 import openai
-
 from pydantic import BaseModel
-
 import pymilvus
 from pymilvus import model as milvus_model
-
 from rich import print
 from rich.panel import Panel
 from rich.markdown import Markdown
-from typing import Optional, Dict, Any
 
+# Convenience function to talk to our inference server
 def generate(
     client,
     model,
@@ -78,7 +75,6 @@ embedding_fn = milvus_model.DefaultEmbeddingFunction()
 # ███████║   ██║   ██║  ██║╚██████╔╝╚██████╗   ██║   ╚██████╔╝██║  ██║███████╗
 # ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝
 
-
 class LoreEntry(BaseModel):
     """
     A class representing a lore entry in the database.
@@ -88,7 +84,6 @@ class LoreEntry(BaseModel):
     name: str
     content: str
     keywords: List[str]
-    reasoning_steps: List[str]
 
     # Embed the content of the lore entry
     def encode(self, embedding_fn):
@@ -104,7 +99,7 @@ class LoreEntry(BaseModel):
         client.insert(
             collection_name="lore",
             data=[dict_data],
-            fields=["content", "reasoning_steps"],
+            fields=["content"],
         )
 
 class SettingType(str, Enum):
@@ -120,7 +115,6 @@ class SettingType(str, Enum):
     steampunk = "steampunk"
     post_apocalyptic = "post apocalyptic"
     magical_realism = "magical realism"
-
 
 class World(BaseModel):
     setting: SettingType
@@ -139,7 +133,7 @@ class World(BaseModel):
 
         # System prompt is first, user prompt is second
         return (f"""
-        You are a world builder. You are given a world description and a setting. Your job is to
+        You are a world builder. Your job is to
         describe a brand new world with a setting and a description of the world.
 
         {"The user has offered this guidance to you: " + world_type if world_type else ""}
@@ -273,6 +267,7 @@ class InformationRequestAnswer(BaseModel):
         """
 
         return system_prompt, user_prompt
+
 def prompt_refine_proposal(lore_query: str):
     return f"""
     <|im_start|>system
@@ -338,6 +333,7 @@ def main():
         border_style="bright_cyan"
     ))
 
+    # Generate the world forever
     while True:
         # Propose a historical event
         system_prompt, user_prompt = world.event_proposal_prompt()
@@ -448,6 +444,15 @@ def main():
             prompt=prompt_refine_proposal(lore_query),
             system_prompt=system_prompt
         )
+
+        # how to do this with outlines locally:
+        # model = outlines.models.vllm(model_repo, device="cpu")
+        # # model = outlines.models.transformers(model_repo, device="cuda")\
+
+        # # Generator for refiner
+        # refiner_generator = outlines.generate.json(model, LoreEntry)
+
+        # refined_lore_entry = refiner_generator(system_prompt + lore_query)
 
         # Display reasoning steps
         separator()
