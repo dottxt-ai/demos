@@ -218,6 +218,7 @@ def generate_world(client, model_string, world_type=None):
 
 class LoreEntryCandidate(BaseModel):
     proposal: str
+    reasoning_steps: List[str]
     information_requests: List[str]
 
 class InformationRequestAnswer(BaseModel):
@@ -314,8 +315,8 @@ def main():
 
     # Go grab whatever the first model we have in LM Studio
     openai_client = openai.OpenAI(
-        base_url="http://0.0.0.0:1234/v1",
-        api_key="dopeness"
+        base_url="http://localhost:1234/v1/",
+        api_key="whatever bro"
     )
     model = openai_client.models.list().data[0].id
 
@@ -446,18 +447,16 @@ def main():
         )
 
         # how to do this with outlines locally:
+        #
         # model = outlines.models.vllm(model_repo, device="cpu")
-        # # model = outlines.models.transformers(model_repo, device="cuda")\
-
-        # # Generator for refiner
+        #
+        # or
+        #
+        # model = outlines.models.transformers(model_repo, device="cuda")\
+        #
+        # Generator for lore entry refiner
         # refiner_generator = outlines.generate.json(model, LoreEntry)
-
         # refined_lore_entry = refiner_generator(system_prompt + lore_query)
-
-        # Display reasoning steps
-        separator()
-        for step in proposal_refined.reasoning_steps:
-            print(Panel.fit('[italic]' + step + '[/italic]', title="Reasoning Step", width=panel_width))
 
         # Insert the refined proposal into the collection
         proposal_refined.insert(client, embedding_fn)
@@ -471,7 +470,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-
-
