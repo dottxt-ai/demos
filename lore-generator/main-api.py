@@ -1,99 +1,129 @@
-import asyncio
-import os
-import httpx
-
+# Misc imports
 from enum import Enum
-import random
+import os
 from typing import List
-
-import httpx
-import llama_cpp
-import outlines
+from dotenv import load_dotenv
+import openai
 from pydantic import BaseModel
-from pydantic.tools import parse_obj_as
-from pymilvus import IndexType, MilvusClient, FieldSchema, DataType
-from pymilvus import model #for embeddings
-
-from outlines import models, generate
-
-
+import pymilvus
+from pymilvus import model as milvus_model
 from rich import print
 from rich.panel import Panel
-
+from rich.markdown import Markdown
 import api
+import hashlib
+import json
+import voyageai
+
+load_dotenv(override=True)
+
+# Some stuff for the remote server I'm working with
+API_HOST = os.environ.get("DOTTXT_API_HOST", None)
+API_KEY = os.environ.get("DOTTXT_API_KEY", None)
+
+# We use Voyage AI for embeddings
+vo = voyageai.Client()
+
+# Convenience function to talk to our inference server
+def generate(
+    pydantic_schema,
+    prompt,
+):
+    generated_text = api.create_completion(pydantic_schema, prompt)
+    return generated_text
+
+
+# ███╗   ███╗██╗██╗    ██╗   ██╗██╗   ██╗███████╗
+# ████╗ ████║██║██║    ██║   ██║██║   ██║██╔════╝
+# ██╔████╔██║██║██║    ██║   ██║██║   ██║███████╗
+# ██║╚██╔╝██║██║██║    ╚██╗ ██╔╝██║   ██║╚════██║
+# ██║ ╚═╝ ██║██║███████╗╚████╔╝ ╚██████╔╝███████║
+# ╚═╝     ╚═╝╚═╝╚══════╝ ╚═══╝   ╚═════╝ ╚══════╝
+
+# ███████╗████████╗██╗   ██╗███████╗███████╗
+# ██╔════╝╚══██╔══╝██║   ██║██╔════╝██╔════╝
+# ███████╗   ██║   ██║   ██║█████╗  █████╗
+# ╚════██║   ██║   ██║   ██║██╔══╝  ██╔══╝
+# ███████║   ██║   ╚██████╔╝██║     ██║
+# ╚══════╝   ╚═╝    ╚═════╝ ╚═╝     ╚═╝
 
 # load the milvus client
-revision = 2
-client = MilvusClient(f"milvusdemo-dotjson-{revision}.db")
+client = pymilvus.MilvusClient("milvusdemo-new.db")
 
-# Set up the endpoint list for .json
-ENDPOINTS = {}
-
-# Convenience function to map a type to a name
-def type_to_name(t):
-    if issubclass(t, BaseModel) or issubclass(t, Enum):
-        return t.__name__ + "-loregen-" + str(revision)
-    else:
-        raise ValueError(f"Unsupported type: {t}")
-
-# Convenience function to take a type and retrieve
-# it's completion endpoint
-def get_completion_endpoint(t):
-    name = type_to_name(t)
-    return api.get_completion_endpoint(name, t)
-
-def update_endpoints(t):
-    name = type_to_name(t)
-    ENDPOINTS[name] = get_completion_endpoint(t)
-
-
-# drop the collection if it already exists,
-# since this script bootstraps the databases
-if client.has_collection(collection_name="lore"):
-    client.drop_collection(collection_name="lore")
+# Remove the collection if it already exists
+if client.has_collection("lore"):
+    client.drop_collection("lore")
 
 # create the collection. default distance metric is "COSINE"
 client.create_collection(
     collection_name="lore",
-    dimension=768,
+    dimension=512, # If using voyage-3-lite
+    # dimension=768,
     auto_id=True,
 )
 
 # This will download a small embedding model "paraphrase-albert-small-v2" (~50MB).
-embedding_fn = model.DefaultEmbeddingFunction()
+embedding_fn = milvus_model.DefaultEmbeddingFunction()
+
+
+# ███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
+# ██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
+# ███████╗   ██║   ██║   ██║██████╔╝ ╚████╔╝
+# ╚════██║   ██║   ██║   ██║██╔══██╗  ╚██╔╝
+# ███████║   ██║   ╚██████╔╝██║  ██║   ██║
+# ╚══════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝   ╚═╝
+#
+# ███████╗████████╗██████╗ ██╗   ██╗ ██████╗████████╗██╗   ██╗██████╗ ███████╗
+# ██╔════╝╚══██╔══╝██╔══██╗██║   ██║██╔════╝╚══██╔══╝██║   ██║██╔══██╗██╔════╝
+# ███████╗   ██║   ██████╔╝██║   ██║██║        ██║   ██║   ██║██████╔╝█████╗
+# ╚════██║   ██║   ██╔══██╗██║   ██║██║        ██║   ██║   ██║██╔══██╗██╔══╝
+# ███████║   ██║   ██║  ██║╚██████╔╝╚██████╗   ██║   ╚██████╔╝██║  ██║███████╗
+# ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝
 
 class LoreEntry(BaseModel):
+    """
+    A class representing a lore entry in the database.
+    Lore entries are descriptive pieces of information that
+    add color to a world.
+    """
     name: str
     content: str
     keywords: List[str]
-    reasoning_steps: List[str]
 
+    # Embed the content of the lore entry
     def encode(self, embedding_fn):
-        return embedding_fn.encode_documents([self.content])[0]
+        # Generate voyage embedding
+        result = vo.embed([self.content ], model="voyage-3-lite", input_type="document")
+        return result.embeddings[0]
 
+        # return embedding_fn.encode_documents([self.content])[0]
+
+    # Insert the lore entry into the database
     def insert(self, client, embedding_fn):
+        # Convert the lore entry to a dictionary and add the embedding
         dict_data = self.model_dump()
         dict_data["vector"] = self.encode(embedding_fn)
 
-        print(f"Inserting {self.name}")
-        print(f"Dimensions: {dict_data['vector'].shape}")
+        # milvus it, bay-bee
         client.insert(
             collection_name="lore",
             data=[dict_data],
-            fields=["content", "reasoning_steps"],
+            fields=["content"],
         )
 
-
-def lore_entry(prompt: str):
-    import outlines
-
-    model = outlines.models.transformers(LLM, device="cuda")
-    generator = outlines.generate.json(model, LoreEntry)
-    return generator(prompt)
-
 class SettingType(str, Enum):
+    """
+    The setting of the world. This is an Enum, so
+    the language model must choose from one of the
+    following options.
+    """
+    science_fiction = "science fiction"
     fantasy = "fantasy"
-    science_fiction = "science_fiction"
+    horror = "horror"
+    cyberpunk = "cyberpunk"
+    steampunk = "steampunk"
+    post_apocalyptic = "post apocalyptic"
+    magical_realism = "magical realism"
 
 class World(BaseModel):
     setting: SettingType
@@ -102,13 +132,27 @@ class World(BaseModel):
     def to_text(self):
         return f"""Genre: {self.setting}\nWorld Description: {self.world_description}"""
 
-    def world_proposal_prompt():
+    def world_proposal_prompt(world_type=None):
+        """
+        This function returns the system prompt for the world proposal prompt.
+        """
+
+        # System prompt is first, user prompt is second
         return f"""
-        <|im_start|>system
-        You are a world builder. You are given a world description and a setting. Your job is to
+        <|im_start|>system 
+        You are a world builder. Your job is to
         describe a brand new world with a setting and a description of the world.
 
-        The setting must be either "fantasy" or "science_fiction".
+        {"The user has offered this guidance to you: " + world_type if world_type else ""}
+
+        The setting may be one of the following:
+        - fantasy
+        - science fiction
+        - horror
+        - cyberpunk
+        - steampunk
+        - post-apocalyptic
+        - magical realism
 
         The world description should be comprehensive. It should describe the unique features of the world,
         focusing primarily on physical properties, geography, and culture.
@@ -120,6 +164,10 @@ class World(BaseModel):
 
         Please provide a world description and a setting. This should be the seed from which
         the rest of the lore of the world is built.
+
+        Be brief.
+
+        Please provide your world description and setting in a JSON format.
         <|im_end|>
         <|im_start|>assistant
         """
@@ -132,15 +180,12 @@ class World(BaseModel):
         "the location of a battle".
 
         Lore entries are pieces of information that add color to a world.
-        They can be anything, including
-
+        They can be anything, including:
         - a historical event
         - a description of a character
         - a description of a location
         - a description of an object
         - a description of a concept
-
-        etc.
 
         You have access to all the lore of the world. To access this lore, you must
         provide a list of requests that will be used to further refine the proposal.
@@ -151,258 +196,299 @@ class World(BaseModel):
         of the world. They should try to understand whether the entry is plausible given
         the existing lore. Your queries should focus on existing lore --
         are there relevant characters? Conflicts? Locations?
+
+        Be brief.
+
         <|im_end|>
         <|im_start|>user
-
         # World Summary
 
         {self.to_text()}
 
-        Please provide
+        Please provide:
         - A proposal for a lore entry in natural language.
         - A list of information requests that will be used to refine the proposal.
-          These should be in the form of natural language queries organized by the
-          type of the query.
+          These should be in the form of a list of questions to search agents
+          that will be used to refine the proposal. Questions you should ask should
+          be about various aspects of the world, such as whether a character exists
+          to answer the question, or if a location is big enough to fit the action. 
+          The goal of your queries should be to help the model refine the proposal.
+          Queries should be specific and precise.
+
+        Please provide your proposal and information requests in a JSON format.
+
+        Be very brief and clear.
 
         <|im_end|>
         <|im_start|>assistant
         """
+def generate_world(world_type=None):
+    return generate(
+        pydantic_schema=World,
+        prompt=World.world_proposal_prompt(world_type)
+    )
 
-def generate_world(model):
-    generator = generate.json(model, World)
-    return generator(World.world_proposal_prompt())
+class LoreEntryCandidate(BaseModel):
+    proposal: str
+    reasoning_steps: List[str]
+    information_requests: List[str]
 
-# Add the schema to the endpoint list
-update_endpoints(LoreEntry)
-update_endpoints(World)
+class InformationRequestAnswer(BaseModel):
+    reasoning_steps: List[str] # this forces the model to provide reasoning
+    answer: str
 
-# Print out the endpoints
-print(ENDPOINTS)
+    def answer_prompt(proposal: str, query: str, search_results: List[LoreEntry]):
+        """
+        This function returns the system prompt and user prompt for the answer prompt.
+        """
 
+        # System prompt is first, user prompt is second
+        return f"""
+        <|im_start|>system 
+        You are a world builder, designed to take a proposal for a lore entry and
+        refine it based on information requests. An agent has already
+        provided a proposal for a lore entry, a list of information
+        requests, and a list of lore entries that are potentially
+        relevant.
 
-# class LoreEntryCandidate(BaseModel):
-#     proposal: str
-#     information_requests: List[str]
+        You are reviewing the agent's question. You will be provided
+        the question and a list of lore entries that are potentially
+        relevant. Your job is to determine whether the question is
+        asking for information that is already known in the lore. If it is,
+        you should provide a concise answer to the agent's question.
 
-# class InformationRequestAnswer(BaseModel):
-#     reasoning_steps: List[str]
-#     answer: str
+        If the question does not seem to be answerable with the provided lore,
+        you should tell the agent that the information is not yet known. Your
+        job is to review and guide the proposal to be sure that it is consistent
+        with the lore of the world.
 
-#     def answer_prompt(proposal: str, query: str, search_results: List[LoreEntry]):
-#         return f"""
-#         <|im_start|>system
-#         You are a world builder, designed to take a proposal for a lore entry and
-#         refine it based on information requests. An agent has already
-#         provided a proposal for a lore entry, a list of information
-#         requests, and a list of lore entries that are potentially
-#         relevant.
+        You may also provide a list of reasoning steps that lead from the available
+        lore to the answer.
 
-#         You are reviewing the agent's question. You will be provided
-#         the question and a list of lore entries that are potentially
-#         relevant. Your job is to determine whether the question is
-#         asking for information that is already known in the lore. If it is,
-#         you should provide a concise answer to the agent's question.
+        Be brief.
 
-#         If the question does not seem to be answerable with the provided lore,
-#         you should tell the agent that the information is not yet known. Your
-#         job is to review and guide the proposal to be sure that it is consistent
-#         with the lore of the world.
+        <|im_end|>
+        <|im_start|>user
+        Proposal being refined:
 
-#         You may also provide a list of reasoning steps that lead from the available
-#         lore to the answer.
+        {proposal}
 
-#         <|im_end|>
-#         <|im_start|>user
+        Information Request from agent:
 
-#         Proposal being refined:
+        {query}
 
-#         {proposal}
+        Search results:
 
-#         Information Request from agent:
+        {search_results}
 
-#         {query}
+        Be brief. 
 
-#         Search results:
+        Make sure your answer uses only information from the search results.
+        Do not make up information.
+        <|im_end|>
+        <|im_start|>assistant
+        """
+def prompt_refine_proposal(lore_query: str):
+    return f"""
+    <|im_start|>system
+    You are a world builder, designed to take a proposal for a lore entry and
+    refine it based on information requests. An agent has already
+    provided a proposal for a lore entry, a list of information
+    requests, and a list of lore entries that are potentially
+    relevant.
 
-#         {search_results}
+    Your job is to produce a new fact that should be added to the lore of the world.
+    It may be brief, like a sentence or two, or it may be longer, like a paragraph.
+    It should be a fact that would be relevant to someone trying to learn the lore
+    of the world.
 
-#         Make sure your answer uses only information from the search results.
-#         Do not make up information.
+    You may add as much or as little detail as you think is appropriate, as long as
+    it is consistent with the lore of the world.
 
-#         <|im_end|>
-#         <|im_start|>assistant
-#         """
+    Provide reasoning steps that lead to the new lore entry.
 
-# def prompt_refine_proposal(lore_query: str):
-#     import outlines
+    Be brief.
 
-#     model = outlines.models.transformers(LLM, device="cuda")
-#     generator = outlines.generate.json(model, LoreEntry)
-#     return generator(lore_query)
+    <|im_end|>
+    <|im_start|>user
 
+    Here is the content you will need to refine the proposal:
 
-# def prompt_refine_proposal(lore_query: str):
-#     return f"""
-#     <|im_start|>system
-#     You are a world builder, designed to take a proposal for a lore entry and
-#     refine it based on information requests. An agent has already
-#     provided a proposal for a lore entry, a list of information
-#     requests, and a list of lore entries that are potentially
-#     relevant.
+    {lore_query}
 
-#     Your job is to produce a new fact that should be added to the lore of the world.
-#     It may be brief, like a sentence or two, or it may be longer, like a paragraph.
-#     It should be a fact that would be relevant to someone trying to learn the lore
-#     of the world.
+    Provide an in-world description of what occured in the world, using the
+    original proposal refined by the queries and answers.
 
-#     You may add as much or as little detail as you think is appropriate, as long as
-#     it is consistent with the lore of the world.
+    Be brief. Deliver a short lore entry, no more than 2 sentences.
 
-#     Provide reasoning steps that lead to the new lore entry.
+    <|im_end|>
+    <|im_start|>assistant
+    """
 
-#     <|im_end|>
-#     <|im_start|>user
+def separator():
+    print("\n")
+    print("─" * 60)
+    print("\n")
 
-#     Here is the content you will need to refine the proposal:
+def main():
+    # Ask the user what kind of world they want to generate
+    print("Tell me what world you want.")
 
-#     {lore_query}
+    # Get the world type from the user
+    # world_type = "cyberpunk" # if you want a manual world
+    world_type = input("> ")
 
-#     <|im_end|>
-#     <|im_start|>assistant
-#     """
+    # Remove the OpenAI client initialization
+    # openai_client = openai.OpenAI(
+    #     base_url="http://localhost:1234/v1/",
+    #     api_key="whatever bro"
+    # )
+    # model = openai_client.models.list().data[0].id
 
+    # Panel display width
+    panel_width = 60
 
-# def main():
-#     # Medium tempterature sampler
-#     sampler = outlines.samplers.multinomial(temperature=0.5)
+    # Generate the world
+    world = generate_world(world_type)
 
-#     # Panel display width
-#     panel_width = 60
+    # Print the world description
+    print(Panel.fit(
+        world.world_description + "\n\n[italic]Setting: " + world.setting + "[/italic]",
+        title="World Description",
+        width=panel_width,
+        border_style="bright_cyan"
+    ))
 
-#     # Create a model for the world proposal prompt using llamacpp
-#     # llm_model = outlines.models.llamacpp(
-#     #     "NousResearch/Hermes-2-Pro-Llama-3-8B-GGUF",
-#     #     "Hermes-2-Pro-Llama-3-8B-Q4_K_M.gguf",
-#     #     tokenizer=llama_cpp.llama_tokenizer.LlamaHFTokenizer.from_pretrained(
-#     #         "NousResearch/Hermes-2-Pro-Llama-3-8B"
-#     #     ),
-#     #     n_gpu_layers=-1,
-#     #     verbose=True,
-#     # )
+    # Generate the world forever
+    while True:
+        # Propose a historical event
+        historical_event = generate(
+            pydantic_schema=LoreEntryCandidate,
+            prompt=world.event_proposal_prompt()
+        )
 
-#     llm_model = outlines.models.transformers(
-#         "NousResearch/Hermes-2-Pro-Llama-3-8B",
-#         # tokenizer=llama_cpp.llama_tokenizer.LlamaHFTokenizer.from_pretrained(
-#         #     "NousResearch/Hermes-2-Pro-Llama-3-8B"
-#         # ),
-#         device="cpu",
-#     )
+        # Print out the historical event proposal
+        separator()
+        print(Panel.fit(
+            historical_event.proposal + \
+                "\n\nNumber of information requests: " + \
+                str(len(historical_event.information_requests)),
+            title="New proposal",
+            width=panel_width,
+            border_style="bright_blue"
+        ))
 
-#     world = generate_world(llm_model)
+        # Ask the model to answer the information requests
+        responses = []
+        for request in historical_event.information_requests:
+            # Print a separator, horizontal line
+            separator()
 
-#     # Print the world description
-#     print(Panel.fit(world.world_description, title="World Description", width=panel_width))
-#     print(Panel.fit(world.setting, title="Setting", width=panel_width))
+            # Print the information request, so we know what we're looking for
+            print(Panel.fit(
+                request,
+                title="Information Request",
+                width=panel_width,
+                border_style="red"
+            ))
 
+            # Search for similar events in the lore
+            search_results = client.search(
+                collection_name="lore",
+                # data=embedding_fn.encode_documents([request]),
+                data=[vo.embed([request], model="voyage-3-lite", input_type="document").embeddings[0]],
+                output_fields=["name", "content", "keywords"],
+                limit=3,
+            )[0]
 
-#     # Answer generator
-#     answer_generator = outlines.generate.json(
-#         llm_model,
-#         InformationRequestAnswer,
-#         sampler=sampler
-#     )
+            # Print out the search results
+            for i, result in enumerate(search_results, 1):
+                entity = result['entity']
+                print(Panel.fit(
+                    Markdown(
+                        f"**Name:** {entity['name']}\n\n"
+                        f"**Content:** {entity['content']}\n\n"
+                        f"**Keywords:** {', '.join(entity['keywords'])}\n\n"
+                        f"**Distance:** {result['distance']}"
+                    ),
+                    title=f"Result {i}",
+                    width=panel_width,
+                    border_style="bright_green"
+                ))
 
-#     while True:
-#         # Have the model propose a historical event
-#         historical_event_generator = outlines.generate.json(
-#             llm_model,
-#             LoreEntryCandidate,
-#             sampler=sampler
-#         )
+            # Have the model answer the information request
+            answer_prompt = InformationRequestAnswer.answer_prompt(
+                historical_event.proposal,
+                request,
+                search_results
+            )
 
-#         historical_event = historical_event_generator(world.event_proposal_prompt())
-#         print(Panel.fit(historical_event.proposal, title="Historical Event Proposal", width=panel_width))
+            answer = generate(
+                pydantic_schema=InformationRequestAnswer,
+                prompt=answer_prompt
+            )
 
-#         # Search for similar events
-#         search_results = client.search(
-#             collection_name="lore",
-#             data=embedding_fn.encode_documents(historical_event.information_requests),
-#             output_fields=["name", "content", "keywords"],
-#             limit=10,
-#         )
+            # Add the answer to the list of answers
+            responses.append(answer.answer)
 
-#         # Print out the search results
-#         print("Search results:")
-#         for i, result in enumerate(search_results, 1):
-#             entity = result['entity']
-#             print(Panel.fit(
-#                 f"[bold]Name:[/bold] {entity['name']}\n\n"
-#                 f"[bold]Content:[/bold] {entity['content']}\n\n"
-#                 f"[bold]Keywords:[/bold] {', '.join(entity['keywords'])}\n\n"
-#                 f"[bold]Distance:[/bold] {result['distance']}",
-#                 title=f"Result {i}"
-#             ))
+            # Print the reasoning steps and the answer
+            for step in answer.reasoning_steps:
+                print(Panel.fit(
+                    "[italic]" + step + "[/italic]",
+                    title="Reasoning Step",
+                    width=panel_width,
 
-#         # Ask the model to answer the information requests
-#         print("Answering information requests...")
-#         responses = []
-#         for request in historical_event.information_requests:
-#             answer = answer_generator(InformationRequestAnswer.answer_prompt(historical_event.proposal, request, search_results))
-#             responses.append(answer.answer)
+                ))
 
-#             print("-" * 100)
-#             print(Panel.fit(request, title="Information Request", width=panel_width))
-#             for step in answer.reasoning_steps:
-#                 print(Panel.fit(step, title="Reasoning Step", width=panel_width))
-#             print(Panel.fit(answer.answer, title="Information Request Answer", width=panel_width))
+            # Print the answer
+            print(Panel.fit(answer.answer, title="Answer", width=panel_width))
 
-#         print("Constructing lore query...")
+        lore_query = world.to_text()
+        lore_query += "\n\n"
+        lore_query += "Proposed Lore Entry: " + historical_event.proposal
+        lore_query += "\n\n"
+        for (request, response) in zip(historical_event.information_requests, responses):
 
-#         lore_query = world.to_text()
-#         lore_query += "\n\n"
-#         lore_query += "Proposed Lore Entry: " + historical_event.proposal
-#         lore_query += "\n\n"
-#         for (request, response) in zip(historical_event.information_requests, responses):
+            # Add the request to the refinement prompt
+            lore_query += "Information Request: " + request + "\n"
+            lore_query += "Information Answer: " + response + "\n"
 
-#             # Add the request to the refinement prompt
-#             lore_query += "Information Request: " + request + "\n"
-#             lore_query += "Information Answer: " + response + "\n"
+            lore_query += "\n\n"
 
-#             lore_query += "\n\n"
+        # Add the system tag
+        lore_query = "<|im_start|>system\n" + lore_query + "<|im_end|>\n" + lore_query
 
-#         # Have the model refine the proposal
-#         proposal_refiner = generate.json(
-#             llm_model,
-#             LoreEntry
-#         )
+        # Have the model refine the proposal
+        proposal_refined = generate(
+            pydantic_schema=LoreEntry,
+            prompt=lore_query
+        )
 
-#         print("Refining proposal...")
-#         new_entry = proposal_refiner(
-#             prompt_refine_proposal(
-#                 lore_query
-#             )
-#         )
+        # how to do this with outlines locally:
+        #
+        # model = outlines.models.vllm(model_repo, device="cpu")
+        #
+        # or
+        #
+        # model = outlines.models.transformers(model_repo, device="cuda")\
+        #
+        # Generator for lore entry refiner
+        # refiner_generator = outlines.generate.json(model, LoreEntry)
+        # refined_lore_entry = refiner_generator(system_prompt + lore_query)
 
-#         # Display reasoning steps
-#         print("Reasoning steps...")
-#         for step in new_entry.reasoning_steps:
-#             print(Panel.fit(step, title="Reasoning Step", width=panel_width))
+        # Insert the refined proposal into the collection
+        proposal_refined.insert(client, embedding_fn)
 
-#         # Insert the refined proposal into the collection
-#         print("Inserting refined proposal...")
-#         new_entry.insert(client, embedding_fn)
+        print(Panel.fit(
+            proposal_refined.content,
+            title=proposal_refined.name,
+            width=panel_width,
+            border_style="green"
+        ))
 
-#         print(Panel.fit(new_entry.content, title=new_entry.name, width=panel_width))
-
-# if __name__ == "__main__":
-#     main()
-
-#     # Make schema dir if it doesn't exist
-#     # if not os.path.exists("schemas"):
-#     #     os.makedirs("schemas")
-
-#     # asyncio.run(main_async())
-
-
-
-
+if __name__ == "__main__":
+    main()
+    # print(api.list_schemas())
+    # print(to_hash(LoreEntry))
+    # print(api.get_completion_endpoint(LoreEntry))
+    # print(api.get_completion_url(LoreEntry))

@@ -10,15 +10,65 @@ from pymilvus import model as milvus_model
 from rich import print
 from rich.panel import Panel
 from rich.markdown import Markdown
+import asyncio
 
 load_dotenv(override=True)
 
-# Set up vllm url
-VLLM_URL = os.environ.get("VLLM_URL", "http://localhost:1234/v1/")
+# Create schema-to-js_id mapping
+VLLM_URL = os.environ.get("MODAL_URL", "http://localhost:1234/v1/")
 
 import requests
 import json
 from pydantic import ValidationError
+
+def generate_vllm(
+    pydantic_schema,
+    prompt,
+    system_prompt="You're a helpful assistant.",
+    model="llama-3.2-1b-instruct",
+    temperature=0.7,
+    max_tokens=50
+):
+    url = VLLM_URL + "chat/completions"
+    
+    headers = {
+        "Content-Type": "application/json"
+    }
+    
+    data = {
+        "model": model,
+        "messages": [
+            {
+                "role": "system",
+                "content": system_prompt
+            },
+            {
+                "role": "user",
+                "content": prompt
+            }
+        ],
+        "response_format": {
+            "type": "json_schema",
+            "json_schema": pydantic_schema.model_json_schema()
+        },
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+        "stream": False
+    }
+    
+    response = requests.post(url, headers=headers, data=json.dumps(data))
+    response.raise_for_status()
+    
+    result = response.json()
+    print(result)
+    
+    try:
+        content = json.loads(result['choices'][0]['message']['content'])
+        validated_response = pydantic_schema(**content)
+        return validated_response
+    except (json.JSONDecodeError, ValidationError) as e:
+        print(f"Error parsing or validating response: {e}")
+        return None
 
 # Convenience function to talk to our inference server
 def generate(
@@ -28,6 +78,8 @@ def generate(
     prompt,
     system_prompt="You're a helpful assistant."
 ):
+    # Try a simple raw call to the endpoint 
+
     # Make a request to the local LM Studio server
     response = client.beta.chat.completions.parse(
         model=model,
@@ -221,6 +273,13 @@ class World(BaseModel):
 def generate_world(client, model_string, world_type=None):
     system_prompt, user_prompt = World.world_proposal_prompt(world_type)
 
+    return generate_vllm(
+        pydantic_schema=World,
+        prompt=user_prompt,
+        system_prompt=system_prompt
+    )
+
+
     return generate(
         client=client,
         model=model_string,
@@ -319,25 +378,44 @@ def separator():
     print("─" * 60)
     print("\n")
 
-def main():
+# Initialize the AsyncOpenAI client
+client = openai.AsyncOpenAI(
+    base_url=VLLM_URL,
+    api_key="whatever bro"
+)
+
+async def generate_async(model, pydantic_schema, prompt, system_prompt):
+    response = await client.chat.completions.create(
+        model=model,
+        messages=[
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": prompt}
+        ],
+        response_format={"type": "json_object"},
+        max_tokens=2000,
+        temperature=0.7,
+        top_p=1,
+        extra_body=dict(guided_json=pydantic_schema.model_json_schema())
+    )
+    return pydantic_schema.model_validate_json(response.choices[0].message.content)
+
+async def main():
     # Ask the user what kind of world they want to generate
     print("Tell me what world you want.")
 
     # Get the world type from the user
     world_type = input("> ")
 
-    # Go grab whatever the first model we have in LM Studio
-    openai_client = openai.OpenAI(
-        base_url=VLLM_URL,
-        api_key="whatever bro"
-    )
-    model = openai_client.models.list().data[0].id
+    # Use the first available model
+    # model = (await client.models.list()).data[0].id
+    model = "NousResearch/Hermes-3-Llama-3.1-8B"
 
     # Panel display width
     panel_width = 60
 
     # Generate the world
-    world = generate_world(openai_client, model, world_type)
+    system_prompt, user_prompt = World.world_proposal_prompt(world_type)
+    world = await generate_async(model, World, user_prompt, system_prompt)
 
     # Print the world description
     print(Panel.fit(
@@ -351,12 +429,11 @@ def main():
     while True:
         # Propose a historical event
         system_prompt, user_prompt = world.event_proposal_prompt()
-        historical_event = generate(
-            client=openai_client,
-            model=model,
-            pydantic_schema=LoreEntryCandidate,
-            prompt=user_prompt,
-            system_prompt=system_prompt
+        historical_event = await generate_async(
+            model,
+            LoreEntryCandidate,
+            user_prompt,
+            system_prompt
         )
 
         # Print out the historical event proposal
@@ -414,13 +491,11 @@ def main():
                 request,
                 search_results
             )
-
-            answer = generate(
-                client=openai_client,
-                model=model,
-                pydantic_schema=InformationRequestAnswer,
-                prompt=user_prompt,
-                system_prompt=system_prompt
+            answer = await generate_async(
+                model,
+                InformationRequestAnswer,
+                user_prompt,
+                system_prompt
             )
 
             # Add the answer to the list of answers
@@ -451,12 +526,11 @@ def main():
             lore_query += "\n\n"
 
         # Have the model refine the proposal
-        proposal_refined = generate(
-            client=openai_client,
-            model=model,
-            pydantic_schema=LoreEntry,
-            prompt=prompt_refine_proposal(lore_query),
-            system_prompt=system_prompt
+        proposal_refined = await generate_async(
+            model,
+            LoreEntry,
+            prompt_refine_proposal(lore_query),
+            system_prompt
         )
 
         # how to do this with outlines locally:
@@ -482,4 +556,4 @@ def main():
         ))
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
