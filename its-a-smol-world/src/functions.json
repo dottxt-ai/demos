@@ -1,0 +1,58 @@
+{
+    "functions": [
+        {
+            "name": "send_text",
+            "description": "Send a text message to a contact",
+            "parameters": {
+                "type": "dict",
+                "properties": {
+                    "to": {
+                        "type": "string",
+                        "description": "The name of the contact to send the text to."
+                    },
+                    "message": {
+                        "type": "string",
+                        "description": "The message to send to the contact."
+                    }
+                },
+                "required": ["to", "message"]
+            }
+        },
+        {   
+            "name": "order_food",
+            "description": "Order food from a restaurant",
+            "parameters": {
+                "type": "dict",
+                "properties": {
+                    "restaurant": {
+                        "type": "string",
+                        "description": "The name of the restaurant to order from."
+                    },
+                    "item": {
+                        "type": "string",
+                        "description": "The name of the item to order."
+                    },
+                    "quantity": {
+                        "type": "integer",
+                        "description": "The quantity of the item to order."
+                    }
+                },
+                "required": ["restaurant", "item", "quantity"]
+            }
+        },
+        {
+            "name": "order_ride",
+            "description": "Order a ride from a ride sharing service",
+            "parameters": {
+                "type": "dict",
+                "properties": {
+                    "dest": {
+                        "type": "string",
+                        "description": "The destination of the ride."
+                    }
+                },
+                "required": ["dest"]
+            }
+        }
+    ]
+}
