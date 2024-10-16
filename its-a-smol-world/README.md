@@ -23,12 +23,16 @@ python3 ./src/app.py
 The demo provides an interface for natural language interaction with a mobile device. You can provide natural language commands and the model will choose one of the following actions:
 
 - Send a text message
-- Make a phone call
 - Order a food delivery
 - Order a ride
-- Play music
-- Set a reminder
-- Send an email
-- Search the web
 - Get the weather
-- Get the news
+
+## Good Test Examples:
+
+"I'd like to order 2 coffees from starbucks"
+
+"I need a ride to SEATAC terminal A"
+
+"What's the weather in san francisco today?"
+
+"Text Remi and tell him the project is looking good"

@@ -4,6 +4,7 @@ import threading
 import sys
 
 from smol_mind import SmolMind, load_functions
+MODEL_NAME = "HuggingFaceTB/SmolLM-1.7B-Instruct"
 
 def spinner(stop_event):
     spinner = itertools.cycle(['-', '/', '|', '\\'])
@@ -16,7 +17,7 @@ def spinner(stop_event):
 def main():
     print("loading SmolMind...")
     functions = load_functions("./src/functions.json")
-    sm = SmolMind(functions)
+    sm = SmolMind(functions, model_name=MODEL_NAME)
     print("Welcome to the Bunny B1! What do you need?")
     while True:
         user_input = input("> ")

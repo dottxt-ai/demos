@@ -53,6 +53,20 @@
                 },
                 "required": ["dest"]
             }
+        },
+        {
+            "name": "get_weather",
+            "description": "Get the weather for a city",
+            "parameters": {
+                "type": "dict",
+                "properties": {
+                    "city": {
+                        "type": "string",
+                        "description": "The city to get the weather for."
+                    }
+                },
+                "required": ["city"]
+            }
         }
     ]
 }

@@ -1,11 +1,20 @@
 import json
 from textwrap import dedent
 import outlines
+from outlines.samplers import greedy
 import re
-from transformers import AutoTokenizer
+from transformers import AutoTokenizer, logging
+import torch
+import io
+import contextlib
+import warnings
+
+
+logging.set_verbosity_error()
 
 MODEL_NAME = 'HuggingFaceTB/SmolLM-1.7B-Instruct'
-
+DEVICE = 'mps'
+T_TYPE = torch.bfloat16
 def format_functions(functions):
     formatted_functions = []
     for func in functions:
@@ -41,7 +50,7 @@ SYSTEM_PROMPT_FOR_CHAT_MODEL = dedent("""
 
 
 ASSISTANT_PROMPT_FOR_CHAT_MODEL = dedent("""
-    I understand and will only return the function call(s) in the correct format.
+    I understand and will only return the function call in the correct format.
     """
 )
 USER_PROMPT_FOR_CHAT_MODEL = dedent("""
@@ -51,7 +60,7 @@ USER_PROMPT_FOR_CHAT_MODEL = dedent("""
 
 def instruct_prompt(question, functions, tokenizer):
     messages = [
-        {"role": "system", "content": SYSTEM_PROMPT_FOR_CHAT_MODEL.format(functions=format_functions(functions))},
+        {"role": "user", "content": SYSTEM_PROMPT_FOR_CHAT_MODEL.format(functions=format_functions(functions))},
         {"role": "assistant", "content": ASSISTANT_PROMPT_FOR_CHAT_MODEL },
         {"role": "user", "content": USER_PROMPT_FOR_CHAT_MODEL.format(user_prompt=question)},
     ]
@@ -72,7 +81,7 @@ simple_type_map = {
     "any": STRING,
     "integer": INTEGER,
     "number": FLOAT,
-    "float": FLOAT,  # change this later
+    "float": FLOAT,
     "boolean": BOOLEAN,
     "null": NULL,
 }
@@ -137,14 +146,22 @@ def load_functions(path):
         return json.load(f)['functions']
 
 class SmolMind:
-    def __init__(self, functions):
+    def __init__(self, functions, model_name=MODEL_NAME):
         self.functions = functions
         self.fc_regex = multi_function_fc_regex(functions)
-        self.model = outlines.models.transformers(MODEL_NAME)
-        self.tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-        self.generator = outlines.generate.regex(self.model, self.fc_regex)
+        self.model = outlines.models.transformers(
+            model_name,
+            device=DEVICE,
+            model_kwargs={
+            "trust_remote_code": True,
+            "torch_dtype": T_TYPE,
+        })  
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.generator = outlines.generate.regex(self.model, self.fc_regex, sampler=greedy())
 
     def get_function_call(self, user_prompt):
-        prompt = instruct_prompt(user_prompt, self.functions, self.tokenizer)
-        response = self.generator(prompt)
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+            prompt = instruct_prompt(user_prompt, self.functions, self.tokenizer)
+            response = self.generator(prompt)
         return response
