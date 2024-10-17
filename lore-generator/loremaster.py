@@ -1,6 +1,7 @@
 from enum import Enum
 from pydantic import BaseModel, Field
 from typing import List, Optional
+from rich.panel import Panel
 
 # ███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
 # ██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
@@ -16,6 +17,7 @@ from typing import List, Optional
 # ███████║   ██║   ██║  ██║╚██████╔╝╚██████╗   ██║   ╚██████╔╝██║  ██║███████╗
 # ╚══════╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝  ╚═════╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝
 
+# A lore entry is a refined, final entry injected into the database.
 class LoreEntry(BaseModel):
     """
     A class representing a lore entry in the database.
@@ -26,7 +28,9 @@ class LoreEntry(BaseModel):
     content: str
     keywords: List[str]
 
-    # Embed the content of the lore entry
+    # Embed the content of the lore entry. This returns
+    # an N-vector where N is the dimensionality of the
+    # embeddings.
     def encode(self, embedding_fn):
         return embedding_fn(self.content)
 
@@ -43,6 +47,16 @@ class LoreEntry(BaseModel):
             fields=["content"],
         )
 
+    def print(self, width):
+        print(Panel.fit(
+            self.content,
+            title=self.name,
+            width=width,
+            border_style="green"
+        ))
+
+# A SettingType is a genre for the world that guides the general
+# direction of the language model's responses.
 class SettingType(str, Enum):
     """
     The setting of the world. This is an Enum, so
@@ -57,53 +71,19 @@ class SettingType(str, Enum):
     post_apocalyptic = "post_apocalyptic"
     magical_realism = "magical_realism"
 
+# A World describes the general shape and rules of the world
 class World(BaseModel):
     setting: SettingType
     world_description: str
 
+    # Convert the world to text -- basically just description + setting type
     def to_text(self):
         return f"""Genre: {self.setting}\nWorld Description: {self.world_description}"""
 
-    def world_proposal_prompt(world_type=None):
-        """
-        This function returns the system prompt for the world proposal prompt.
-
-        Returns:
-            (system_prompt, user_prompt)
-        """
-
-        # System prompt is first, user prompt is second
-        return (f"""
-        You are a world builder. Your job is to
-        describe a brand new world with a setting and a description of the world.
-
-        {"The user has offered this guidance to you: " + world_type if world_type else ""}
-
-        The setting may be one of the following:
-        - fantasy
-        - science fiction
-        - horror
-        - cyberpunk
-        - steampunk
-        - post-apocalyptic
-        - magical realism
-
-        The world description should be comprehensive. It should describe the unique features of the world,
-        focusing primarily on physical properties, geography, and culture.
-
-        Be extremely brief. We'll add more information later.
-        """,
-        # User prompt
-        """
-        Please provide a world description and a setting. This should be the seed from which
-        the rest of the lore of the world is built.
-
-        Be brief.
-
-        Please provide your world description and setting in a JSON format.
-        """
-        )
-
+    # Propose an event using the text description of the world.
+    # Note that this is not conditioned on anything other than
+    # the world -- it works regardless of what is in the database.
+    # The refinement step handles correcting the prompt.
     def event_proposal_prompt(self):
         system_prompt = """
         You propose entries for a lore database. These should be general plot points,
@@ -148,59 +128,131 @@ class World(BaseModel):
 
         return system_prompt, user_prompt
 
+    def print_world_description(self, width=60):
+        print(Panel.fit(
+            self.world_description + "\n\n[italic]Setting: " + self.setting + "[/italic]",
+            title="World Description",
+            width=width,
+            border_style="bright_cyan"
+        ))
+
+# A candidate for a lore entry, which will be further refined
+# using information from the database.
 class LoreEntryCandidate(BaseModel):
+    # Proposal here is some arbitrary text that is used as a seed
+    # for further refinement.
     proposal: str
+
+    # Note: adding reasoning steps here forces the model to generate
+    # at least one reasoning step to determine information requests.
     reasoning_steps: List[str]
+
+    # Information requests are queries to ask the database
     information_requests: List[str]
 
+    def print_lore_entry_candidate(self, width):
+        print(Panel.fit(
+            self.proposal + \
+                "\n\nNumber of information requests: " + \
+                str(len(self.information_requests)),
+            title="New proposal",
+            width=width,
+            border_style="bright_blue"
+        ))
+
+# A response to a question asked by the lore agent
 class InformationRequestAnswer(BaseModel):
     reasoning_steps: List[str] # this forces the model to provide reasoning
     answer: str
 
-    def answer_prompt(proposal: str, query: str, search_results: List[LoreEntry]):
-        system_prompt = """
-        You are a world builder, designed to take a proposal for a lore entry and
-        refine it based on information requests. An agent has already
-        provided a proposal for a lore entry, a list of information
-        requests, and a list of lore entries that are potentially
-        relevant.
+# Converts a proposal, query from agent, and relevant search results
+# to a prompt that answers the agent query.
+def answer_prompt(proposal: str, query: str, search_results: List[LoreEntry]):
+    system_prompt = """
+    You are a world builder, designed to take a proposal for a lore entry and
+    refine it based on information requests. An agent has already
+    provided a proposal for a lore entry, a list of information
+    requests, and a list of lore entries that are potentially
+    relevant.
 
-        You are reviewing the agent's question. You will be provided
-        the question and a list of lore entries that are potentially
-        relevant. Your job is to determine whether the question is
-        asking for information that is already known in the lore. If it is,
-        you should provide a concise answer to the agent's question.
+    You are reviewing the agent's question. You will be provided
+    the question and a list of lore entries that are potentially
+    relevant. Your job is to determine whether the question is
+    asking for information that is already known in the lore. If it is,
+    you should provide a concise answer to the agent's question.
 
-        If the question does not seem to be answerable with the provided lore,
-        you should tell the agent that the information is not yet known. Your
-        job is to review and guide the proposal to be sure that it is consistent
-        with the lore of the world.
+    If the question does not seem to be answerable with the provided lore,
+    you should tell the agent that the information is not yet known. Your
+    job is to review and guide the proposal to be sure that it is consistent
+    with the lore of the world.
 
-        You may also provide a list of reasoning steps that lead from the available
-        lore to the answer.
-        """
+    You may also provide a list of reasoning steps that lead from the available
+    lore to the answer.
+    """
 
-        user_prompt = f"""
-        Proposal being refined:
+    user_prompt = f"""
+    Proposal being refined:
 
-        {proposal}
+    {proposal}
 
-        Information Request from agent:
+    Information Request from agent:
 
-        {query}
+    {query}
 
-        Search results:
+    Search results:
 
-        {search_results}
+    {search_results}
 
-        Be brief.
+    Be brief.
 
-        Make sure your answer uses only information from the search results.
-        Do not make up information.
-        """
+    Make sure your answer uses only information from the search results.
+    Do not make up information.
+    """
 
-        return system_prompt, user_prompt
+    return system_prompt, user_prompt
 
+# Prompting for proposing a world
+def world_proposal_prompt(world_type: Optional[str] = None):
+    """
+    This function returns the system prompt for the world proposal prompt.
+
+    Returns:
+        (system_prompt, user_prompt)
+    """
+
+    # System prompt is first, user prompt is second
+    return (f"""
+    You are a world builder. Your job is to
+    describe a brand new world with a setting and a description of the world.
+
+    {"The user has offered this guidance to you: " + world_type if world_type else ""}
+
+    The setting may be one of the following:
+    - fantasy
+    - science fiction
+    - horror
+    - cyberpunk
+    - steampunk
+    - post-apocalyptic
+    - magical realism
+
+    The world description should be comprehensive. It should describe the unique features of the world,
+    focusing primarily on physical properties, geography, and culture.
+
+    Be extremely brief. We'll add more information later.
+    """,
+    # User prompt
+    """
+    Please provide a world description and a setting. This should be the seed from which
+    the rest of the lore of the world is built.
+
+    Be brief.
+
+    Please provide your world description and setting in a JSON format.
+    """
+    )
+
+# Prompt to refine a proposal
 def prompt_refine_proposal(lore_query: str):
     return f"""
     <|im_start|>system
@@ -233,6 +285,8 @@ def prompt_refine_proposal(lore_query: str):
     <|im_start|>assistant
     """
 
+# Simple display convenience function. Just prints
+# a straight line.
 def separator():
     print("\n")
     print("─" * 60)
