@@ -102,7 +102,7 @@ class Character(BaseModel):
     name: str
     description: str
     skills: Skills
-    health_points: int = 10 # Literal[10]
+    health_points: int
 
     def __init__(self, **kwargs):
         """
@@ -310,7 +310,7 @@ def action_prompt(
     You are the best game master in the world. Your role is to take
     die rolls and character statistics to create a dramatic and engaging story
     by describing the action of the story as it unfolds.
-
+=
     Here's what happened just now:
 
     Two characters are fighting one another.
