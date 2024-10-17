@@ -23,6 +23,8 @@ from loremaster import (
     LoreEntry,
     LoreEntryCandidate,
     World,
+    world_proposal_prompt,
+    answer_prompt,
     prompt_refine_proposal,
     separator,
 )
@@ -39,12 +41,14 @@ from loremaster import (
 # - SEARCH_RESULT_LIMIT limits how many lore entries are retrieved
 #   in each database query. Lower numbers are better for low-context
 #   size models, as they may not be able to fit all the lore entries.
+# - DB_PATH is the location of the milvus database.
 EMBEDDING_MODEL = "nomic-ai/nomic-embed-text-v1"
 EMBEDDING_DEVICE = "cpu"
 LLM_MODEL = "microsoft/Phi-3-mini-128k-instruct"
 LLM_DEVICE = "cpu"
 PANEL_WIDTH = 60
 SEARCH_RESULT_LIMIT = 3
+DB_PATH = "milvusdemo.db"
 
 # Generate world is a simple convenience function to generate a
 # new World object. You may pass a world_type here, which will
@@ -54,7 +58,7 @@ SEARCH_RESULT_LIMIT = 3
 # a post-apocalyptic world full of zombie cyborgs.
 def generate_world(model, world_type=None):
     # Retrieve the prompt to generate a world.
-    system_prompt, user_prompt = World.world_proposal_prompt(world_type)
+    system_prompt, user_prompt = world_proposal_prompt(world_type)
 
     # Create a generator function that uses our lanugage model. It will return
     # a World object. Note how simple this is -- no language model nonsense!
@@ -93,7 +97,7 @@ def main():
     # than standard keyword search.
 
     # load the milvus client
-    milvus_client = pymilvus.MilvusClient("milvusdemo-new.db")
+    milvus_client = pymilvus.MilvusClient(DB_PATH)
 
     # Remove the collection if it already exists.
     # NOTE! this will overwrite any existing lore.
@@ -144,7 +148,7 @@ def main():
     world = generate_world(model, world_seed)
 
     # Print the world description
-    world.print_world_description(PANEL_WIDTH)
+    world.print(PANEL_WIDTH)
 
     # Historical event generator. This will propose something
     # to add to the lore of the world. It may make no sense,
@@ -193,7 +197,7 @@ def main():
 
         # Print out the historical event proposal
         separator()
-        historical_event.print_lore_entry_candidate(PANEL_WIDTH)
+        historical_event.print(PANEL_WIDTH)
 
         # Ask sub-agents to handle the information request answers.
         responses = []
@@ -241,7 +245,7 @@ def main():
 
             # Construct a prompt used to ask the language model to
             # answer the lore agent's query.
-            system_prompt, user_prompt = InformationRequestAnswer.answer_prompt(
+            system_prompt, user_prompt = answer_prompt(
                 historical_event.proposal,
                 request,
                 search_results
@@ -264,7 +268,11 @@ def main():
                 ))
 
             # Print the answer the lookup agent provided
-            print(Panel.fit(answer.answer, title="Answer", width=PANEL_WIDTH))
+            print(Panel.fit(
+                answer.answer,
+                title="Answer",
+                width=PANEL_WIDTH
+            ))
 
         # This part of the code just constructs the final prompt to pass to the
         # refinement prompt. You should think of this as describing the world,
@@ -286,7 +294,7 @@ def main():
 
         # Insert the refined proposal into the collection!
         proposal_refined.insert(milvus_client, embed_text)
-        proposal_refined.print()
+        proposal_refined.print(PANEL_WIDTH)
 
         # Cool. this iteration of the loop has finished,
         #

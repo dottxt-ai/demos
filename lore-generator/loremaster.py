@@ -128,7 +128,7 @@ class World(BaseModel):
 
         return system_prompt, user_prompt
 
-    def print_world_description(self, width=60):
+    def print(self, width=60):
         print(Panel.fit(
             self.world_description + "\n\n[italic]Setting: " + self.setting + "[/italic]",
             title="World Description",
@@ -150,7 +150,7 @@ class LoreEntryCandidate(BaseModel):
     # Information requests are queries to ask the database
     information_requests: List[str]
 
-    def print_lore_entry_candidate(self, width):
+    def print(self, width):
         print(Panel.fit(
             self.proposal + \
                 "\n\nNumber of information requests: " + \
