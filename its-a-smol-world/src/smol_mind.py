@@ -41,11 +41,14 @@ SYSTEM_PROMPT_FOR_CHAT_MODEL = dedent("""
     Request: I want to order a cheese pizza from Pizza Hut.
     Response: [order_food(restaurant="Pizza Hut", item="cheese pizza", quantity=1)]
                                       
-    Request: I want to know the weather in Tokyo.
-    Response: [get_weather(city="Tokyo")]
+    Request: Is it raining in NY.
+    Response: [get_weather(city="New York")]
 
     Request: I need a ride to SFO.
     Response: [order_ride(destination="SFO")]
+                                      
+    Request: I want to send a text to John saying Hello.
+    Response: [send_text(to="John", message="Hello!")]
 """)
 
 
@@ -57,6 +60,11 @@ USER_PROMPT_FOR_CHAT_MODEL = dedent("""
     Request: {user_prompt}. 
 """)
 
+def continue_prompt(question, functions, tokenizer):
+    prompt = SYSTEM_PROMPT_FOR_CHAT_MODEL.format(functions=format_functions(functions))
+    prompt += "\n\n"
+    prompt += USER_PROMPT_FOR_CHAT_MODEL.format(user_prompt=question)
+    return prompt
 
 def instruct_prompt(question, functions, tokenizer):
     messages = [
@@ -146,7 +154,10 @@ def load_functions(path):
         return json.load(f)['functions']
 
 class SmolMind:
-    def __init__(self, functions, model_name=MODEL_NAME):
+    def __init__(self, functions, model_name=MODEL_NAME,instruct=True,debug=False):
+        self.model_name = model_name
+        self.instruct = instruct
+        self.debug = debug
         self.functions = functions
         self.fc_regex = multi_function_fc_regex(functions)
         self.model = outlines.models.transformers(
@@ -162,6 +173,12 @@ class SmolMind:
     def get_function_call(self, user_prompt):
         with warnings.catch_warnings():
             warnings.simplefilter("ignore")
-            prompt = instruct_prompt(user_prompt, self.functions, self.tokenizer)
+            if self.instruct:
+                prompt = instruct_prompt(user_prompt, self.functions, self.tokenizer)
+            else:
+                prompt = continue_prompt(user_prompt, self.functions, self.tokenizer)
             response = self.generator(prompt)
+            if self.debug:
+                print(f"functions: {self.functions}")
+                print(f"prompt: {prompt}")
         return response

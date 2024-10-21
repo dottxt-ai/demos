@@ -2,8 +2,10 @@ import time
 import itertools
 import threading
 import sys
+import argparse
 
 from smol_mind import SmolMind, load_functions
+
 MODEL_NAME = "HuggingFaceTB/SmolLM-1.7B-Instruct"
 
 def spinner(stop_event):
@@ -15,9 +17,18 @@ def spinner(stop_event):
         time.sleep(0.1)
 
 def main():
+    # Add command-line argument parsing
+    parser = argparse.ArgumentParser(description="SmolMind CLI")
+    parser.add_argument('-d', '--debug', action='store_true', help='Enable debug mode')
+    parser.add_argument('-c', '--cont', action='store_true', help='Enable continue mode (disables instruct mode)')
+    args = parser.parse_args()
+
     print("loading SmolMind...")
     functions = load_functions("./src/functions.json")
-    sm = SmolMind(functions, model_name=MODEL_NAME)
+    sm = SmolMind(functions, model_name=MODEL_NAME, debug=args.debug, instruct=not args.cont)
+    print("Using model:", sm.model_name)
+    print("Debug mode:", "Enabled" if args.debug else "Disabled")
+    print("Instruct mode:", "Enabled" if not args.cont else "Disabled")
     print("Welcome to the Bunny B1! What do you need?")
     while True:
         user_input = input("> ")
