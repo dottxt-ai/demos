@@ -1,0 +1,4 @@
+outlines==0.1.0
+transformers
+torch
+accelerate>=0.26.0
