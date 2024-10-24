@@ -19,13 +19,22 @@ app = App(name="outlines-app")
 # Specify a language model to use. This should be the huggingface repo/model name.
 LANGUAGE_MODEL = "microsoft/Phi-3.5-mini-instruct"
 
+cuda_version = "12.4.0"  # should be no greater than host CUDA version
+flavor = "devel"  #  includes full CUDA toolkit
+operating_sys = "ubuntu22.04"
+tag = f"{cuda_version}-{flavor}-{operating_sys}"
+
+
 # Set up the Modal image with the necessary libraries and our huggingface token.
-outlines_image = Image.debian_slim(python_version="3.11").pip_install(
+# debian_slim(python_version="3.11").pip_install(
+outlines_image = Image.from_registry(f"nvidia/cuda:{tag}", add_python="3.11")\
+.pip_install(
     "outlines==0.1.1",
     "transformers",
     "datasets",
     "accelerate",
     "sentencepiece",
+    "torch",
 ).env({
     # This will pull in your HF_TOKEN environment variable if you have one.
     'HF_TOKEN':os.environ['HF_TOKEN']
@@ -38,6 +47,7 @@ def import_model():
     import outlines
     outlines.models.transformers(
         LANGUAGE_MODEL,
+        device="cuda",
     )
 
 # This line tells the container to run the import_model function when the
@@ -50,7 +60,12 @@ outlines_image = outlines_image.run_function(import_model)
 def generate(
     transcripts: List[str],
 ):
-    return generate_earnings_calls(LANGUAGE_MODEL, transcripts)
+    import outlines
+    model = outlines.models.transformers(
+        LANGUAGE_MODEL,
+        device="cuda"
+    )
+    return generate_earnings_calls(model, transcripts)
 
 @app.local_entrypoint()
 def main(
