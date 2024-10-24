@@ -16,9 +16,45 @@ and requires a thorough understanding of the company, the industry, and the
 overall economy. Please consult a financial professional before making investment
 decisions.
 
-## Schema
+## Usage
 
-The default class is `EarningsCall`, which extracts
+This can be run locally (using `transcripts_local.py`) or on [Modal](https://modal.com/) using `transcripts_modal.py`. Modal is a cloud platform supporting GPUs.
+
+### Local
+
+1. Install the requirements:
+    ```bash
+    pip install -r requirements.txt
+    ```
+2. Run the script:
+    ```bash
+    python transcripts_local.py
+    ```
+
+### Modal
+
+1. [Sign up](https://modal.com/signup) for a Modal account.
+2. Install the Modal CLI:
+    ```bash
+    pip install modal
+    ```
+2. Set up your Modal key if you have not done so:
+    ```bash
+    modal setup
+    ```
+3. Run the script:
+    ```bash
+    modal run transcripts_modal.py
+    ```
+
+1. Download the [data source](https://www.kaggle.com/datasets/tpotterer/motley-fool-scraped-earnings-call-transcripts)
+2. Run `unpickle-earnings.py` to extract the transcrips to the `transcripts/` directory. This step adds metadata to each transcript, such as company name, ticker, date, quarter, and the transcript itself.
+
+## How it works
+
+We define a Pydantic model that specifies the information we wish to extract from the transcripts. This model is passed to the language model, which then extracts the data according to the schema.
+
+The schema is defined in `transcripts_common.py`. The default class is `EarningsCall`, which extracts
 
 - Company name and ticker
 - Earnings call date and quarter
@@ -46,9 +82,9 @@ class Sentiment(str, Enum):
     NEUTRAL = "neutral"
     NEGATIVE = "negative"
 
-class AnalystPrediction(str, Enum):
+class InvestmentRecommendation(str, Enum):
     """
-    Analyst prediction of the company's future financial performance.
+    Recommendation of whether to buy, hold, or sell the company's stock.
     """
     BUY = "buy"
     HOLD = "hold"
@@ -104,10 +140,13 @@ class EarningsCall(BaseModel):
     strategic_risk_reasoning: str
 
     # Whether the analyst's prediction is a buy, hold, or sell
-    investment_recommendation: AnalystPrediction
+    investment_recommendation: InvestmentRecommendation
 
     # Have the model review its own output for correctness
     review_correctness: List[str]
+
+    # Whether the text must be reprocessed
+    text_must_be_reprocessed: bool
 ```
 
 Financial metrics extracted are
@@ -121,7 +160,16 @@ Financial metrics extracted are
 
 and can easily be extended to include other financial metrics. In the event that you expand the schema to include other financial metrics, you will need to update the prompt to ensure that the model understands the new metrics it needs to extract.
 
-## Setup
+## Limitations
 
-1. Download the [data source](https://www.kaggle.com/datasets/tpotterer/motley-fool-scraped-earnings-call-transcripts)
-2. Run `unpickle-earnings.py` to extract the transcrips to the `transcripts/` directory. This step adds metadata to each transcript, such as company name, ticker, date, quarter, and the transcript itself.
+- The model is not perfect. It will sometimes make up numbers or misinterpret the data.
+- The model may not understand the data it is extracting if it is not mentioned in the transcripts. For example, if a company announces a new product, but does not discuss its financial impact, the model will not be able to extract that information.
+
+## Future work
+
+- Add a second agent to review the output of the first agent. The `text_must_be_reprocessed` field is currently not used, but could be used to trigger a second agent to attempt a reprocessing of the text.
+
+## Contributing
+
+We welcome contributions to the project! Please open an issue or submit a pull request.
+
