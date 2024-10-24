@@ -26,9 +26,7 @@ tag = f"{cuda_version}-{flavor}-{operating_sys}"
 
 
 # Set up the Modal image with the necessary libraries and our huggingface token.
-# debian_slim(python_version="3.11").pip_install(
-outlines_image = Image.from_registry(f"nvidia/cuda:{tag}", add_python="3.11")\
-.pip_install(
+outlines_image = Image.debian_slim(python_version="3.11").pip_install(
     "outlines==0.1.1",
     "transformers",
     "datasets",
@@ -47,7 +45,6 @@ def import_model():
     import outlines
     outlines.models.transformers(
         LANGUAGE_MODEL,
-        device="cuda",
     )
 
 # This line tells the container to run the import_model function when the

@@ -1,60 +1,29 @@
 from enum import Enum
-import json
-import csv
 from typing import List, Optional
-from rich import print
 import outlines
-import os
+from pathlib import Path
 
-from transcripts_common import *
+from transcripts_common import (
+    EarningsCall,
+    generate_earnings_calls,
+    prompt_for_earnings_call,
+    load_transcripts,
+    save_earnings_calls
+)
 
 from pydantic import BaseModel, Field
 
-language_model = "meta-llama/Llama-3.2-1B"
-
-model = outlines.models.transformers(
-    language_model,
-)
 
 
-# Define a function that uses the image we chose, and specify the GPU
-# and memory we want to use.
-def generate(
-    transcripts: List[str],
-):
-    # Remember, this function is being executed in the container,
-    # so we need to import the necessary libraries here. You should
-    # do this with any other libraries you might need.
-    import outlines
+def main():
+    # Specify the language model to use
+    language_model = "microsoft/Phi-3.5-mini-instruct"
 
-    # Load the model into memory. The import_model function above
-    # should have already downloaded the model, so this call
-    # only loads the model into GPU memory.
+    # Load the language model
     model = outlines.models.transformers(
         language_model,
-        device="cuda",
+        device="cuda"
     )
-
-    generator = outlines.generate.json(model, EarningsCall)
-
-    # For batched inferece
-    # earnings_calls = generator([prompt_for_earnings_call(transcript) for transcript in transcripts])
-
-    # One at a time inference with progress bar
-    from tqdm import tqdm
-    earnings_calls = [
-        generator(prompt_for_earnings_call(transcript))
-        for transcript in tqdm(transcripts, desc="Processing transcripts")
-    ]
-
-    # Return the earnings data
-    return earnings_calls
-
-def main(
-):
-    import os
-    import json
-    from pathlib import Path
 
     # Get the directory of the current script
     script_dir = Path(__file__).parent
@@ -66,7 +35,7 @@ def main(
     transcripts, transcript_paths = load_transcripts(transcripts_dir)
 
     # Generate the earnings calls
-    earnings_calls = generate_earnings_calls(language_model, transcripts)
+    earnings_calls = generate_earnings_calls(model, transcripts)
 
     # Save the earnings calls
     save_earnings_calls(earnings_calls, transcript_paths)
