@@ -1,0 +1,348 @@
+Company name: RDFN-2022-Q1
+Company ticker: RDFN
+Earnings call date: May 05, 2022, 4:30 p.m. ET
+Earnings call quarter: 2022-Q1
+Earnings call transcript: 
+Prepared Remarks:
+
+Operator
+
+Good day, and welcome to the Redfin Corporation's first quarter 2022 earnings call. Today's call is being recorded. At this time, I would like to turn the call over to Meg Nunnally, head of investor relations. Please go ahead.
+
+Meg Nunnally -- Head of Investor Relations
+
+Good afternoon, and welcome to Redfin's financial results conference call for the first quarter ended March 31, 2022. I'm Meg Nunnally, Redfin's head of investor relations. Joining me on the call today is Glenn Kelman, our CEO; and Chris Nielsen, our CFO. Before we start, note that some of our statements on today's call are forward-looking.
+
+We believe our assumptions and expectations related to these forward-looking statements are reasonable, but our actual results may turn out to be materially different. Please read and consider the risk factors in our SEC filings together with the content of today's call. Any forward-looking statements are based on our assumptions today, and we don't undertake to update these statements in light of new information or future events. We use a non-GAAP measure, adjusted EBITDA, when presenting our financial results.
+
+We encourage you to review the non-GAAP reconciliation in today's earnings release, which is available on our website at investors.redfin.com, for a complete understanding of this measure and its purpose. All comparisons made in the course of this call are against the same period in the prior year, unless otherwise stated. Lastly, we'll be providing a copy of our prepared remarks on our website by the conclusion of today's call, and a full transcript and audio replay will also be available soon after the call. With that, I'll turn the call over to Glenn. 
+
+Glenn Kelman -- Chief Executive Officer
+
+Thank you, Meg, and hi to you, everyone. Redfin performed significantly better in the first quarter than expected. Overall revenue of $597 million was $37 million above the top of the range projected in our last earnings call. Our core business of brokering home sales or our employees and our partner agents generated $177 million in revenue, up 5% from the red-hot first quarter of 2021 and $6 million above the top of our range.
+
+Our net loss of $91 million was $24 million better than our most optimistic projection. Redfin typically has its largest loss of the year in the first quarter, as we pay for agents to meet customers who buy homes in the second and third quarters. We expect our net loss to improve significantly throughout the year. Gross profit was $73 million, up 71% year over year.
+
+After warning investors that we might not grow real estate services revenue in the first quarter of 2022, we gained 2 basis points of share compared to the first quarter of last year. Share gains improved from January to February to March, with shares reaching a new record of 1.25% in March. Share gains are likely to keep accelerating through 2022. With demand so volatile and now shifting even more rapidly from large coastal cities to the rest of America, we expect those gains to be less predictable from quarter to quarter, but to grow at historical rates from year to year.
+
+One reason to believe our share of home sales transactions will keep increasing is that our share of online listing searches has kept increasing. Year-over-year gains and average month -- Let me say that again. Year-over-year gains and average monthly visitors accelerated from 1% in the fourth quarter of 2021 to 11% in the first quarter of 2022. Redfin again grew traffic faster than its two main online rivals, Zillow.com and Realtor.com.
+
+Near-simultaneous breakthroughs this spring should broaden our reach even more. First, Redfin.com launched rental search. Second, we hooked up our site to a national listing feed that by year-end will let us show substantially every for-sale home in America. When today our coverage is limited to 91% of homes.
+
+An already massive competitive advantage, largely unchecked by competing brokers has widened. Our engineers aren't just driving demand from Redfin.com to our agents, but also arming those agents with better products to sell. The automation to support a 1% listing fee. The machine learning to give homeowners an immediate RedfinNow offer, and on-demand tours for buyers to see homes first.
+
+None of that matters without second to none sales execution. Our plan to improve our service is well known to investors. We hired more agents through the winter and limited the number of customers from our site who each agent could support. The markets that piloted this approach in 2020 and 2021 delivered better service and gain share faster than their peers.
+
+We funded the service improvement by reducing home buyers commission refund, keeping margins the same without hurting demand. Now, as the agents hired for a companywide rollout of this initiative sell their first homes, we expect to get that benefit across Redfin in 2022. Share gains will come not only from better sales programs, but better salespeople. Market uncertainty has made agents and other brokers eager to join Redfin.
+
+After two years of scrambling to add more than 1,000 agents each year, Redfin now has the time and space to invest more on the agents already here. Managers are training agents in person for the first time in two years, then making better and faster judgments about who will be able to guide our customers to victory in such an uncertain low inventory market. We expect to execute better in our core business, but it's equally important to discuss how all our businesses are coming together to drive sales. When we last spoke, Redfin was more pessimistic about the housing market than any of our peers.
+
+Predicting continued rate increases, economic pressures and hard times. We are more optimistic than ever about our strategy, which is to drive customer demand by building Redfin.com into a complete destination for real estate information, and to make more money from each customer by becoming a one-stop shop for buying or selling a home. For the first time, we're ready to talk about that strategy's results, not just its rationale. We need to do this because rising rates have put an even higher premium on profits when Redfin is in the midst of a transition to what we believe is a much more valuable company.
+
+At the start of the pandemic, about half our agents worked in large coastal markets, where home sales are now declining. In January, we abandoned a business we built from scratch, Redfin Mortgage, in favor of acquiring Bay Equity Home Loans. Revenues from our first acquisition, RentPath, were declining. In February, we projected our biggest quarterly loss ever.
+
+On March 23, we published RentPath rentals on Redfin.com, immediately generating thousands of inquiries per week for RentPath's property management customers. Even prior to this launch, RentPath revenues had increased month over month in February, then increased again in March. The number of listing service customers also increased month over month in March. RentPath hasn't had simultaneous month-over-month increases in revenue and customers since 2019.
+
+Even as RentPath decreased first quarter spending on lead generation by 25% year over year, rental inquiries for property management customers increased by 6%. We now expect RentPath revenues to increase quarter to quarter. We'll keep investing in RentPath's efforts to get more property management customers listing their properties in our network, but only as RentPath revenues keep strengthening. RentPath will be an important contributor in its own right, the profits we can generate from online home shoppers, but the strategic goal is bigger, to challenge the largest real estate sites for traffic.
+
+Of the top 10 US sites, only sites owned by Redfin and Zillow have our own large scale databases of rental listings. And with the arrival of a third competitor in CoStar, there's now a broad industry consensus that stand-alone rental sites or stand-alone home buying sites will struggle to compete. RentPath is how Redfin takes our shot, not just in incremental growth, but to become the No. 1 or No.
+
+2 destination for every search on every listing for rent or for sale in the US. The value of more online customers will compound as we make more money from each one. We've talked for years about the one-stop shop theory, but here again we have the first results. Redfin has owned Bay Equity for a month, and already on five different days, the rate at which Bay Equity has locked the interest rate on loans for Redfin customers has eclipsed Redfin Mortgage's five-year high.
+
+Based on this data, we expect 11% of the Redfin home buyers who close in June will borrow money from a Redfin lender. For all of 2021, that number was 6%. This success can build on itself, as Redfin agents who were cranky about Redfin Mortgage have raved about Bay Equity service. The differences in underwriting efficiency have been equally stark.
+
+Whereas Redfin Mortgage lost a couple of thousand dollars in gross profit for loan in 2021, Bay Equity earned thousands. Even as lending margins compress in 2022, we expect Bay Equity's gross profits from a home buyer to be similar to our brokerages. As rapidly rising rates eviscerate other lenders' earnings, our mortgage business will go from a major source of Redfin's 2021 losses to a major source of 2022 profit. These investments in a broader product portfolio are generating more gross profit, not just from home buyers, but from home sellers too.
+
+Even as the housing market turn, Redfin now generated almost as much gross profit in the first quarter as our brokerage. From the first quarter of 2021 to the first quarter of 2022, gross margins improved from 1.7% to 5.5%. This validates our seats as the iBuying will be most successful within a brokerage. First, because we're already equipped to sell the homes we buy.
+
+But second, because we can promote our agents to customers who ask about a cash offer, but end up hiring an agent. Over the last year, the rate at which we schedule listing consultations with homeowners who reject our cash offers has improved 17%. Turning iBuyer inquiries into consultations with the Redfin agent is crucial because our goal isn't to own more homes than pure-play iBuyers. We want to sell more homes.
+
+Owning properties is only as necessary to facilitate a sale. By making money from the service we offer customers, not from big bets on home price appreciation, we hope to earn investors' trust that Redfin now can become a steady source of net income. Heading into a more volatile phase of the housing market, we have curtailed volume, even though marketwide inventory is likely to stay low, an approach that favors durability of gross profits over riskier gains on sale. This discipline is part of a larger change at Redfin that is the final element of our strategy.
+
+We want to drive demand by building a larger online presence and improve monetization through a broader product portfolio. But none of that matters without an ironclad commitment to major net income improvements, not in the distant future, but now. This means that we'll run Redfin out of the cash register, with gross profits growing about twice as fast as overhead expenses, so that more than half our gross profit gains for 2023 fall to the bottom line. Since those gains are unpredictable, we're making changes in the current quarter, so that even if growth is low, net income can still improve.
+
+Future headquarters investors will follow not lead gross profit gains. Redfin will keep investing in advertising and our online audience, but given the progress we've made over more than a decade of building brokerage tools, we can support new products for our agents to sell mostly with the staff we already have. We're now assigning the cost of employees and programs to businesses like real estate services, mortgage, title, rentals, and properties, so we can measure not only each business's gross profits, but net income. We plan to share that segmentation with you in our next call.
+
+We expect this to show that real estate services subsidized all of our other businesses in 2021, but that mortgage and properties businesses will be profitable or roughly break even in 2022. A company that wants plan to make money in the distant future will generate cash from operations this year and net income in 2024. Redfin's strategy and competitive position have gotten better over the past year, but the housing market has gotten worse. We were fashionable, and now we're unfashionable.
+
+As we reminded you on the day of our initial public offering, we're used to that in a way that probably none of our competitors are. Our exec team came together in the depths of the great financial crisis and built our business on the certainty that another downturn could come. When talking about a business's ups and downs, it's common to say the endeavor is a marathon, not a sprint, but most marathoners are trying to complete the race, not compete in it. In your first marathon, you dread the point at which the suffering will become intense, but as you mature as a runner, you realize that everyone suffers and the point of maximum suffering is when those best prepared for it will win.
+
+What you once thought of as suffering time becomes winning time, but only if you seize the moment to leave one version of yourself behind and run toward what you want to be. Redfin has finish arrived at this moment in our race. At a time when shareholders have suffered grievous losses. It may seem crazy to say that now is Redfin's winning time, but it is.
+
+What we're running to is a bigger website, more revenue per customer, and significant profits. We're running not because of how good it'll feel when we stop, but because we were born to run and we plan to win. Take it away, Chris.
+
+Chris Nielsen -- Chief Financial Officer
+
+Thanks, Glenn. We posted solid results for the first quarter. Revenue and net income both came in better than the high end of our guidance. Top of funnel demand remained strong, although getting customers through to a close transaction remains a challenge and rising mortgage interest rates have begun to impact affordability.
+
+Our agents are still going strong, but we're carefully monitoring the macro backdrop. First quarter revenue is $597 million, up 123% from a year ago. Our rentals business, which we acquired subsequent to the first quarter of the prior year, generated $38 million of revenue and contributed approximately 14 percentage points to total revenue growth. Real estate services revenue, which includes our brokerage and partner businesses, generated $177 million in revenue, up 5% year over year.
+
+Brokerage revenue, or revenue from home sales closed by our own agents, was up 7%, on a 5% increase in brokerage transactions. Revenue from our partners was down 21%, on a 13% decrease in transactions and mix shift to lower value houses. The decline in partner transactions is the result of normalizing mix between our partner and brokerage business. Real estate services revenue per transaction was up 4% year over year.
+
+The properties segment, which consists primarily of homes sold through RedfinNow, generated $380 million in revenue, which was up from $93 million in revenue in the prior year. RedfinNow transactions grew 310%. In anticipation of scaling our mortgage business with acquisition of Bay Equity, which closed on April 1, we have begun reporting this business as a separate segment. Our mortgage segment generated $3 million in revenue in the first quarter, a decrease of 49% year over year.
+
+Finally, our other segment, which now includes title and other services, contributed revenue of $4 million, an increase of 20% year over year. Total gross profit was $73 million, up 71% year over year. Real estate services gross margin was 13.4%, down 10.6 percentage points year over year. This was driven by a 10.5 percentage-point increase in personnel costs and transaction bonuses.
+
+This decline was anticipated, and was due to a steeper ramp in agent hiring against lower seasonal volumes. Properties gross margin was up 380 basis points year over year in the first quarter, and this marked our fifth consecutive quarter of positive gross profits for the segment. The improvement was primarily attributable to a 320-basis point decrease in personnel costs as the business scaled, and an 80-basis point decrease in home selling expense. This improvement was offset by a 30-basis point increase in purchase, maintenance and capital improvement costs.
+
+Rentals gross margin was 81.1%. Mortgage gross margin was negative 89.1% for the first quarter, down from negative 2.8% a year ago. Other segment gross margin was negative 6.9%, down from positive 14.5% a year ago. Operating expenses were up $80.8 million year over year and represented 26% of revenue, down from 29% of revenue one year ago.
+
+$47.9 million of the increase was attributable to the acquisition of RentPath. Technology and development expenses increased by $22.0 million, as compared with the same period in 2021. The increase was primarily attributable to a $12.8 million increase from RentPath. The remaining increase was primarily attributable to a $5.9 million increase in personnel costs due to increased headcount.
+
+Total technology and development expenses represented 8% of revenue, down from 10% one year ago. Marketing expenses increased by $31.5 million, as compared with the same period in 2021. The increase was primarily attributable to an $11.0 million increase from RentPath. The remainder was primarily attributable to a $16.2 million increase in marketing media, as we were not running any mass media campaigns in the prior year, but were in the first quarter of 2022.
+
+Total marketing expenses represented 7% of revenue, up from 4% one year ago. General and administrative expenses increased by $21.6 million, as compared with the same period in 2021. The increase was primarily attributable to a $22.5 million increase from RentPath. Excluding these expenses from RentPath, general and administrative expenses decreased by $1.0 million.
+
+Total G&A expenses represented 10% of revenue, down from 14% one year ago. Restructuring expenses included in total operating expenses were $5.7 million, and there were no such expenses in the same period in 2021. These expenses were attributable to $4.2 million in severance and other costs associated with our mortgage restructuring, and $1.5 million in severance costs associated with our rentals restructuring. Net loss of $91 million beat the better end of our $122 to $115 million guidance range.
+
+Diluted loss per share attributable to common stock was $0.86, as compared with diluted loss per share attributable to common stock of $0.37 per share one year ago. As a supplement to our GAAP-based financial reporting, we are now also providing adjusted EBITDA, which is a non-GAAP financial measure. We believe adjusted EBITDA is useful for investors because it enhances period-to-period comparability of our financial statements on a consistent basis and provides investors with useful insight into the underlying trends of the business. Please see our press release or the MD&A section of our 10-Q for more information, as well as a reconciliation of adjusted EBITDA to net loss.
+
+We are also providing nine quarters of historical reconciliation calculations in our quarterly earnings slides, which are available on our investor relations website. Now turning to our financial expectations for the second quarter of 2022. Consolidated revenue is expected to be between $613 million and $650 million, representing year-over-year growth between 30% and 38%. We expect our real estate services segment to account for $249 million to $256 million of that revenue, and the properties segment to be between $256 million and $281 million.
+
+Rentals revenue is expected to be $38 million and rentals contribution to net loss is expected to be approximately $21 million. Mortgage revenue is expected to be between $68 million and $73 million, reflecting a full quarter of Bay Equity ownership, and contribution to net income is expected to be approximately $4 million. We are still determining the proper split between cost of revenue and operating expense, but our current expectation is for approximately $47 million for mortgage cost of revenue and $22 million of operating expenses in the second quarter. Going forward, we expect mortgage revenues will be impacted by industrywide volume, as well as our ability to drive attach rates with our brokerage business, but we generally expect the business to follow seasonal patterns in line with our brokerage business.
+
+Turning back to consolidated guidance for the second quarter, our consolidated net loss is expected to be between $72 million and $60 million, compared to total net loss of $28 million in the second quarter of 2021. We expect real estate services gross margin to decrease in the second quarter as compared with the same period in 2021. This compression is primarily due to changes we're making to lower agent loads and adjust compensation as described in our November earnings call. On a consolidated basis, this guidance includes approximately $61 million in total company marketing expense, $21 million of stock-based compensation, $17 million of depreciation and amortization, $4 million of interest expense, and $4 million of restructuring expenses.
+
+In addition, we expect to pay a quarterly dividend of 30,640 shares of common stock to our preferred stockholder. The guidance assumes, among other things, that no additional business acquisitions, investments, restructurings, or legal settlements are concluded and that there are no further revisions to stock-based compensation estimates. And now, let's take your questions.
+
+Questions & Answers:
+
+Operator
+
+[Operator instructions] And the first question today comes from Mark Mahaney of ISI. Mr. Mahaney, your line is open.
+
+Mark Mahaney -- Evercore ISI -- Analyst
+
+Sorry about that. I got two questions. But first, Glenn, you really should get a music soundtrack to back you up when you go through your prepared remarks. You've got so much enthusiasm, that's actually wonderful.
+
+The --
+
+Glenn Kelman -- Chief Executive Officer
+
+I love the idea of a music soundtrack next quarter. Let's guide to that.
+
+Mark Mahaney -- Evercore ISI -- Analyst
+
+You can do it as you're cutting over to Chris and then you just tone it down. The market share increase of 2 bps year over year, that sounds really low to me, but it was at a comps issue. And I know you talked about how it was accelerating as you left, just talk through that. I assume that there's nothing unusual in that, but that number just seemed low.
+
+And then did spend a little time please talking about the rental opportunity and why you think Redfin is well-positioned for that. Thanks a lot.
+
+Glenn Kelman -- Chief Executive Officer
+
+Sure. Well, first of all on share, that is low compared to our traditional rate of 10 to 15 basis points per quarter -- or per year, excuse me. We gained that year over year every quarter. Is that the most confusing statement I have ever made? Our year-over-year gain is usually around 10 to 14 basis points, maybe 10 to 15 and this time it was 2.
+
+But we expect it to accelerate, as you noted, through the year. There are two reasons for it. One is that we're just ramping a large number of new agents, and the second is the demand is shifting from coastal markets where we've traditionally had more share, more presence to the south and the Sunbelt. So we think that we will gain share as these agents season and that's especially true in the places where we've hired the most agents like the southeast.
+
+As far as rentals, the rationale for rentals is pretty simple. We can't have people build a relationship with other websites through the first 30 years of their life, then start searching Redfin.com when it's time to buy a home. So the most reliable way to increase traffic has been to add rental listings. We are confident that we are going to keep increasing inventory and that revenues are also going to increase.
+
+That was not the case through 2021. But it now seems to be headed in the right direction. And the fact that that happened even before we added Redfin.com as a distribution source for this rental inventory is even more encouraging. Because the immediate reaction, when we did launch rentals on Redfin.com was to get thousands of inquiries every week to the property management customers RentPath had recruited.
+
+So I think the synergies are pretty straightforward that we have an audience that wants to see more inventory and RentPath had inventory that wanted to reach a broader audience.
+
+Mark Mahaney -- Evercore ISI -- Analyst
+
+OK. Thank you, Glenn.
+
+Operator
+
+And the next question comes from Ygal Arounian of Wedbush.
+
+Ygal Arounian -- Wedbush Securities -- Analyst
+
+Hey, good afternoon, guys. So first, Glenn, I guess, surprised by your tone. I was maybe expecting a little bit more cautiousness given what we've seen in the macro and rates. And so maybe you could just expand on your view a little bit.
+
+Last quarter, you guys were more about inventory levels. What are you seeing there? And then your thoughts on affordability and how that might impact the market as we go through the rest of the year? So let's start there.
+
+Glenn Kelman -- Chief Executive Officer
+
+Well, I think we've largely been vindicated, and our view of the housing market, we were probably more dour on it than anyone else. And that has come to pass. We are still very cautious about the housing market overall, but we think we're going to take significant share as we progress through 2022. And we feel the same way about mortgage attach rates and RedfinNow sales.
+
+So that's more a reflection of our business and our ability to progress through headwinds than anything else. What we're seeing consumers do in response to interest rate increases is sometimes stepping back, there's less homebuyer demand than there was, there were still inventory constrain. But often is not they're shifting their search. So we now have people who are looking in three or four different markets each at a different price tier.
+
+So we used to think of those people as investors. If someone's looking in both Raleigh, North Carolina, in Shreveport, Louisiana, and in Tampa Bay, Florida, clearly, that must be an investor. But really, it's a regular consumer who's completely agnostic about location, as interest rates go from 3% to 4%, to 5% and beyond. Instead of being able to afford less house, they go to a place where home prices are lower generally.
+
+So that has provided significant liquidity in the market. It used to be that when housing became less affordable, someone in San Francisco would look further afield by commuting 60 minutes, 90 minutes, and at some point, they were just unwilling to take the drive. But now there is no commute. So I think that provides some buffer in the market.
+
+But there's no question that there are headwinds, and there's no question that the housing market is going through some kind of correction. It's just that we think inventory will still be the main issue except in a handful of markets. And just based on our own data about tours and offers and mortgages and everything else, we think we can beat the rap and keep taking share.
+
+Ygal Arounian -- Wedbush Securities -- Analyst
+
+OK. So during the quarter, you guys put out a bunch of blogs and press releases about -- and signals kind of slowing or weakening. But then your traffic actually accelerated and looks to be stepping up. Can you talk about maybe a little bit more detail around the traffic? Presumably, the rentals hit in April, so it wasn't really an impact yet.
+
+What do you say on the traffic side that's putting you in a better place?
+
+Glenn Kelman -- Chief Executive Officer
+
+On the traffic side, some of this is just an improvement in ranks against our competitors. So the same number of people might be searching for real estate, but Redfin is getting more of them. It is worth noting, however, that traffic decelerated through the quarter. So even though we went from 1% in Q4 to 11% in Q1, I shouldn't quote it from memory, but it kind of went down from 11% to 10% to 9% or something like that through the quarter.
+
+So there will be a slowing of traffic for Redfin.com and for the industry overall. We just think one reason we'll take brokerage share is because we've been taking search share, so we've been getting more than our fair share of demand and we've just needed agents in the right places within North America to season and get ready to handle that level of demand. So, the market may be cooling, but we hope to take more share.
+
+Ygal Arounian -- Wedbush Securities -- Analyst
+
+OK. Just real quick, then one last follow up on that. The [Inaudible] ability as some sort of essential [Inaudible] where we are now or somewhere maybe close to it rates and HPA keep going up from where we are right now. Thanks.
+
+Glenn Kelman -- Chief Executive Officer
+
+Could you repeat the question? Did you hear the question?
+
+Ygal Arounian -- Wedbush Securities -- Analyst
+
+Sure. Just on [Inaudible] If rates go up, you know, they've shot up a lot. If they go up a little bit more from here, if HPA goes up a little bit more from here, where we're bubble territory and becomes kind of existential type of crisis for the housing market. Are we close to that? Or do you not think that that's the case, because of mobility? Thank you.
+
+Glenn Kelman -- Chief Executive Officer
+
+I do think that mobility buffers at some that when homes become too expensive in Austin, Texas, people look in San Antonio, and when San Antonio becomes too expensive, they look in El Paso. That is a legitimate phenomenon that we're seeing, where the range of places that people are looking has broadened significantly. The other factor you should consider is how much rents are going up. So, normally, if the spread between buying a house and renting one gets too large, people just decide, you know what, I'm going to rent for one more year.
+
+But with rents going up too, people feel the pressure behind them to find a place to live, even if it's not the city they originally had in mind. So I'm not here hyping the market. I've never done that. I never will.
+
+We are worried about the overall economy. We are worried about the housing market, we think there will be a significant setback, and the number of homes sold in the United States in 2022 compared to 2021. And we've been careful about our RedfinNow purchases, because we know that it's a fool's Gambit, trying to figure out where prices are going to land this summer, especially because the home buying season is probably going to be short. But if you're asking about what's happening now, we are still inventory constrained.
+
+There's only a few markets like Seattle, Denver, Tacoma, parts of California, where homes are sitting on the market, and they're only sitting just a little bit. The final thought is just that when people talk about a bubble, they talk about speculation where you're not buying the asset because you actually want it. But this is not a bubble in that strict sense, because the need for housing is profound, emotional and deep. People want to live in their own home.
+
+These are not just investors buying a house. And so I don't think people are over their skis on their mortgage. I don't think we're going to see a major increase in foreclosures. That means the inventory is probably going to stay low for structural reasons.
+
+And you're not going to see a massive collapse in prices. There's always that possibility, but it'd be very surprising to me.
+
+Ygal Arounian -- Wedbush Securities -- Analyst
+
+All right. Thanks, Glenn. I appreciate all the color and commentary.
+
+Operator
+
+The next question comes from Naved Khan of Truist.
+
+Robert Zeller -- Truist Securities -- Analyst
+
+Hey, guys, this is Robert Zeller on for Naved. Thanks for taking the questions. In the prepared remarks, I think you spoke about you're going to be integrating a new listing fee to show most of the homes available for sale in the US versus you guys just being able to show 91% today, if I heard that correctly. Can you just expand on that a little bit? I mean, can you guys turn this on like immediately, and do other brokerages have access to that as well? And then how does the shift from coastal markets to markets in the South and the Sunbelt regions affect volume growth and margin implications for the rental and iBuying units? Do you guys kind of see this as headwinds or tailwinds for Redfin? Thank you.
+
+Glenn Kelman -- Chief Executive Officer
+
+Got it. Well, I'll talk about the first question, and Chris, I'd welcome your comments on the second one. It is a national feed, when prior to this we had gone from one city to another. Each city has a cooperative of real estate agents who decide to share listings.
+
+It's called the multiple listing service. Each has its own rules about what you can publish. And we would integrate with that multiple listing services programming interface. Now with this national feed, we still have to observe different local rules about what can and can't be displayed.
+
+But this provider of listings, simplifies some of the technical integration. So we expect it will take us still the balance of the year to get the last 9%. But that was a very long tail. At first, you start integrating with the Washington DC Multiple Listing Service, which is massive.
+
+But eventually, you're going to Wyoming and it's onesie-twosie. And this makes that process much easier. And if we've learned anything, the most reliable lever for increasing traffic is adding inventory. There are two ways to add inventory.
+
+By adding a new type of inventory such as rental listings, or by expanding to new places. But when you do that, you get a new entry in the index, you're competing for listings, where before you hadn't. And if I were running another website, and that wasn't available to me, when we were trying to accelerate traffic without being able to expand anywhere new or add any new type of inventory, that would be hard. This is a major lever for growth.
+
+And so we think that part of it is just very direct, that adding listings adds traffic. And the other part is more over the top that we just haven't been a completely national brand. And there's a premium to being a national brand. Wherever you go, you can look on Redfin.com and the listing will be there.
+
+That hasn't been true and we need to make it true. And I think there's a real benefit to that right now, for your question about a shift in customer interests from the coastal markets to broader places, which is we're just really glad to have this inventory in smaller markets where people have been looking, will be looking for homes, maybe even more so than they have in the past. That shift, just as it relates to the business, is probably most impactful in terms of where we're hiring agents and where we will be hiring agents. And that's just that -- that's where the biggest opportunities are.
+
+It probably means we'll have more hiring in what have been smaller markets for us in more central markets in the South, as opposed to these larger coastal markets. There's not much of an impact here though that relates to our RedfinNow business. That business is nationwide spread out. And there's not a meaningful difference in terms of how we would think about the margins at location by location.
+
+That is more related to our execution in those local markets, as opposed to something specific on market conditions.
+
+Chris Nielsen -- Chief Financial Officer
+
+And that's something that's changed. One concern I had about Redfin five or 10 years ago, it works in San Francisco, but how are you going to make it work in San Antonio, Texas, when home prices are so much lower? And now mobility has partially solved that problem, equalizing prices across the United States to a degree. But we've also just figured out different staffing models for those markets. Our closed rates are higher in the smaller markets than they are in the major coastal markets.
+
+So even though it's still a lower priced home, the margins are more similar than you'd expect.
+
+Robert Zeller -- Truist Securities -- Analyst
+
+OK. Great. Thank you.
+
+Operator
+
+The next question comes from John Campbell of Stephens Inc.
+
+John Campbell -- Stephens Inc. -- Analyst
+
+Hey, guys, good afternoon. The lead agent count -- maybe this is for Chris. But on the lead agent count, that was a bit ahead of us of what we had modeled the real estate services, or the real estate revenue. Guidance was a little bit below us.
+
+And I'm guessing, based on Glenn's commentary, I think he has probably factored in a little bit more of the negative housing outlook. So I'm just hoping you can maybe unpack that. Maybe start off with how you're thinking about transactions per agent? And then maybe also just high level thoughts on how the real estate rev per transaction is going to grow?
+
+Chris Nielsen -- Chief Financial Officer
+
+Yeah. So we certainly hired into the year with an expectation of how the market was going to play out and provide commentary with mortgage interest rates up. I do think that that has had an impact on the guidance that we've provided in the second quarter, that you just can't plough through as much uncertainty as some potential homebuyers might have at this point in time. And so, really, that's the combination I think that I would call out there.
+
+Glenn, is there anything you'd add to that?
+
+Glenn Kelman -- Chief Executive Officer
+
+No.
+
+John Campbell -- Stephens Inc. -- Analyst
+
+OK. And then on the lawsuit settlement, I know you guys really can't get into that much, but I felt like that was a kind of unfair development for you guys. I mean, your model is basically designed to only serve a certain price points with your lead agents and there's nothing else to read into that. I think we all get that.
+
+I guess the regulators didn't. But coming away from all that, Glenn, did you foresee any changes in how the business operates just in regards to maybe how you direct customers between the core brokerage and partner channel?
+
+Glenn Kelman -- Chief Executive Officer
+
+Well, first of all, the regulators didn't have an opinion on it. It was settled before they reached a verdict. We feel that it's very clear across a free market that price is the only fair way to decide which customers you can and can't serve. If someone walks into a grocery store with $0.89, they can buy a can of beans.
+
+And if they don't have the $0.89, they can't. It has nothing to do with the color of their shirt or the color of their skin. So we settled the case for less than what it cost us to litigate it. If I sound pugnacious about it, I am.
+
+I care very much about the mission of this company. Part of that mission is to make housing more fair. We have always been committed to that and we always will be. Now, having said that, I do not think this is going to change the economics of the business much.
+
+We did agree that in certain neighborhoods, we would sell homes at a loss. We have always done that as part of our mission, we will do it a little bit more. It's a good thing to suck it up for a more just society. But we just had to be careful about how much we suck it up because we're also trying to make money.
+
+Operator
+
+[Operator instructions] Our next question comes from Tom Champion of Piper Sandler.
+
+Tom Champion -- Piper Sandler -- Analyst
+
+Hi. Good afternoon, guys. Thanks for taking the questions. Maybe dovetailing with the prior question.
+
+Can you talk a little bit about agent compensation and how much is salary based and fixed relative to transactions based and success based? Just in light of the kind of urgency and greater priority around profits and the size of the agent count that it's gotten to with the market at this point. And then I'm curious, Glenn, if you could just share any thoughts about what Jon Ziglar has been doing at RentPath? Maybe the changes that he has instilled in the business and any additional expectations for what we might see out of the rental side of the business going forward? Thanks.
+
+Glenn Kelman -- Chief Executive Officer
+
+Sure. So the first question about agent compensation, maybe 20% of the agent's compensation is salary, and the rest is upside. And that provides ample opportunity for the agent to earn hundreds of thousands of dollars a year. Some of our top agents earn $700,000-$800,000 a year.
+
+So we feel like they have every incentive to go out and get it. And right now, other agents are very anxious to work for us. We have had no problem recruiting top talent. That was a real issue last year.
+
+And we were straight up with you about it, but it sure isn't now. So we expect our agents to be absolutely hungry for the business, and to do whatever it takes to put the customer first and get the deal done. As for Jon Ziglar and his plan of attack, it's really had two prongs. One is to get sales going again.
+
+And it took him a few months to do that, but that's pretty darn fast. He started in August or September. And here we are February and March, we're getting month-over-month increases for the first time in three years. So that makes every other decision easier.
+
+But at the same time, he's just been really aggressive about understanding where we allocate our resources. So there have been some restructuring costs that you see. Some of those are related to RentPath, some of the restructuring was because we bought Bay Equity. But he has wasted no time whatsoever.
+
+He's a competitive monster. And he's someone we know will just keep driving sales. And by the way, that's important, just to add some color to that, because building an enterprise sales force isn't something that many people here at Redfin know how to do. We are a consumer company.
+
+And RentPath in just a different way is running a two-sided marketplace, where not only do they have to talk to consumers looking for rentals, but they have to talk to businesses running apartment buildings. So it's a really valuable skill.
+
+Operator
+
+And there are no further questions at this time.
+
+Meg Nunnally -- Head of Investor Relations
+
+Thanks, Kevin. We can go ahead and wrap up the call now.
+
+Glenn Kelman -- Chief Executive Officer
+
+Thanks, everybody. See you next quarter.
+
+Operator
+
+[Operator signoff]
+
+Duration: 46 minutes
+
+Call participants:
+
+Meg Nunnally -- Head of Investor Relations
+
+Glenn Kelman -- Chief Executive Officer
+
+Chris Nielsen -- Chief Financial Officer
+
+Mark Mahaney -- Evercore ISI -- Analyst
+
+Ygal Arounian -- Wedbush Securities -- Analyst
+
+Robert Zeller -- Truist Securities -- Analyst
+
+John Campbell -- Stephens Inc. -- Analyst
+
+Tom Champion -- Piper Sandler -- Analyst
+
+More RDFN analysis
+
+All earnings call transcripts

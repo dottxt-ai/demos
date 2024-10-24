@@ -1,7 +1,3 @@
+*/.pyron/*
 */__pycache__/
-lore-generator/milvusdemo.db
-lore-generator/.env
-lore-generator/slides_files/
-*.db
-*.html
-*.lock
+*.env
