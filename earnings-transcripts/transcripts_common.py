@@ -14,9 +14,9 @@ class Sentiment(str, Enum):
     NEUTRAL = "neutral"
     NEGATIVE = "negative"
 
-class AnalystPrediction(str, Enum):
+class InvestmentRecommendation(str, Enum):
     """
-    Analyst prediction of the company's future financial performance.
+    Recommendation of whether to buy, hold, or sell the company's stock.
     """
     BUY = "buy"
     HOLD = "hold"
@@ -72,7 +72,7 @@ class EarningsCall(BaseModel):
     strategic_risk_reasoning: str
 
     # Whether the analyst's prediction is a buy, hold, or sell
-    investment_recommendation: AnalystPrediction
+    investment_recommendation: InvestmentRecommendation
 
     # Have the model review its own output for correctness
     review_correctness: List[str]
@@ -155,7 +155,7 @@ def prompt_for_earnings_call(transcript: str) -> str:
     <|im_start|>assistant
     """
 
-def generate_earnings_calls(language_model, transcripts: List[str], batched: bool = False) -> List[EarningsCall]:
+def generate_earnings_calls(model, transcripts: List[str], batched: bool = False) -> List[EarningsCall]:
     """
     Generate earnings calls from transcripts.
 
@@ -169,10 +169,6 @@ def generate_earnings_calls(language_model, transcripts: List[str], batched: boo
       A list of EarningsCall objects.
     """
     import outlines
-    model = outlines.models.transformers(
-        language_model,
-        device="auto",
-    )
     generator = outlines.generate.json(model, EarningsCall)
 
     # For batched inference. This is very VRAM intensive for long earnings calls,
@@ -210,11 +206,11 @@ def save_earnings_calls(earnings_calls: List[EarningsCall], transcript_paths: Li
     """
 
     # Convert to an array of json objects
-    json_data = [earnings_call.model_dump_json(indent=2) for earnings_call in earnings_calls]
+    json_data = [earnings_call.model_dump() for earnings_call in earnings_calls]
 
     # Save all earnings calls to a single JSON file
     with open('all_earnings_calls.json', 'w') as f:
-        f.write(json.dumps(json_data, indent=2))
+        json.dump(json_data, f, indent=2)
 
     # Create a CSV file with selected data from the earnings calls
     import csv
@@ -224,29 +220,32 @@ def save_earnings_calls(earnings_calls: List[EarningsCall], transcript_paths: Li
     with open(csv_file_path, 'w', newline='') as csvfile:
         # Define the CSV headers in lowercase with words separated by underscores
         headers = [
-            'ticker', 'company_name', 'quarter', 'analyst_prediction',
-            'revenue_m', 'revenue_growth_pct', 'net_income_m', 'eps',
-            'ebitda_m', 'free_cash_flow_m', 'earnings_sentiment',
-            'needs_reprocessing', 'original_filepath'
+            'company_ticker', 'company_name', 'earnings_call_quarter', 'investment_recommendation',
+            'revenue_in_millions', 'revenue_growth_in_percent', 'net_income_in_millions', 'earnings_per_share',
+            'ebitda_in_millions', 'free_cash_flow_in_millions', 'earnings_sentiment',
+            'text_must_be_reprocessed', 'original_filepath'
         ]
 
         writer = csv.DictWriter(csvfile, fieldnames=headers)
         writer.writeheader()
 
-        for call, filepath in zip(earnings_calls, transcript_paths):
-            writer.writerow({
-                'ticker': call.company_ticker,
-                'company_name': call.company_name,
-                'quarter': call.earnings_call_quarter,
-                'analyst_prediction': call.analyst_prediction,
-                'revenue_m': call.financial_metrics.revenue_in_millions,
-                'revenue_growth_pct': call.financial_metrics.revenue_growth_in_percent,
-                'net_income_m': call.financial_metrics.net_income_in_millions,
-                'eps': call.financial_metrics.earnings_per_share,
-                'ebitda_m': call.financial_metrics.ebitda_in_millions,
-                'free_cash_flow_m': call.financial_metrics.free_cash_flow_in_millions,
-                'earnings_sentiment': call.earnings_sentiment,
-                'needs_reprocessing': call.needs_reprocessing,
+        # Iterate through the JSON data, extract headers, and write to CSV
+        for call, filepath in zip(json_data, transcript_paths):
+            row = {
+                'company_ticker': call['company_ticker'],
+                'company_name': call['company_name'],
+                'earnings_call_quarter': call['earnings_call_quarter'],
+                'investment_recommendation': call['investment_recommendation'],
+                'revenue_in_millions': call['financial_metrics']['revenue_in_millions'],
+                'revenue_growth_in_percent': call['financial_metrics']['revenue_growth_in_percent'],
+                'net_income_in_millions': call['financial_metrics']['net_income_in_millions'],
+                'earnings_per_share': call['financial_metrics']['earnings_per_share'],
+                'ebitda_in_millions': call['financial_metrics']['ebitda_in_millions'],
+                'free_cash_flow_in_millions': call['financial_metrics']['free_cash_flow_in_millions'],
+                'earnings_sentiment': call['earnings_sentiment'],
+                'text_must_be_reprocessed': call['text_must_be_reprocessed'],
                 'original_filepath': filepath
-            })
-        print(f"CSV file '{csv_file_path}' has been created with the earnings call data.")
+            }
+            writer.writerow(row)
+
+    print(f"CSV file '{csv_file_path}' has been created with the earnings call data.")
