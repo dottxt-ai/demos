@@ -1,0 +1,518 @@
+Company name: AAPL-2022-Q1
+Company ticker: AAPL
+Earnings call date: Jan 27, 2022, 5:00 p.m. ET
+Earnings call quarter: 2022-Q1
+Earnings call transcript: 
+Prepared Remarks:
+
+Operator
+
+Good day, and welcome to the Apple Q1 FY 2022 earnings conference call. Today's call is being recorded. At this time, for opening remarks and introductions, I would like to turn the call over to Tejas Gala, director of investor relations and corporate finance. Please go ahead. 
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thank you. Good afternoon and thank you for joining us. Speaking first today is Apple's CEO, Tim Cook; and he'll be followed by CFO, Luca Maestri. After that, we'll open the call to questions from analysts.
+
+Please note that some of the information you'll hear during our discussion today will consist of forward-looking statements, including, without limitation, those regarding revenue, gross margin, operating expenses, other income and expense, taxes, capital allocation, and future business outlook, including the potential impact of COVID-19 on the company's business and results of operations. These statements involve risks and uncertainties that may cause actual results or trends to differ materially from our forecast. For more information, please refer to the risk factors discussed in Apple's most recently filed annual report on Form 10-K and the Form 8-K filed with the SEC today, along with the associated press release. Apple assumes no obligation to update any forward-looking statements or information, which speak as of their respective dates.
+
+I'd now like to turn the call over to Tim for introductory remarks. 
+
+Tim Cook -- Chief Executive Officer
+
+Thank you, Tejas, and good afternoon. Today, we are proud to announce Apple's biggest quarter ever. Through the busy holiday season, we set an all-time revenue record of nearly $124 billion, up 11% from last year and better than we had expected at the beginning of the quarter. And we are pleased to see that our active installed base of devices is now at a new record with more than 1.8 billion devices.
+
+We set all-time records for both developed and emerging markets and saw revenue growth across all of our product categories, except for iPad, which we said would be supply constrained. As expected, in the aggregate, we experienced supply constraints that were higher than the September quarter. Before I discuss our results in greater detail, I want to first acknowledge the toll that COVID continues to have on communities around the world. In many places, case counts are higher and health systems more strained than at any point throughout the pandemic.
+
+On behalf of all of us at Apple, I want to extend our deep gratitude to the scientists, doctors, nurses, and so many others on the front lines of combating COVID-19. This is our eighth quarter reporting results in the shadow of the pandemic. And while I can't say it gets any easier, I can say I'm incredibly proud of the way our teams have come together and continue to innovate on behalf of our customers. A few weeks ago, we marked the 15th anniversary of the day Steve revealed iPhone to the world.
+
+We knew that we had the beginnings of something fundamentally transformative, though none of us could have predicted the incredible and meaningful impact it would have on all of our lives. The creative spirit that made the first iPhone possible has thrived at Apple every day since. We never stop creating. We never stop innovating.
+
+You can see that spirit reflected throughout our products from the incredible performance and capability of our M1 chips to our powerful yet easily use operating systems to our unrivaled iPhone camera systems to the beauty and magic of AirPods. That's why each of our major products leads the industry in customer satisfaction for their respective category. People expect Apple to solve hard problems with easy-to-use products. And iPhone has never been more popular.
+
+During the December quarter, we set an all-time revenue record for iPhone, thanks to the strength of our incredible iPhone 13 lineup. This is the best iPhone lineup we've ever had, and the reaction from the press and our users have been off the charts. This past quarter, we also set another all-time revenue record for Mac, with customers eager to get their hands on an M1-powered MacBook Air, iMac, or MacBook Pro. We've been thrilled with the response from Pro users to the M1 Pro and M1 Max chips and to see how Apple silicon is blowing them away with its power, performance, and efficiency.
+
+Despite the constraints I mentioned earlier, our iPad lineup continues to be indispensable to tens of millions of people from teachers and students to artists and creators. Customers are eager to get their hands on our ninth generation iPad, which features a beautiful display and double the storage capacity, as well as the new iPad mini with its ultra-portable design. Wearables, Home, and Accessories, meanwhile, set an all-time revenue record. Customers are loving the Apple Watch Series 7 with its cutting-edge health and fitness tracking features.
+
+Nearly every day, I get notes from customers who share how a heart alert led to a life-saving appointment with the cardiologist. And more recently, I've been hearing from people who tell me that their Apple Watch saved their lives by calling 911 when they couldn't. As I've said, we're still in the early innings with our health work, but every day, I am encouraged by our positive impact. We are also making great advancements in audio and are seeing strong demand from customers as a result.
+
+The HomePod mini continues to earn praise for combining the intelligence of Siri with an immersive room-filling audio experience. And our customers have responded with a lot of excitement to the magic of spatial audio on AirPods, which packs the acoustics of a concert hall. As always, the deep integration of hardware, software, and services is a hallmark of everything Apple makes. It's a principle you can see at work in the introduction of SharePlay, a feature that offers a whole new way to create shared experiences by letting users watch and listen to their favorite content together on FaceTime.
+
+And we continue to invest in innovation across our services business, which set another all-time revenue record last quarter and performed even better than we had anticipated. The App Store continues to be an economic miracle for developers around the world and a safe and trusted place for consumers to discover their favorite apps. Since its launch, we have paid developers selling digital goods and services more than $260 billion, with 2021 setting a new record for their earnings. I'm also happy to report that in its first two years, Apple TV+ shows and movies have earned 200 award wins and more than 890 nominations.
+
+Among the powerful lineup are feature films like "The Tragedy of Macbeth," "CODA," and "Swan Song," along with many gripping new series coming up, including "Severance" and "The Afterparty." Each one is a tremendous credit to all the storytellers in front of the cameras and behind them who touched audiences all over the world. Fitness+, meanwhile, continues to inspire customers to reach their health and fitness goals. We recently introduced "Time to Run," an extension of our popular series "Time to Walk," as well as new collections of workouts and meditations to help users make more intentional training choices. Despite the pandemic, our retail businesses saw its highest revenue in Apple's history, and we also earned our highest ever customer satisfaction scores.
+
+That is a testament to the incredible adaptability our teams have shown as we've reimagined retail experience. I also want to take a moment to thank our retail employees and AppleCare teams for the deep care you've given to our customers as they look to get the most out of our products, learn new skills, or track down the perfect gift. We have always led with our values and with compassion and care and never has that been more needed than during the pandemic. Last quarter, we celebrated 10 years of our Employee Giving program, which we started to help our employees identify and support the causes they care most deeply about.
+
+We pledged to match their contributions to organizations doing important work at every level from their local food pantry to global humanitarian nonprofits. In the last decade, this program has contributed nearly $725 million to charitable organizations. We also celebrated 15 years of Apple's partnership with a global fund on (PRODUCT)RED, supporting their life-saving work to expand healthcare services in sub-Saharan Africa for people living with HIV/AIDS. With the support of our customers, we've now raised nearly $270 million to fund prevention, testing, and counselling services for people impacted by HIV/AIDS.
+
+And in keeping with our abiding belief in and commitment to education, we also launched a new partnership with the Boys & Girls Clubs of America. This initiative will help young people across the U.S. learn to code on iPad using our Everyone Can Code Curriculum. And we are continuing to drive innovations to help combat climate change.
+
+We are already carbon neutral across our own operations, and we are working intensely to meet our 2030 goal of carbon neutrality across our supply chain and the life cycle of our products. To celebrate Black History Month, we will be releasing a special edition Apple Watch Black Unity Braided Solo Loop and a matching Unity Lights Watch face. And through our racial equity and justice initiative, we are continuing to support organizations blazing trails to a more equitable world in our economies, our classrooms, and our criminal justice system. We recognize, as ever, that it takes all of us to confront our most profound challenges.
+
+And at Apple, we are determined to do our part. That includes our own work and inclusion and diversity, which we are advancing every day. Let me close by saying that despite the uncertainty of the world, there is one thing of which I am certain: Apple will continue to end every day and in every way to deliver on the promise of technology at its best. I will now turn it over to Luca to go over our quarterly results in more detail. 
+
+Luca Maestri -- Chief Financial Officer
+
+Thank you, Tim, and good afternoon, everyone. We are very pleased to report record financial results for the December quarter. We set an all-time revenue record of $123.9 billion, an 11% increase from a year ago. We reached new all-time records in the Americas, Europe, Greater China, and the rest of Asia-Pacific.
+
+And it was also an all-time record quarter for both products and services. On the product side, revenue was $104.4 billion, up 9% over a year ago, despite significant supply constraints. We grew in each of our product categories, except iPad, where supply constraints were particularly pronounced, and set all-time records for iPhone; Mac; and wearables, home and accessories. The strong level of sales performance, the unmatched loyalty of our customers, and the strength of our ecosystem have driven our current installed base of active devices to a new all-time record of 1.8 billion devices.
+
+The growth in the installed base were broad-based as we set all-time records in each major product category and in each geographic segment. Our services set an all-time revenue record of $19.5 billion, up 24% over a year ago, with December quarter records in every geographic segment. Company gross margin was 43.8%, up 160 basis points from last quarter due to volume leverage and favorable mix, partially offset by higher cost structures. Products gross margin was 38.4%, up 410 basis points sequentially, driven by leverage and mix.
+
+Services gross margin was 72.4%, up 190 basis points sequentially, mainly due to a different mix. Net income of $34.6 billion and diluted earnings per share of $2.10, both grew more than 20% year over year and were all-time records. Operating cash flow of $47 billion was also an all-time record. Let me get into more detail for each of our revenue categories.
+
+iPhone revenue grew 9% year over year to an all-time record of $71.6 billion despite supply constraints, thanks to a remarkable customer response to our new iPhone 13 family. We set all-time records in both developed and emerging markets, reached all-time high in the iPhone active installed base. And the latest survey of U.S. consumers from 451 Research indicates iPhone customer satisfaction of 98%.
+
+For Mac, revenue of $10.9 billion was an all-time record with growth of 25% year over year, driven by strong demand for our newly redesigned MacBook Pro powered by M1, despite supply constraints. We are one year into our transition to Apple silicon. And already, the vast majority of our Mac sales are from M1-powered devices, which helped drive a record number of upgraders during the December quarter. Our momentum in this category is very impressive as the last six quarters have been the best six quarters ever for Mac.
+
+iPad generated $7.2 billion in revenue, down 14% year over year due to very significant supply constraints, but customer demand was very strong across all models. Despite the supply shortages, our installed base of iPads reached a new all-time high during the quarter, thanks to a high number of customers that are new to iPad. In fact, around half of the customers purchasing an iPad during the quarter were new to the product. wearables, home and accessories set a new all-time record of $14.7 billion, up 13% year over year.
+
+And we set all-time revenue records in each geographic segment. We also continue to improve and expand our product offerings in this category to create unique experiences showcasing our deep integration of hardware, software, and services. In addition to an outstanding level of sales performance globally, Apple Watch continues to extend its reach, with over two-thirds of customers purchasing an Apple Watch during the quarter being new to the product. Turning to services.
+
+As I mentioned, we reached an all-time revenue record of $19.5 billion, up 24%, with all-time records for cloud services, for music, video, advertising, and payment services, and a December quarter record for the App Store. These impressive results reflect the positive momentum we are seeing on many fronts. First, as I mentioned before, our installed base has continued to grow and has reached an all-time high across each geographic segment and major product category. Next, we continue to see increased customer engagement with our services.
+
+The number of paid accounts on our digital content stores grew double digits and reached a new all-time high during the December quarter in every geographic segment. Also, paid subscriptions continue to show very strong growth. We now have more than 785 million paid subscriptions across the services on our platform, which is up 165 million during the last 12 months alone. And finally, we're adding new services that we think our customers will love, and we continue to improve the breadth and quality of our current service offerings.
+
+Just in this last quarter, we have added incredible new content on Apple TV+, on Fitness+ and Apple Arcade and a brand-new way to listen to music with Apple Music Voice. We also announced in November the beta program for Apple Business Essentials, a new service offering that brings together device management 24/7 support and iCloud storage to our small businesses, manage the end-to-end life cycle of their employees' Apple devices. We are very excited that many thousands of small business customers are already actively participating in the beta program. This announcement is just one of many ways we are expanding our support for enterprise and business customers.
+
+With the latest Macbook Pros that we've introduced last October, the new M1-powered Mac lineup has quickly become the preferred choice of Max among enterprise customers. Shopify, for example, is upgrading its entire global workforce to M1-powered MacBook Pro and MacBook Air. By standardizing on M1 Max, Shopify continues its commitment to providing the best tools to help its employees work productively and securely from anywhere. And Deloitte Consulting is expanding the deployment of the Mac Employee Choice program, including offering the new M1 MacBook Pro to empower their professionals to choose devices that work best for them in delivering consulting services.
+
+Let me now turn to our cash position. Due to our strong operating performance and holiday quarter seasonality, we ended the quarter with $203 billion in cash, plus marketable securities. We decreased commercial paper by $1 billion, leaving us with total debt of $123 billion. As a result, net cash was $80 billion at the end of the quarter.
+
+Our business continues to generate very strong cash flow, and we're also able to return nearly $27 billion to shareholders during the December quarter. This included $3.7 billion in dividends and equivalents and $14.4 billion through open market repurchases of 93 million Apple shares. We also began $6 billion accelerated share repurchase program in November, resulting in the initial delivery and retirement of 30 million shares. As we move ahead into the March quarter, I'd like to review our outlook, which includes the types of forward-looking information that Tejas referred to at the beginning of the call.
+
+Given the continued uncertainty around the world in the near term, we are not providing revenue guidance, but we are sharing some directional insights based on the assumption that the COVID-related impacts to our business do not worsen from what we are projecting today for the current quarter. We expect to achieve solid year-over-year revenue growth and set a March quarter revenue record despite significant supply constraints, which we estimate to be less than what we experienced during the December quarter. We expect our revenue growth rate to decelerate from the December quarter, primarily due to two factors. First, during the March quarter a year ago, we grew revenue by 54%.
+
+Remember that last year, we launched our new iPhones during the December quarter. While this year, we launched them during the September quarter. Due to the later launch a year ago, some of the associated channel inventory fill occurred during the March quarter last year. As a result of the different launch timing, we will face a more challenging year-over-year compare.
+
+Second, we expect foreign exchange to be a 3-point headwind when compared to the December quarter growth rate. We currently expect FX to have a negative impact on growth of 2 points in the March quarter, while it represented a 1-point benefit during the December quarter. Specifically related to services, we expect to grow strong double digits but decelerate from the December quarter performance. This is due to a more challenging compare because a higher level of lockdowns around the world last year led to increased usage of digital content and services.
+
+We expect gross margin to be between 42.5% and 43.5%. We expect opex to be between $12.5 billion and $12.7 billion. We expect OI&E to be around negative $150 million, excluding any potential impact from the mark-to-market of minority investments, and our tax rate to be around 16%. Finally, today, our board of directors has declared a cash dividend of $0.22 per share of common stock payable on February 10, 2022, to shareholders of record as of February 7, 2022.
+
+And with that, let's open the call to questions.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thank you, Luca. We ask that you limit yourself to two questions. Operator, may we have the first question, please? 
+
+Questions & Answers:
+
+Operator
+
+Absolutely. We'll take our first question from Katy Huberty with Morgan Stanley. Katy, please check your mute function, we weren't able to hear you. Hearing no response, we'll take our next question from Wamsi Mohan with Bank of America.
+
+Wamsi Mohan -- Bank of America Merrill Lynch -- Analyst
+
+Yes, thank you. Your margins have clearly been very impressive. So I have one question each on product and one on services gross margins. On product gross margins, that's clearly benefiting from a very strong mix.
+
+So, Tim, I'm curious how sustainable do you think these mix trends are from the data that you see? And can you share any thoughts across how the Pro and Pro Max mix compared to prior cycles? And on the services side, if I could just ask that, too. When you look at the gross margins there, that's been really impressive. Can you give us some sense of where within services you're seeing particularly favorable mix trends? And how should investors think about the trajectory of these margins given some of the sizable investments you're making to drive very successful areas like content for TV+ as an example? Thank you.
+
+Tim Cook -- Chief Executive Officer
+
+Wamsi, it's Tim. In terms of the mix, you know, we don't comment directly on mix. But what I would tell you is that we saw strong demand across the iPhone 13 family. And in fact, we had several of the top-selling models in various markets, including the top five in the U.S.
+
+and Australia, the top four in Urban China, two of the top three in the U.K., three of the top four in France and Germany, and four of the top six in Japan. And certainly, based on some external data that I've seen, it does seem to say that we are gaining share as well. So we feel quite good about the momentum of iPhone. And I should add that we were constrained during the quarter.
+
+Luca Maestri -- Chief Financial Officer
+
+Wamsi, on the services side, you were asking about gross margin there. As you know, our services business in aggregate is accretive to overall company margin. And as you know, our services portfolio is very broad, and it contains businesses with very different margin profiles. The difference in margin profile is due in part to the nature of those businesses and in part to the way that we account for them, in some cases, we account on a net basis as opposed to a gross basis.
+
+And so as a result, the Services gross margin percentage over time will be influenced by the relative growth of the different businesses within the portfolio. We do not guide at the product and services level, but I think you've seen the guidance that we provided for the March quarter at the total company level, 42.5% to 43.5%, obviously very strong compared to our recent history. And so we're very pleased with that.
+
+Wamsi Mohan -- Bank of America Merrill Lynch -- Analyst
+
+Thanks, Tim. Thanks, Luca.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thanks, Wamsi. Can we have the next question, please?
+
+Operator
+
+We'll take our next question from Kyle McNealy with Jefferies.
+
+Kyle McNealy -- Jefferies -- Analyst
+
+Hi, thanks very much. Congrats on the solid iPhone result. That's very good. I assume that you may have prioritized iPhone to the extent there may be similar components that are used for iPhone and iPad.
+
+Can you just level set me on that if that's not the case? And if it is, should we see a recovery in iPad as you move past your prime iPhone selling season and you may have better access to components or better supply as we move through the next few months of the year?
+
+Tim Cook -- Chief Executive Officer
+
+Yeah. Kyle, it's Tim. From a supply constraint point of view, as you recall, we said that in Q1, the December quarter, that would have constraints more than six, and we clearly did have constraints more than six. On March, we're saying that where we will have -- we will do better or have less constraints than we had in the December quarter.
+
+If you look at the commonality between different products, there is some. But generally, the challenge is on legacy nodes. And these legacy nodes are by supplier. And so it's much more focused on the supplier than anything else and versus us behind the curtain finding a place to take it.
+
+There's not -- none of that, but there is some of that. But largely, we have to take it where the shortages are.
+
+Kyle McNealy -- Jefferies -- Analyst
+
+OK. Great. Can you give us any other color on kind of the trajectory of iPad and, you know, what's impacting this quarter and where it might go in the March and the June quarter?
+
+Tim Cook -- Chief Executive Officer
+
+Yeah. The issue with iPad, and it was a very significant constraint in the December quarter, was very much on these legacy nodes that I had talked about. Virtually all of the problem was in that area. And so overall, we're not guiding by product constraint -- by product level.
+
+But at the -- but overall, we do see an improvement in the March quarter in terms of the constraints going down versus what they were in the December quarter.
+
+Kyle McNealy -- Jefferies -- Analyst
+
+OK, great, thanks so much. Congrats again on the solid results all around.
+
+Tim Cook -- Chief Executive Officer
+
+Oh, thanks very much.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thank you, Kyle. Can we have the next question, please?
+
+Operator
+
+Thank you. We'll take our next question from Shannon Cross with Cross Research. 
+
+Shannon Cross -- Cross Research -- Analyst
+
+Thank you very much. Tim, could you talk a bit about the Mac business? Looking back, it's up about 50% from the calendar 2019 revenue. You did almost $11 billion this quarter, and you're still working through the M1 transition. So can you talk about where you see the opportunity to gain share? What are really sort of the target markets that you think you can go after, you know, in order to grow this beyond, I think it was about $37 billion in the last 12 months? Thank you.
+
+And then I have a follow-up.
+
+Tim Cook -- Chief Executive Officer
+
+Yeah. Shannon, thank you for the question. Mac set an all-time revenue record at $10.9 billion for the quarter. That was up 25%.
+
+And as you point out, the last six quarters for the Mac have been the top six revenue quarters of all time. And what's further very good about this is, we set all-time revenue records in Americas, in Europe, and the rest of Asia Pacific. And we set a December quarter record in Greater China. And so it's not narrowed to a particular geographic area that we're doing well in.
+
+It's almost -- about almost across the board. The response is very much because of M1. And we got even more response with the MacBook Pro that we launched in the -- during the Q1 time frame. The -- both the upgraders, which we had a record number of upgraders for the December quarter, but also in markets like China, six out of the -- six out of 10 sales are people new to the Mac.
+
+And so it's powered by both upgraders and switchers. Customer satisfaction is off the charts. And so what I see this as is a -- that will -- a product that will be very successful in a number of different markets from education to business, to the creative industry and in all geographic markets. We're not limiting ourselves.
+
+Shannon Cross -- Cross Research -- Analyst
+
+Great. Thank you. And then, Luca, can you talk a bit more on services? Just obviously outperformed your guidance or your expectations, as well as certainly where we were at. Where were the -- what were the things that really outperformed? And maybe what trends are you seeing that is driving the extra revenue? Thank you.
+
+Luca Maestri -- Chief Financial Officer
+
+Yeah, Shannon. It was -- I mean it was really great on all fronts. We said December quarter records in every geographic segment. And then as I mentioned earlier, an all-time record for cloud, for music, for video, for advertising, for payment services.
+
+December quarter record in the App Store. So we've done, as you said, better than we were expecting at the beginning of the quarter. This overperformance has been spread around the world and spread around our services categories. And the reality is, this combination of factors, the fact that the installed base is growing, the fact that we continue to have more and more engagement of our customers on all the services -- paid subscriptions is a phenomenal story, right? We now have 785 million paid subs.
+
+We just -- we've increased 165 million in the last 12 months alone, right? And so all these things combined are really powering the business. Very, very pleased with the performance.
+
+Shannon Cross -- Cross Research -- Analyst
+
+OK. Thank you.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thanks. Can we have the next question, please?
+
+Operator
+
+We'll hear next from Katy Huberty with Morgan Stanley.
+
+Katy Huberty -- Morgan Stanley -- Analyst
+
+Thank you. Can you hear me OK?
+
+Luca Maestri -- Chief Financial Officer
+
+Now we can. 
+
+Tim Cook -- Chief Executive Officer
+
+Yes. 
+
+Katy Huberty -- Morgan Stanley -- Analyst
+
+OK. Good. So first question, just as it relates to some of the disruption you've seen on the component side, manufacturing and logistics over the past couple of years. Are you starting to rethink your broader supply chain strategy or the manufacturing footprint on the back of the significant disruption? Are you happy with the overall geographic exposure that you see in the supply chain today?
+
+Tim Cook -- Chief Executive Officer
+
+Katy, if you sort of step back and look at how we've done, our largest issue by far has been the chip shortage. That is industrywide and on these legacy nodes, as I had mentioned earlier. And I think our supply chain actually does very good considering the shortages because it's a fast-moving supply chain. The cycle times are very short.
+
+There's very little distance between a chip being fabricated and packaged and a product being -- going out of factory. And so no, I don't see that it makes a fundamental change in the supply chain. 
+
+Katy Huberty -- Morgan Stanley -- Analyst
+
+OK. And how are you thinking about the metaverse opportunity and Apple's role in that market?
+
+Tim Cook -- Chief Executive Officer
+
+Well, that's a big question. But we're a company in the business of innovation. So we're always exploring new and emerging technologies. And I -- you've spoken at length about how this area is very interesting to us.
+
+Right now, we have over 14,000 AR kit apps in the App Store, which provide incredible AR experiences for millions of people today. And so we see a lot of potential in this space and are investing accordingly.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thanks. Can we take the next question, please? 
+
+Operator
+
+Thank you. We'll take our next question from Amit Daryanani with Evercore.
+
+Amit Daryanani -- Evercore ISI -- Analyst
+
+I have two as well. I guess both up on the supply chain side, I think these continue to be fairly volatile. I'd love to get your perspective, if you feel, if things or supply chain issues are starting to alleviate or they still remain challenging. And then maybe I missed this, but could you perhaps tell us how much revenue was left on the table in December because of the supply chain issues? And how does that number shake up in March?
+
+Tim Cook -- Chief Executive Officer
+
+Yeah. Amit, what we've said in terms of December and March was that it's very difficult to estimate with great precision the constraints. But we said that they would be more than the Q4 or more than the September quarter, and we're saying that March will be less than the December quarter. And so that's the kind of verbiage that we placed around it.
+
+In terms of is it still challenging, yes, it is challenging. And for us, we pride ourselves on getting products to customers who really want them and try to do that in a fast basis. And so it's frustrating that we can't always do that at the speed that we would like. However, March is better than December.
+
+And so there's some encouraging sign there. We're not predicting with the [Inaudible] overall, obviously, because of the number of variables that go into such a prediction.
+
+Amit Daryanani -- Evercore ISI -- Analyst
+
+Fair enough. Tim, I think one of the topics investors can struggle a fair a bit with Apple is really just sort of understand visibility around your product road map, and I think some of your tech peers tend to be more vocal about their initiative. Some of them go change their name when they find an initiative. You folks are spending, I think, $23 billion on R&D in '21.
+
+So you're really spending a fair amount. And maybe without telling us the road map, could you just talk about how do you think about where to focus your R&D resources on? And to some extent, is the way to think about this R&D spend, how much of it is really done on things that are more evolutionary in products that are out in the marketplace versus things that we haven't seen yet are on potential new offerings? 
+
+Tim Cook -- Chief Executive Officer
+
+You know, we have a little different model. We tried to announce things when they're ready or close to ready and try to maintain an element of surprise in the air. And so that explains, hopefully, what we do with our roadmap. And I think that's proven successful for us.
+
+And other people can do it differently, of course. But it's been good for us over time to do that. So, we're going to continue to do that. In terms of deciding where we invest in, we look at areas that are sort of at the intersection of hardware, software, and services.
+
+And because we think that that's where the magic really happens, and it brings out the best in our home, and so there are areas that have more than piqued our interest, and we are investing in those. And you can tell through time that we've wrapped our R&D spend even more than we were before. And so, there's quite a bit of investment going into things that are not on the market at this point, as there always are. Thanks for the question.
+
+Amit Daryanani -- Evercore ISI -- Analyst
+
+Perfect. Thank you.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thanks. Can we have the next question, please?
+
+Operator
+
+ Thank you. We'll hear next from David Vogt with UBS.
+
+David Vogt -- UBS -- Analyst
+
+Great. Thanks for taking my call and my question. I just wanted to dive in to your perspective on China and sort of the macroclimate there and how that sort of pertains to your business as we think about it going forward. And the reason why I'm asking is we've heard some concerns that current policies might have caused a pause in this market and smartphone inventory.
+
+Maybe more specifically the local vendors could be a little bit elevated going into Chinese New Year. So we just want to get your thoughts on what you're seeing in this market around, the sort of potential development, and then maybe touch on sell-in versus sell-through in that market. And then I have a follow-up.
+
+Tim Cook -- Chief Executive Officer
+
+Well, I can only comment on for us. Our sales grew 21% there in the last quarter, and we're very proud of that. I'll stay away and let other people be the economist and make the macro determinations. But what we're seeing there was super impressive with all-time revenue records and a record number of upgraders and strong double-digit growth in switchers on iPhone, which is very important to us.
+
+And as I've mentioned before, we had the top four selling phones in urban China. And so there's a lot of good there. And I would remind you that iPhone was constrained in the quarter. And so I'm not sure where the statements are coming around about inventory, and I can't comment on whether other people have more or not.
+
+I don't know the answer to that. Thanks for the question. 
+
+David Vogt -- UBS -- Analyst
+
+That's helpful, Tim. And then maybe just on the supply chain. You know, obviously, you've been managing it incredibly well over the last 12 to 18 months. And gross margins have actually performed relatively well, mix driven both between products and services.
+
+Can you help us think about sort of the quantifiable impact or maybe the costs that you're carrying due to the supply chain that may be sort of -- I don't want to use the word transitory, but we'd expect over the longer term that might be sort of abate a little bit and you'll get a little bit of a benefit as we get past some of these supply chain issues over the next 12 months or so?
+
+Tim Cook -- Chief Executive Officer
+
+We're seeing inflation, and it's factored into our gross margin and opex that Luca reviewed with you earlier. Logistics, as I've mentioned on a previous call, is very elevated in terms of the cost of moving things around. I would hope that at least a portion of that is transitory, but the world is -- the world has changed, and so we'll see.
+
+David Vogt -- UBS -- Analyst
+
+Thank you.
+
+Tim Cook -- Chief Executive Officer
+
+Yeah.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thanks. Can we get the next question, please?
+
+Operator
+
+Thank you. We'll take the question from Samik Chatterjee with J.P. Morgan. 
+
+Samik Chatterjee -- J.P. Morgan -- Analyst
+
+Oh, great, thanks for taking my question. I had a couple. The first question that I had was really on Apple TV+, and I know some of the other players in this market have talked about slowing subscriber growth as we exit the pandemic. So curious if you can share what trends you're seeing in Apple TV and Apple TV+ and how similar or dissimilar they are and how your content is maybe helping you on that aspect? And I have a follow-up.
+
+Tim Cook -- Chief Executive Officer
+
+We, you know, don't give out subscriber numbers for Apple TV+. What we do, do is give out a subscriber number for -- our subscription number for the total number of subscriptions that we had. And I think Luca mentioned earlier we ended the quarter at 785 million. And so we were incredibly pleased with that.
+
+That's a huge growth on a year-over-year basis of 165 million. And it counts, as you recall, both Apple branded and third party. In terms of how we're doing with TV+, we've been honored with 200 wins and 890 nominations. We're doing exactly like we had wanted to, giving storytellers a place to tell original stories and feel really good about where we are competitively and strategic position of the product. 
+
+Samik Chatterjee -- J.P. Morgan -- Analyst
+
+And if I can just follow up, and similarly on Apple, can you just help us think about when you think about the next few years, where are the biggest opportunities, either be it in terms of like geographies or either segments -- customer segments that you may not be tapping into currently and have an opportunity in. And thank you.
+
+Tim Cook -- Chief Executive Officer
+
+Well, putting aside any kind of thing that sits on our road map for a second in that area, which we obviously wouldn't talk about in the call, I would say that I think Apple Card has a great runway ahead of us. It was rated to the No. 1 midsized credit carding customer set by J.D. Power and is getting -- has fast become people's main credit card for many, many people.
+
+And the growth of Apple Pay has just been stunning. It's been absolutely stunning. And there's still obviously a lot more there to go -- and because there's still a lot of cash in the environment. And so I think that both of these and whatever else we might do have a great future ahead.
+
+Samik Chatterjee -- J.P. Morgan -- Analyst
+
+OK. Congrats on the results.
+
+Tim Cook -- Chief Executive Officer
+
+Thanks so much.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thanks. Can we have the next question, please?
+
+Operator
+
+Thank you. We'll take our next question from Chris Caso with Raymond James. 
+
+Chris Caso -- Raymond James -- Analyst
+
+Yes, thank you. Good evening. First question is just a little bit of help in interpreting the guidance. And if you could speak to the March quarter, perhaps in terms of seasonality and seasonal performance.
+
+And Luca, as you mentioned last year, because of the later launch of the phone that some of that came into the March quarter, and that was better than seasonal performance in March. Should we interpret because the supply constraints are easing somewhat as you go into the March quarter that we should see something similar that March quarter would get some better than seasonal performance? Is that the correct way to interpret your guidance?
+
+Luca Maestri -- Chief Financial Officer
+
+Well, you know, and we talked about it on a year-over-year basis because that's probably how most people look at it. And so just to recap what we said. First of all, we expect a record for the March quarter. We expect solid growth on a year-over-year basis.
+
+And -- but as Tim was saying, we still expect significant supply constraints but less than what we've seen in December. So I think on that basis, you can do the math around sequential. But given where we are in the environment, given the difficult compare both on iPhone, and as I mentioned on -- during my prepared remarks, on Services, we're very, very happy with the way we're guiding and the way the business is going right now.
+
+Chris Caso -- Raymond James -- Analyst
+
+OK. Thank you, sir. As a follow-up, a follow-up question is on perhaps the sustainability and repeatability of the growth in iPhone after two very good years, well-received product and the 5G upgrade cycle. And I think there was a point in time when perhaps there's a view from some that iPhone was x growth, and that's been proven wrong.
+
+Off of these very strong results, maybe you can speak to your level of confidence that iPhone continues to grow in the future and kind of what are the avenues for that growth.
+
+Tim Cook -- Chief Executive Officer
+
+Yeah. Hey, Chris, it's Tim. What I would say is that the iPhone has become an integral part of so many people's lives now more than ever. And the active installed base of iPhone continues to grow and is now at an all-time high.
+
+And during December, as we had mentioned, we had a record number of upgraders and grew switchers strong double digit, which I think speaks to the strength of the product. And that's all an adjacent to some -- an enormous customer satisfaction rating of 98% and are doing well throughout the geographies. And I've mentioned some of the geos that we track and how many units that we have on the top-selling model charts. And so -- and even though this is the second product announcement that has 5G in it, we're still really in the early innings of 5G, meaning if you look at the installed base and look at how many people are on 5G versus not, and we don't release those exact numbers, but you can do some math and estimate those.
+
+We maintain a very optimistic view on iPhone long term.
+
+Chris Caso -- Raymond James -- Analyst
+
+Thank you very much.
+
+Tim Cook -- Chief Executive Officer
+
+Yes, thank you.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thanks. Can we have the next question, please?
+
+Operator
+
+Thank you. We'll take our next question from Ben Bollin with Cleveland Research.
+
+Ben Bollin -- Cleveland Research Company -- Analyst
+
+Thank you for taking the question. Tim, I'm interested in how you think about the relationship between the total iOS installed base and then the subsequent performance you see within the services or the paid subscriptions. And a second part to that is, how do you look at the existing services business in terms of the growth you get from customers who are already subscribers versus completely net new or greenfield subscribers?
+
+Tim Cook -- Chief Executive Officer
+
+I think I'll let Luca comment on the second part of that. But if you back up and sort of look at how we're doing, even though we have 785 million subs, relative to the total number of products offered and the customers that's offered in, there's still a lot of room to grow there. And so I -- the way that I look at it is that we -- there's a lot more greenfield in front of us.
+
+Luca Maestri -- Chief Financial Officer
+
+And Ben, on the services engagement and how we think about customers, right, obviously, it's important for us that customers are engaged on our services platforms. And the ones that we have, we know that the more engaged they are, they're more likely to stay with Apple for the long term. So we just obviously track all those metrics, and they're very important for us. And that's why we continue to improve the quality of our offerings and the quantity over time.
+
+As you've seen, we launched a lot of new services. We obviously care a lot about new customers as well, and that's why we keep track of the installed base and a lot of other metrics on that front. It's very similar to what we do with products. I mean, also for products, we care a lot about upgraders.
+
+We care a lot about switchers. It's obviously the combination of the two that when you put it together, you know, provides the level of growth that you've actually seen in our services business. I mean the last 12 months, we've done over $72 billion of revenue on services. It's the size of a Fortune 50 company.
+
+It couldn't happen with our contribution from both existing and new customers. 
+
+Ben Bollin -- Cleveland Research Company -- Analyst
+
+Thank you.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thanks. Can we have the next question, please?
+
+Operator
+
+Thank you. We'll take our next question from Harsh Kumar with Piper Sandler.
+
+Harsh Kumar -- Piper Sandler -- Analyst
+
+Yeah, hey, guys. First of all, congratulations on stellar quarter in December and all the records that the Apple community has set. Tim, I had a question on the content on Apple TV. When we look at the Apple content that you guys put all on TV original content, it's typically very socially responsible and healthy, for example, at Ted Lasso.
+
+Has this, in effect, created a constraint or a hesitancy of some sort for Apple to go and purchase studios when they come up? Or have those decisions been primarily financial or otherwise? 
+
+Tim Cook -- Chief Executive Officer
+
+We don't make purely financial decisions about the content. We try to find great content that has a reason for being. And we love shows like Ted Lasso and several of the other shows as well that have a reason for existing and may have a good message and may make people feel better at the end of it. But we're -- but I don't view that we've narrowed our universe the things we're selecting from.
+
+There's plenty to pick from out there. And I think that we're doing a pretty good job of it as we speak. 
+
+Harsh Kumar -- Piper Sandler -- Analyst
+
+Fair enough. And then my follow-up was the Apple vision of healthcare in the future. So you guys have sort of cautiously approached healthcare with iWatch and iPhone. It's mostly a preventative sort of approach.
+
+It provides you updates. But do you see a situation down the line where Apple perhaps plays a more active role, either through the Watch or some of the device where perhaps a doctor or a hospital mandates that the watch we want for effectively for critical and vital monitoring? And I was curious if you could just give us some color on how you guys think about healthcare and iWatch in that confluence?
+
+Tim Cook -- Chief Executive Officer
+
+Well, the -- with the Apple Watch, there's literally not days that go by without me getting notes about someone that's received a health alert. Maybe it's to do with their cardiovascular health. Or more recently, a lot of people have told me that they fell and was knocked unconscious and couldn't respond and the watch responded for them to emergency contacts and emergency personnel. And so there's a lot that we're doing today.
+
+My sense has always been that there's more here. I don't want to get into a road map discussion in the call. But we continue to kind of pull the string and see where it takes us. But we're really satisfied with how we're doing in this area because we are fundamentally changing people's lives and, in some cases, saving people's lives.
+
+So it's an area of great interest.
+
+Harsh Kumar -- Piper Sandler -- Analyst
+
+Very helpful, Tim, thank you.
+
+Tim Cook -- Chief Executive Officer
+
+Thanks for the question.
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Thank you. A replay of today's call will be available for two weeks on Apple Podcasts, as a webcast on apple.com/investor and via telephone. The numbers for the telephone replay are 888-203-1112 or 719-457-0820. Please enter confirmation code 3599903.
+
+These replays will be available by approximately 5:00 p.m. Pacific Time today. Members of the press with additional questions can contact Josh Rosenstock at 408-862-1142. Financial analysts can contact me with additional questions at 669-227-2402.
+
+Thank you again for joining us. 
+
+Operator
+
+[Operator signoff]
+
+Duration: 54 minutes
+
+Call participants:
+
+Tejas Gala -- Director, Investor Relations, and Corporate Finance
+
+Tim Cook -- Chief Executive Officer
+
+Luca Maestri -- Chief Financial Officer
+
+Wamsi Mohan -- Bank of America Merrill Lynch -- Analyst
+
+Kyle McNealy -- Jefferies -- Analyst
+
+Shannon Cross -- Cross Research -- Analyst
+
+Katy Huberty -- Morgan Stanley -- Analyst
+
+Amit Daryanani -- Evercore ISI -- Analyst
+
+David Vogt -- UBS -- Analyst
+
+Samik Chatterjee -- J.P. Morgan -- Analyst
+
+Chris Caso -- Raymond James -- Analyst
+
+Ben Bollin -- Cleveland Research Company -- Analyst
+
+Harsh Kumar -- Piper Sandler -- Analyst
+
+More AAPL analysis
+
+All earnings call transcripts
