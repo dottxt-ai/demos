@@ -1,7 +1,6 @@
 from enum import Enum
 from pydantic import BaseModel, Field
 from typing import List, Optional
-from rich.panel import Panel
 
 # ███████╗████████╗ ██████╗ ██████╗ ██╗   ██╗
 # ██╔════╝╚══██╔══╝██╔═══██╗██╔══██╗╚██╗ ██╔╝
@@ -47,16 +46,6 @@ class LoreEntry(BaseModel):
             fields=["content"],
         )
 
-    def print(self, width):
-        print(Panel.fit(
-            self.content,
-            title=self.name,
-            width=width,
-            border_style="green"
-        ))
-
-# A SettingType is a genre for the world that guides the general
-# direction of the language model's responses.
 class SettingType(str, Enum):
     """
     The setting of the world. This is an Enum, so
@@ -128,19 +117,9 @@ class World(BaseModel):
 
         return system_prompt, user_prompt
 
-    def print(self, width=60):
-        print(Panel.fit(
-            self.world_description + "\n\n[italic]Setting: " + self.setting + "[/italic]",
-            title="World Description",
-            width=width,
-            border_style="bright_cyan"
-        ))
-
 # A candidate for a lore entry, which will be further refined
 # using information from the database.
 class LoreEntryCandidate(BaseModel):
-    # Proposal here is some arbitrary text that is used as a seed
-    # for further refinement.
     proposal: str
 
     # Note: adding reasoning steps here forces the model to generate
@@ -149,16 +128,6 @@ class LoreEntryCandidate(BaseModel):
 
     # Information requests are queries to ask the database
     information_requests: List[str]
-
-    def print(self, width):
-        print(Panel.fit(
-            self.proposal + \
-                "\n\nNumber of information requests: " + \
-                str(len(self.information_requests)),
-            title="New proposal",
-            width=width,
-            border_style="bright_blue"
-        ))
 
 # A response to a question asked by the lore agent
 class InformationRequestAnswer(BaseModel):

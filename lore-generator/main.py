@@ -44,8 +44,8 @@ from loremaster import (
 # - DB_PATH is the location of the milvus database.
 EMBEDDING_MODEL = "nomic-ai/nomic-embed-text-v1"
 EMBEDDING_DEVICE = "cpu"
-LLM_MODEL = "microsoft/Phi-3-mini-128k-instruct"
-LLM_DEVICE = "cpu"
+LLM_MODEL = "NousResearch/Hermes-3-Llama-3.1-8B"
+LLM_DEVICE = "cuda"
 PANEL_WIDTH = 60
 SEARCH_RESULT_LIMIT = 3
 DB_PATH = "milvusdemo.db"
@@ -104,9 +104,7 @@ def main():
     if milvus_client.has_collection("lore"):
         milvus_client.drop_collection("lore")
 
-    # Set up our embedding model. Nomic is a high-quality embedding
-    # model. It has a dimensionality of 768, which we have to specify
-    # in
+    # Set up our embedding model
     embedding_model = SentenceTransformer(
         EMBEDDING_MODEL,
         device=EMBEDDING_DEVICE,
@@ -128,7 +126,7 @@ def main():
     # create the collection. default distance metric is "COSINE"
     milvus_client.create_collection(
         collection_name="lore",
-        dimension=768,
+        dimension=embedding_model_dims,
         auto_id=True,
     )
 
@@ -148,7 +146,12 @@ def main():
     world = generate_world(model, world_seed)
 
     # Print the world description
-    world.print(PANEL_WIDTH)
+    print(Panel.fit(
+        world.world_description + "\n\n[italic]Setting: " + world.setting + "[/italic]",
+        title="World Description",
+        width=PANEL_WIDTH,
+        border_style="bright_cyan"
+    ))
 
     # Historical event generator. This will propose something
     # to add to the lore of the world. It may make no sense,
@@ -180,8 +183,6 @@ def main():
     # (see use in the while loop for more information)
     proposal_refiner = outlines.generate.json(model, LoreEntry)
 
-
-
     # Generate the world forever.
     # Let the WORLD BUILDING BEGIN
     while True:
@@ -197,7 +198,14 @@ def main():
 
         # Print out the historical event proposal
         separator()
-        historical_event.print(PANEL_WIDTH)
+        print(Panel.fit(
+            historical_event.proposal + \
+                "\n\nNumber of information requests: " + \
+                str(len(historical_event.information_requests)),
+            title="New proposal",
+            width=PANEL_WIDTH,
+            border_style="bright_blue"
+        ))
 
         # Ask sub-agents to handle the information request answers.
         responses = []
@@ -264,7 +272,6 @@ def main():
                     "[italic]" + step + "[/italic]",
                     title="Reasoning Step",
                     width=PANEL_WIDTH,
-
                 ))
 
             # Print the answer the lookup agent provided
@@ -294,7 +301,12 @@ def main():
 
         # Insert the refined proposal into the collection!
         proposal_refined.insert(milvus_client, embed_text)
-        proposal_refined.print(PANEL_WIDTH)
+        print(Panel.fit(
+            proposal_refined.content,
+            title=proposal_refined.name,
+            width=PANEL_WIDTH,
+            border_style="green"
+        ))
 
         # Cool. this iteration of the loop has finished,
         #
