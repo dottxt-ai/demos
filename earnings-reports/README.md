@@ -5,8 +5,6 @@
 
 This proof-of-concept showcases how to automate the extraction of financial metrics from income statements in SEC 10-K filings using Outlines. Manually extracting data from financial reports is time-consuming and error-prone - analysts often spend hours copying numbers from PDFs or HTML files into spreadsheets.
 
-![Nvidia income statement example](./images/nvidia-income.png)
-
 Investors often want a simple CSV file to use in financial modeling and research. With Outlines, we can restrict the language model to extract the data we want _directly_ into a CSV file.
 
 This tool automates the extraction process by:
@@ -16,6 +14,21 @@ This tool automates the extraction process by:
 3. Validating the extracted data against known good values
 
 The system is designed to be extensible - you can easily add new metrics to extract or switch to more powerful models.
+
+## Example
+
+10-K filings are often long and contain many pages of financial information. The following is an example of an income statement page from Nvidia's 10-K filing:
+
+![Nvidia income statement example](./images/nvidia-income.png)
+
+which this demo can parses to
+
+```
+   year  revenue  operating_income  net_income
+2  2022    26914             10041        9752
+1  2023    26974              4224        4368
+0  2024    60922             32972       29760
+```
 
 ## Quick Start
 
