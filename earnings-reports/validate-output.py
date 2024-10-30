@@ -1,9 +1,7 @@
-
 import glob
 import os
 
 import pandas as pd
-
 
 if __name__ == "__main__":
     # Get all manually-coded files
