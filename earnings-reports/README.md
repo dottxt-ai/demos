@@ -56,6 +56,8 @@ year,revenue,operating_income,net_income
 2023,211915,88523,72361
 ```
 
+Output is placed in the `csv/` directory.
+
 ## Prerequisites
 
 - Python 3.8+
