@@ -1,4 +1,5 @@
 # Imports
+from io import StringIO
 import re
 import outlines
 import glob
@@ -10,160 +11,189 @@ import tqdm
 from transformers import AutoTokenizer
 from markdownify import markdownify as md
 
-# Choose your language model
-# language_model = "TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
-# language_model = "microsoft/Phi-3-medium-4k-instruct"
-language_model = "microsoft/Phi-3.5-mini-instruct"
-# language_model = "meta-llama/Llama-3.1-8B-Instruct"
-# language_model = "meta-llama/Llama-3.2-3B-Instruct"
-# model = outlines.models.transformers(
-#     language_model,
-#     device="auto",
-#     model_kwargs={
-#         "torch_dtype": torch.bfloat16,
-#     }
-# )
+# Choose your language model. Phi-3.5-mini-instruct
+# should work for most cases, and it's small enough
+# that it can run on lots of hardware.
+LANGUAGE_MODEL = "microsoft/Phi-3.5-mini-instruct"
 
-model = outlines.models.vllm(
-    language_model,
-    max_model_len=60000
+# Use transformers for most cases.
+MODEL = outlines.models.transformers(
+    LANGUAGE_MODEL,
+    device="auto",
+    model_kwargs={
+        "torch_dtype": torch.bfloat16,
+    },
 )
 
-# Load the tokenizer, used for adding system/user tokens
-TOKENIZER = AutoTokenizer.from_pretrained(language_model)
+# Regex patterns for the data types
+YEAR_REGEX = r"\d{4}"
+INTEGER_COMMA_REGEX = r"((-?\d+),?\d+|(\d+))"
+NUMBER_REGEX = r"(-?\d+(?:\.\d{1,2})?)"
 
-def to_prompt(user_prompt="", system_prompt=""):
+# Define the column type regex patterns
+COLUMN_TYPE_REGEX = {
+    "year": YEAR_REGEX,
+    "integer_comma": INTEGER_COMMA_REGEX,
+    "number": NUMBER_REGEX,
+}
+
+# Define the columns to extract, and their data types.
+# These are the columns the model
+COLUMNS_TO_EXTRACT = {
+    "year": "year",
+    "revenue": "integer_comma",
+    "operating_income": "integer_comma",
+    "net_income": "integer_comma",
+}
+
+# Load the tokenizer for adding system/user tokens
+TOKENIZER = AutoTokenizer.from_pretrained(LANGUAGE_MODEL)
+
+####################################################
+#               Convenience functions              #
+####################################################
+
+def to_prompt(user_prompt: str = "", system_prompt: str = "") -> str:
+    """Convert user and system prompts to a chat template.
+
+    Args:
+        user_prompt: The user's input text
+        system_prompt: Optional system instructions
+
+    Returns:
+        str: The formatted chat template with special tokens
+
+    Note:
+        Outlines does not add special tokens to chat templates,
+        so we handle that manually here.
     """
-    Convert a user prompt and system prompt to a chat template.
+    chat = []
 
-    Outlines does not add special tokens to the chat template, so we need to
-    do this manually.
-    """
-    chat=[]
+    if system_prompt:
+        chat.append({"role": "system", "content": system_prompt})
 
-    if len(system_prompt) > 0:
-        chat.append({'role':'system', 'content':system_prompt})
+    if user_prompt:
+        chat.append({"role": "user", "content": user_prompt})
 
-    if len(user_prompt) > 0:
-        chat.append({'role':'user', 'content':user_prompt})
-
-    tokenized_chat = TOKENIZER.apply_chat_template(
-        chat,
-        tokenize=True,
-        add_generation_prompt=True,
-        return_tensors="pt"
+    # Convert chat to model's expected format with special tokens
+    tokenized = TOKENIZER.apply_chat_template(
+        chat, tokenize=True, add_generation_prompt=True, return_tensors="pt"
     )
 
-    decoded_chat = TOKENIZER.decode(tokenized_chat[0])
-    return decoded_chat
+    return TOKENIZER.decode(tokenized[0])
 
-# Example of using the prompt function
-# to_prompt(user_prompt="What's up?")
 
 def create_regex_pattern(
-    columns: List[str],
-    data_types: List[str],
-    # The maximum number of rows to extract.
-    # Firms usually report the most recent 3 years of data.
-    max_rows: int = 3
+    # Dictionary mapping column names to their data types
+    column_types: dict[str, str],
+    # Firms typically report three years of data
+    # in the income statement.
+    max_rows: int = 3,
 ) -> str:
-    # Define regex patterns for common data types
-    type_patterns = {
-        "string": r"([a-zA-Z\s]+?)",
-        "year": r"\d{4}",
-        "integer": r"(-?\d+)",
-        "integer_comma": r"((-?\d+),?\d+|(\d+))",
-        "nullable_integer": r"(-?\d+?|null)",
-        "number": r"(-?\d+(?:\.\d{1,2})?)",
-        "nullable_number": r"(-?\d+(?:\.\d{1,2})?|null)"
-    }
+    """
+    Create a regex pattern for extracting data from a CSV.
 
-    # Create the header line
-    header = ",".join(columns)
+    Args:
+        column_types: Dictionary mapping column names to their data types
+        max_rows: The maximum number of rows to extract.
 
-    # Create the data capture patterns
-    data_patterns = [type_patterns[dtype] for dtype in data_types]
+    Returns:
+        str: The regex pattern for the CSV table
+
+    Example:
+        {"year": "year", "revenue": "integer_comma"}
+        ->
+        "year,integer_comma(\n\d{4},((-?\d+),?\d+|(\d+)))"
+    """
+    # Create the header line. This is the requested column names
+    # separated by commas, i.e. "year,revenue,..."
+    header = ",".join(column_types.keys())
+
+    # Create the data capture patterns. These are the regex patterns
+    # that will be used to capture the data in each column
+    data_patterns = [COLUMN_TYPE_REGEX[dtype] for dtype in column_types.values()]
     data_line = ",".join(data_patterns)
 
     return f"{header}(\n{data_line}){{,{max_rows}}}\n\n"
 
-# Available files
-files = glob.glob("10k/*.html")
-print(f"Found {len(files)} 10k files")
+def load_pages(file: str) -> List[str]:
+    """
+    Load the pages from a 10k filing.
 
-# Store whether the manual + extraction match
-valid_matches = []
+    Args:
+        file: The path to the HTML 10k filing
 
-# Go through each file
-for file in files:
-    print(f"Processing {file}")
-
-    # Read the file
+    Returns:
+        List[str]: A list of markdown-formatted pages
+    """
+    # Read the file in as a string
     data = open(file, encoding="latin-1").read()
 
     # Convert to markdown. This removes a lot of the extra HTML
-    # formatting that can be token-heavy
-    markdown_document = md(data, strip=['a', 'b', 'i', 'u', 'code', 'pre'])
+    # formatting that can be token-heavy.
+    markdown_document = md(data, strip=["a", "b", "i", "u", "code", "pre"])
 
-    # Remove table separators
-    # markdown_document = markdown_document.replace("|", "")
+    # Split the document into pages
+    return [page.strip() for page in markdown_document.split("\n---\n")]
 
-    # markdown document
-    pages = [page.strip() for page in markdown_document.split("\n---\n")]
+def checker_prompt(page: str) -> str:
+    return to_prompt(
+        user_prompt=f"""
+        Analyze the following page from a financial filing and determine if it contains
+        the comprehensive income statement. This is the primary financial statement for
+        the company over the year.
 
-    # Finding the income statement
-    yesno = outlines.generate.choice(model, ["Yes", "Maybe", "No"], sampler=outlines.samplers.greedy())
+        Page Content:
+        {page}
 
+        Criteria for identification:
+        1. Must contain key income statement line items like:
+        - Revenue/Sales
+        - Cost of Revenue/Cost of Sales
+        - Operating Expenses
+        - Net Income/Loss
+        2. Must show financial results for specific time periods
+        3. Must be a primary financial statement (not just discussion or analysis)
+        4. Numbers should be presented in a structured tabular format
+
+        Answer only 'Yes' if this page contains a complete comprehensive income statement
+        table, or 'No' if it does not. If you are not sure, answer 'Maybe'.
+        """,
+    )
+
+def find_income_statement(pages: List[str]) -> str:
+    # Create a yes/no classifier for identifying income statements
+    yesno = outlines.generate.choice(
+        MODEL, ["Yes", "Maybe", "No"], sampler=outlines.samplers.greedy()
+    )
+
+    # Track which pages contain the income statement
     categories = []
     for i in tqdm.tqdm(range(len(pages))):
-        prompt = to_prompt(
-            user_prompt=f"""
-            Analyze the following page from a financial filing and determine if it contains
-            the comprehensive income statement. This is the primary financial statement for
-            the company over the year. Note that this is not the same as the consolidated
-            income statement, or the consolidated comprehensive income statement. We want just
-            the comprehensive income statement.
+        # Result here is one of "Yes", "Maybe", or "No".
+        result = yesno(checker_prompt(pages[i]))
 
-            Page Content:
-            {pages[i]}
-
-            Criteria for identification:
-            1. Must contain key income statement line items like:
-            - Revenue/Sales
-            - Cost of Revenue/Cost of Sales
-            - Operating Expenses
-            - Net Income/Loss
-            2. Must show financial results for specific time periods
-            3. Must be a primary financial statement (not just discussion or analysis)
-            4. Numbers should be presented in a structured tabular format
-
-            Answer only 'Yes' if this page contains a complete comprehensive income statement
-            table, or 'No' if it does not. If you are not sure, answer 'Maybe'.
-            """,
-            # system_prompt="You are an expert accountant that locates relevant financial tables in a 10q filing."
-        )
-        result = yesno(prompt)
+        # If the result is "Yes", we've found a page that
+        # seems to contain a table related to the income statement.
         if result == "Yes":
             categories.append(i)
 
-    # Extract the income statement pages and join them with separators
+    # Extract the income statement-related pages and join them with separators.
+    # This will give us one big string we'll hand to the extractor.
     income_statement_pages = [pages[i] for i in categories]
     income_statement = ""
     for i, page in enumerate(income_statement_pages):
         income_statement += f"\n---\nPAGE {i}\n{page}\n---\n"
 
+    return income_statement
+
+def extract_financial_metrics(income_statement: str) -> str:
     # Now we can look at the financial statements and extract the data.
-    columns = ["year", "revenue", "operating_income", "net_income"]
-    data_types = ["year", "integer_comma", "integer_comma", "integer_comma"]
-    csv_pattern = create_regex_pattern(columns, data_types)
+    csv_pattern = create_regex_pattern(COLUMNS_TO_EXTRACT)
 
     csv_extractor = outlines.generate.regex(
-        model,
-        csv_pattern,
-        sampler=outlines.samplers.greedy()
+        MODEL, csv_pattern, sampler=outlines.samplers.greedy()
     )
-
-    raw_text_extractor = outlines.generate.text(model, sampler=outlines.samplers.greedy())
 
     prompt = to_prompt(
         user_prompt=f"""
@@ -175,10 +205,10 @@ for file in files:
         statement.
 
         Create a row for each year available in the income statement with the
-        following columns: {', '.join(columns)}. Firms typically report the
+        following columns: {', '.join(COLUMNS_TO_EXTRACT.keys())}. Firms typically report the
         most recent 3 years of data, but this can vary.
 
-        Each column has types: {', '.join(data_types)}.
+        Each column has types: {', '.join(COLUMNS_TO_EXTRACT.values())}.
 
         # Relevant pages:
 
@@ -196,7 +226,7 @@ for file in files:
 
         # Output format:
 
-        - CSV format with headers: {','.join(columns)}
+        - CSV format with headers: {','.join(COLUMNS_TO_EXTRACT.keys())}
         - Use NULL for missing values
         - If no data are found, do not create a row.
         - Enter two newline characters to terminate the CSV when no more data are found.
@@ -214,58 +244,56 @@ for file in files:
     )
 
     # Save the prompt to a file
-    os.makedirs("prompts", exist_ok=True)
-    with open(f"prompts/{os.path.basename(file).replace('.html', '.txt')}", "w") as f:
-        f.write(prompt)
+    # os.makedirs("prompts", exist_ok=True)
+    # with open(
+    #     f"prompts/{os.path.basename(file).replace('.html', '.txt')}", "w"
+    # ) as f:
+    #     f.write(prompt)
 
     csv_data = csv_extractor(prompt, max_tokens=500)
-    raw_text = raw_text_extractor(prompt, max_tokens=500)
 
-    # Create the output dir if it doesn't exist
-    os.makedirs("csv", exist_ok=True)
-    os.makedirs("raw", exist_ok=True)
+    return csv_data
 
-    # Let's save the CSV data to a file
-    filename = os.path.basename(file).replace(".html", ".csv")
-    with open(f"csv/{filename}", "w") as f:
-        f.write(csv_data)
 
-    with open(f"raw/{filename}", "w") as f:
-        f.write(raw_text)
+####################################################
+#                  Main function                   #
+####################################################
+if __name__ == "__main__":
+    # Load available 10k filings
+    files = glob.glob("10k/*.html")
+    print(f"Found {len(files)} 10k files")
 
-    # Load the extracted data as a dataframe
-    df = pd.read_csv(f"csv/{filename}").sort_values(by="year")
+    # Go through each file
+    for file in files:
+        print(f"Processing {file}")
 
-    # Load the manual extraction for comparison
-    manual_df = pd.read_csv(f"manual/{filename}").sort_values(by="year")
+        # Loads the file into a list of markdown pages
+        pages = load_pages(file)
 
-    print(f"Filename: {filename}")
-    print("Extracted:")
-    print(df.head())
-    print("Manual:")
-    print(manual_df.head())
+        # Find the income statement page. income_statement is a big string
+        # of markdown pages that seem to be related to the income statement.
+        #
+        # Related pages are determined by a checking model that assigns a
+        # "Yes" if the page seems to contain the income statement, a "Maybe"
+        # if it might contain the income statement, and a "No" otherwise.
+        #
+        # We take only the "Yes" pages and concatenate them with separators.
+        income_statement = find_income_statement(pages)
 
-    # Compare the two dataframes by checking each value directly
-    # First ensure both dataframes have the same columns
-    df = df[manual_df.columns]
+        # Extract the financial metrics from the income statement.
+        #
+        # This is a language model call that extracts the financial metrics
+        # from the income statement, and returns it in CSV format.
+        csv_data = extract_financial_metrics(income_statement)
 
-    # Sort both by year to align rows
-    df = df.sort_values('year').reset_index(drop=True)
-    manual_df = manual_df.sort_values('year').reset_index(drop=True)
+        # Print out the CSV data in a pandas dataframe
+        df = pd.read_csv(StringIO(csv_data))
+        print(df)
 
-    # Compare all values element by element
-    matches = (df == manual_df) | (pd.isna(df) & pd.isna(manual_df))
-    is_match = matches.all().all()
+        # Create the output dir if it doesn't exist
+        os.makedirs("csv", exist_ok=True)
 
-    valid_matches.append(is_match)
-    print(f"Match: {is_match}")
-
-    if not is_match:
-        print("Mismatches:")
-        for col in df.columns:
-            if not matches[col].all():
-                print(f"\n{col}:")
-                print("Extracted:", df[col].tolist())
-                print("Manual:", manual_df[col].tolist())
-
-print(f"Total matches: {sum(valid_matches)}/{len(valid_matches)}")
+        # Save the CSV data to a file
+        filename = os.path.basename(file).replace(".html", ".csv")
+        with open(f"csv/{filename}", "w") as f:
+            f.write(csv_data)
