@@ -53,6 +53,7 @@ TOKENIZER = AutoTokenizer.from_pretrained(LANGUAGE_MODEL)
 #               Convenience functions              #
 ####################################################
 
+
 def to_prompt(user_prompt: str = "", system_prompt: str = "") -> str:
     """Convert user and system prompts to a chat template.
 
@@ -116,6 +117,7 @@ def create_regex_pattern(
 
     return f"{header}(\n{data_line}){{,{max_rows}}}\n\n"
 
+
 def load_pages(file: str) -> List[str]:
     """
     Load the pages from a 10k filing.
@@ -135,6 +137,7 @@ def load_pages(file: str) -> List[str]:
 
     # Split the document into pages
     return [page.strip() for page in markdown_document.split("\n---\n")]
+
 
 def checker_prompt(page: str) -> str:
     return to_prompt(
@@ -161,6 +164,7 @@ def checker_prompt(page: str) -> str:
         """,
     )
 
+
 def find_income_statement(pages: List[str]) -> str:
     # Create a yes/no classifier for identifying income statements
     yesno = outlines.generate.choice(
@@ -186,6 +190,7 @@ def find_income_statement(pages: List[str]) -> str:
         income_statement += f"\n---\nPAGE {i}\n{page}\n---\n"
 
     return income_statement
+
 
 def extract_financial_metrics(income_statement: str) -> str:
     # Now we can look at the financial statements and extract the data.
