@@ -39,6 +39,12 @@ pip install -r requirements.txt
 python extraction.py
 ```
 
+You can validate the output against manually-coded data by running
+
+```bash
+python validate-output.py
+```
+
 ## Example Output
 
 From Microsoft's 10k:
@@ -108,7 +114,7 @@ The system works in three main stages:
 ├── manual/              # Manual extractions for validation
 │   └── company1.csv     # Hand-coded reference data
 ├── extraction.py        # Main extraction script
-└── validate-matches.py  # Validation script
+└── validate-output.py  # Validation script
 ```
 
 After running `extraction.py`, you'll find the extracted CSV files in the `csv/` directory.
@@ -154,7 +160,7 @@ The script processes each file sequentially and provides progress updates. For e
 
 2. Run validation:
    ```bash
-   python validate-matches.py
+   python validate-output.py
    ```
 
 3. Review the results:
