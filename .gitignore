@@ -5,3 +5,4 @@ lore-generator/slides_files/
 *.db
 *.html
 *.lock
+*/.pyron/
