@@ -5,6 +5,7 @@ import pandas as pd
 import os
 from typing import List
 import torch
+import tqdm
 from transformers import AutoTokenizer
 from markdownify import markdownify as md
 
@@ -12,7 +13,8 @@ from markdownify import markdownify as md
 # language_model = "TheBloke/Mistral-7B-Instruct-v0.2-AWQ"
 # language_model = "thesven/Phi-3.5-medium-instruct"
 # language_model = "microsoft/Phi-3.5-mini-instruct"
-language_model = "meta-llama/Llama-3.1-8B-Instruct"
+# language_model = "meta-llama/Llama-3.1-8B-Instruct"
+language_model = "meta-llama/Llama-3.2-3B-Instruct"
 # language_model = "meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo"
 model = outlines.models.transformers(
     language_model,
@@ -105,17 +107,11 @@ for file in files:
     # markdown document
     pages = [page.strip() for page in markdown_document.split("\n---\n")]
 
-    # Print out the first few pages
-    for page in pages[0:2]:
-        print(page)
-        print("\n---\n")
-
     # Finding the income statement
     yesno = outlines.generate.choice(model, ["Yes", "Maybe", "No"])
 
     categories = []
-    for i in range(len(pages)):
-        print(f"\nPage {i}:")
+    for i in tqdm.tqdm(range(len(pages))):
         prompt = to_prompt(
             user_prompt=f"""
             Analyze the following page from a financial filing and determine if it contains
@@ -148,7 +144,6 @@ for file in files:
     # Extract the income statement pages and join them with separators
     income_statement_pages = [pages[i] for i in categories]
     income_statement = "\n---\n".join(income_statement_pages)
-    print(income_statement)
 
     # Now we can look at the financial statements and extract the data.
     columns = ["year", "revenue", "operating_income", "net_income"]
@@ -166,10 +161,9 @@ for file in files:
         Extract annual financial data from this set of pages. Pages
         are from a 10k filing and were chosen because they may contain an income statement.
 
-        Create a row for each year with the following columns: {', '.join(columns)}.
-
-        Extract a row for each year available in the income statement.
-        Firms typically report the most recent 3 years of data, but this can vary.
+        Create a row for each year available in the income statement with the
+        following columns: {', '.join(columns)}. Firms typically report the
+        most recent 3 years of data, but this can vary.
 
         Each column has types: {', '.join(data_types)}.
 
@@ -180,6 +174,7 @@ for file in files:
         {income_statement}
 
         # Key instructions:
+
         1. Use only annual data, often labeled as "FY" or "12 months ended..."
         2. Use NULL for missing values
 
