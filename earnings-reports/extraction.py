@@ -1,6 +1,5 @@
 # Imports
 from io import StringIO
-import re
 import outlines
 import glob
 import pandas as pd
