@@ -21,7 +21,7 @@ The system is designed to be extensible - you can easily add new metrics to extr
 
 ![Nvidia income statement example](./images/nvidia-income.png)
 
-which this demo can parses to
+which this demo can parse to
 
 ```
    year  revenue  operating_income  net_income
