@@ -247,13 +247,7 @@ def extract_financial_metrics(income_statement: str) -> str:
         # system_prompt="You extract data from 10k filings and output it in CSV format."
     )
 
-    # Save the prompt to a file
-    # os.makedirs("prompts", exist_ok=True)
-    # with open(
-    #     f"prompts/{os.path.basename(file).replace('.html', '.txt')}", "w"
-    # ) as f:
-    #     f.write(prompt)
-
+    # Extract our data to a CSV
     csv_data = csv_extractor(prompt, max_tokens=500)
 
     return csv_data
