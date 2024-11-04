@@ -1,8 +1,12 @@
-# It's a Smol World
+# The Bunny B1: Powered by SmolLM2
 
-This is a demo showing off the capabilities of the <SMOL MODEL NAME>
+This is a demo to celebrate the release of [the `SmolLM2-1.7B` model](https://huggingface.co/collections/HuggingFaceTB/smollm2-6723884218bcda64b34d7db9) from Hugging Face 🤗!
 
-The demo is a command line interface representing a natural language interface to a mobile device making use of the <SMOL MODEL NAME> model.
+Ever want to have a natural language interface to local apps? The Bunny B1 demonstrates how to combine the power of SmolLM2 with structured generation using [Outlines](https://github.com/dottxt-ai/outlines) to be able to map natural language requests to calls to applications, even on smaller devices.
+
+Here's a look at the demo in action:
+
+![Bunny B1](./demo.gif)
 
 ## Setting up the environment
 
@@ -27,12 +31,18 @@ The demo provides an interface for natural language interaction with a mobile de
 - Order a ride
 - Get the weather
 
+To add a new function you can edit `functions.json` and follow the pattern you'll find in the examples.
+
 ## Good Test Examples:
 
-"I'd like to order 2 coffees from starbucks"
+"I'd like to order two coffees from starbucks"
 
 "I need a ride to SEATAC terminal A"
 
 "What's the weather in san francisco today?"
 
 "Text Remi and tell him the project is looking good"
+
+## Customizing
+
+The `constants.py` file allows you to customize the model, device, and torch tensor type. This demo was created on a Mac so the default device is `mps`. You can swap this out for `cuda` if you'd like.

@@ -3,10 +3,8 @@ import itertools
 import threading
 import sys
 import argparse
-
 from smol_mind import SmolMind, load_functions
-
-MODEL_NAME = "HuggingFaceTB/SmolLM-1.7B-Instruct"
+from constants import MODEL_NAME
 
 def spinner(stop_event):
     spinner = itertools.cycle(['-', '/', '|', '\\'])
@@ -20,15 +18,16 @@ def main():
     # Add command-line argument parsing
     parser = argparse.ArgumentParser(description="SmolMind CLI")
     parser.add_argument('-d', '--debug', action='store_true', help='Enable debug mode')
-    parser.add_argument('-c', '--cont', action='store_true', help='Enable continue mode (disables instruct mode)')
+    parser.add_argument('-i', '--instruct', action='store_true', help='Enable instruct mode (disables continue mode)')
     args = parser.parse_args()
 
     print("loading SmolMind...")
     functions = load_functions("./src/functions.json")
-    sm = SmolMind(functions, model_name=MODEL_NAME, debug=args.debug, instruct=not args.cont)
-    print("Using model:", sm.model_name)
-    print("Debug mode:", "Enabled" if args.debug else "Disabled")
-    print("Instruct mode:", "Enabled" if not args.cont else "Disabled")
+    sm = SmolMind(functions, model_name=MODEL_NAME, debug=args.debug, instruct=args.instruct)
+    if args.debug:
+        print("Using model:", sm.model_name)
+        print("Debug mode:", "Enabled" if args.debug else "Disabled")
+        print("Instruct mode:", "Enabled" if args.instruct else "Disabled")
     print("Welcome to the Bunny B1! What do you need?")
     while True:
         user_input = input("> ")

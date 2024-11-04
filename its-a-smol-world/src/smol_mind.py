@@ -2,19 +2,13 @@ import json
 from textwrap import dedent
 import outlines
 from outlines.samplers import greedy
-import re
 from transformers import AutoTokenizer, logging
-import torch
-import io
-import contextlib
 import warnings
+from constants import MODEL_NAME, DEVICE, T_TYPE
 
 
 logging.set_verbosity_error()
 
-MODEL_NAME = 'HuggingFaceTB/SmolLM-1.7B-Instruct'
-DEVICE = 'mps'
-T_TYPE = torch.bfloat16
 def format_functions(functions):
     formatted_functions = []
     for func in functions:
