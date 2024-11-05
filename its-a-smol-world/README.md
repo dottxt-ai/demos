@@ -10,6 +10,13 @@ Here's a look at the demo in action:
 
 ## Setting up the environment
 
+Before install the requirements, please be sure to have a Rust compiler installed, otherwise download it from the [official website](https://www.rust-lang.org/tools/install) using:  
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+Then you can install the required libraries using:
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
