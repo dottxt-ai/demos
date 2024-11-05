@@ -1,4 +1,4 @@
-outlines==0.1.0
+outlines==0.1.1
 transformers
 torch
 accelerate>=0.26.0
