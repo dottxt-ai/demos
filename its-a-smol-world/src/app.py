@@ -6,6 +6,13 @@ import argparse
 from smol_mind import SmolMind, load_functions
 from constants import MODEL_NAME
 
+# Thanks to @torymur for the bunny ascii art!
+bunny_ascii = r"""
+(\(\ 
+ ( -.-)
+ o_(")(")
+"""
+
 def spinner(stop_event):
     spinner = itertools.cycle(['-', '/', '|', '\\'])
     while not stop_event.is_set():
@@ -28,6 +35,7 @@ def main():
         print("Using model:", sm.model_name)
         print("Debug mode:", "Enabled" if args.debug else "Disabled")
         print("Instruct mode:", "Enabled" if args.instruct else "Disabled")
+    print(bunny_ascii)
     print("Welcome to the Bunny B1! What do you need?")
     while True:
         user_input = input("> ")
