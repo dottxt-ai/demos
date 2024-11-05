@@ -26,35 +26,6 @@ def list_supported_files(directory):
             if Path(file).suffix.lower() in SUPPORTED_EXTENSIONS:
                 supported_files.append(os.path.join(root, file))
     return supported_files
-
-def get_file_head(file_path, num_chars=250):
-    try:
-        with open(file_path, 'r', encoding='utf-8') as file:
-            return file.read(num_chars)
-    except Exception as e:
-        return f"Error reading file: {str(e)}"
-
-def get_file_creation_time(file_path):
-    """
-    Get the creation time of a file.
-    
-    Args:
-    file_path (str): The path to the file.
-    
-    Returns:
-    datetime: The creation time of the file as a datetime object.
-    """
-    try:
-        # Get the file's creation time as a timestamp
-        creation_time = os.path.getctime(file_path)
-        
-        # Convert the timestamp to a datetime object
-        creation_datetime = datetime.datetime.fromtimestamp(creation_time)
-        
-        return creation_datetime
-    except OSError as e:
-        print(f"Error getting creation time for {file_path}: {e}")
-        return None
     
 def get_file_metadata(file_path, num_chars=250):
     """

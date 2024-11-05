@@ -19,22 +19,24 @@ The program will:
 """
 
 import argparse
-import contextlib
-import datetime
-import io
 import os
 from pathlib import Path
 from textwrap import dedent
-import warnings
 import outlines
 from outlines.samplers import greedy
 import torch
-from transformers import AutoTokenizer
-from file_proc import create_file_pairs, get_file_metadata, list_supported_files, get_file_head, get_file_creation_time
-# meta-llama/Llama-3.1-70B-Instruct
+from transformers import AutoTokenizer, logging
+from file_proc import create_file_pairs, get_file_metadata, list_supported_files
+logging.set_verbosity_error()
+
 MODEL_NAME = "microsoft/Phi-3-medium-4k-instruct"
 
 FILE_CATEGORIES = ['data', 'notes', 'meeting', 'memo']
+
+# Example file name:2024-02-29-meeting-planning_next_quarter
+FILE_STRUCTURE = r'\d{4}-\d{2}-\d{2}-(' + '|'.join(FILE_CATEGORIES) + r')-[a-zA-Z_]{5,150}'
+
+
 
 
 def create_prompt(file_metadata, tokenizer):
@@ -82,23 +84,10 @@ Here is the content of the file I want you to rename (this is only a sample of t
     prompt = tokenizer.apply_chat_template(messages, tokenize=False)
     return prompt
 
-FILE_STRUCTURE = r'\d{4}-\d{2}-\d{2}-(' + '|'.join(FILE_CATEGORIES) + r')-[a-zA-Z_]{5,150}'
-
-@contextlib.contextmanager
-def suppress_output():
-    with contextlib.redirect_stdout(io.StringIO()):
-        with contextlib.redirect_stderr(io.StringIO()):
-            with warnings.catch_warnings():
-                warnings.simplefilter("ignore")
-                yield
-
 def generate_filename(file_content, tokenizer, model):
     generator = outlines.generate.regex(model, FILE_STRUCTURE, sampler=greedy())
     prompt = create_prompt(file_content, tokenizer)
-    
-    # Suppress all output
-    with suppress_output():
-        new_name = generator(prompt)
+    new_name = generator(prompt)
     
     return new_name
 
@@ -121,9 +110,6 @@ def main():
         file_metadata.append(get_file_metadata(file, args.head_chars))
     
     print("Generating new names...")
-    # Note: create_file_pairs includes metadata on all the additional files
-    # originally this was used to add other files to the context, but now we're not using context
-    # since it didn't seem to work any better than just using the file content directly
     for i, (file_metadata, _) in enumerate(create_file_pairs(file_metadata)):
         old_path = files[i]
         old_name = os.path.basename(old_path)
