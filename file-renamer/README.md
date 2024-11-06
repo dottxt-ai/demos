@@ -2,11 +2,9 @@
 
 This is a simple demonstration of how to use a local LLM along with structured generation with [Outlines](https://github.com/dottxt-ai/outlines) to automatically rename directories of files. The use of structured generation allows us to specify the format of the output, and the use of a local LLM means that we don't need to worry about data privacy or API keys.
 
-This project was inspired by a Tweet from [@_xjdr](https://twitter.com/_xjdr) requesting:
+Here is a demo of the program in action:
 
-```
-
-```
+![Demo](demo.gif)
 
 # Using the File Renamer
 
