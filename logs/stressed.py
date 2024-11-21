@@ -29,17 +29,18 @@ of log for security issues.
 
 # Imports
 from enum import Enum
-from typing import Optional
+from typing import Literal, Optional
 import outlines
-import torch
-from transformers import AutoTokenizer
 from pydantic import BaseModel, Field
+from datetime import datetime
+import os
+
+# For pretty printing
 from rich import print
 from rich.panel import Panel
 from rich.table import Table
 from rich.console import Console
 from rich.text import Text
-from datetime import datetime
 
 # Severity levels are used classify the severity of a security event.
 # High severity events are those that should be escalated to a human
@@ -87,22 +88,27 @@ class LogID(BaseModel):
         <LETTERS> indicates the log identifier at the beginning of
         each log entry.
         """,
+
+        # This is a regular expression that matches the LOGID-<LETTERS> format.
+        # The model will fill in the <LETTERS> part.
         pattern=r"LOGID-([A-Z]+)",
     )
 
+    # Find the log entry in a list of logs. Simple
+    # conveience function.
     def find_in(self, logs: list[str]) -> Optional[str]:
         for log in logs:
             if self.log_id in log:
                 return log
         return None
 
-# Class for an IP address
+# Class for an IP address.
 class IPAddress(BaseModel):
     ip_address: str = Field(
         pattern=r"^\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}$",
     )
 
-# Class for a response code
+# Class for an HTTP response code.
 class ResponseCode(BaseModel):
     response_code: str = Field(
         pattern=r"^\d{3}$",
@@ -113,30 +119,64 @@ class ResponseCode(BaseModel):
 # WebSecurityEvents are high-priority events that should be escalated
 # to a human for further investigation.
 class WebSecurityEvent(BaseModel):
+    # The log entry IDs that are relevant to this event.
     relevant_log_entry_ids: list[LogID]
+
+    # The reasoning for why this event is relevant.
     reasoning: str
+
+    # The type of event.
     event_type: str
+
+    # The severity of the event.
     severity: SeverityLevel
+
+    # Whether this event requires human review.
     requires_human_review: bool
-    confidence_score: float = Field(ge=0.0, le=1.0)
+
+    # The confidence score for this event. I'm not sure if this
+    # is meaningful for language models, but it's here if we want it.
+    confidence_score: float = Field(
+        ge=0.0, 
+        le=1.0,
+        description="Confidence score between 0 and 1"
+    )
 
     # Web-specific fields
-    url_pattern: str
-    http_method: str
+    url_pattern: str = Field(
+        min_length=1,
+        description="URL pattern that triggered the event"
+    )
+
+    http_method: Literal["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD", "TRACE", "CONNECT"]
     source_ips: list[IPAddress]
     response_codes: list[ResponseCode]
     user_agents: list[str]
 
+    # Possible attack patterns for this event.
     possible_attack_patterns: list[AttackType]
+
+    # Recommended actions for this event.
     recommended_actions: list[str]
 
 # A LogAnalysis is a high-level analysis of a set of logs.
 class LogAnalysis(BaseModel):
+    # A summary of the analysis.
     summary: str
+
+    # Observations about the logs.
     observations: list[str]
+
+    # Planning for the analysis.
     planning: list[str]
+
+    # Security events found in the logs.
     events: list[WebSecurityEvent]
+
+    # Traffic patterns found in the logs.
     traffic_patterns: list[WebTrafficPattern]
+
+    # The highest severity event found.
     highest_severity: Optional[SeverityLevel]
     requires_immediate_attention: bool
 
@@ -206,11 +246,14 @@ def format_log_analysis(analysis: LogAnalysis, logs: list[str]):
         )
 
     # Create summary panel
+    summary_text = f"[bold white]Summary:[/]\n[cyan]{analysis.summary}[/]\n\n"
+    if analysis.highest_severity:
+        summary_text += f"[bold red]Highest Severity: {analysis.highest_severity.value}[/]\n"
+    summary_text += f"[bold {'red' if analysis.requires_immediate_attention else 'green'}]" + \
+                   f"Requires Immediate Attention: {analysis.requires_immediate_attention}[/]"
+    
     summary = Panel(
-        f"[bold white]Summary:[/]\n[cyan]{analysis.summary}[/]\n\n" +
-        f"[bold red]Highest Severity: {analysis.highest_severity.value}[/]\n" +
-        f"[bold {'red' if analysis.requires_immediate_attention else 'green'}]" +
-        f"Requires Immediate Attention: {analysis.requires_immediate_attention}[/]",
+        summary_text,
         border_style="blue"
     )
 
@@ -235,6 +278,11 @@ class STRESSED:
         prompt_template_path: str,
         token_max: int
     ):
+        if token_max <= 0:
+            raise ValueError("token_max must be positive")
+        if not os.path.exists(prompt_template_path):
+            raise FileNotFoundError(f"Prompt template not found: {prompt_template_path}")
+        
         self.model = model
         self.tokenizer = tokenizer
         self.log_type = log_type
