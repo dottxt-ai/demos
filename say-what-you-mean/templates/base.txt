@@ -1,0 +1,7 @@
+Follow the instruction to complete the task:
+{{task_specification}}
+
+Instruct : {{format_instruct}}
+
+{{fewshot_text}}
+{{question}}

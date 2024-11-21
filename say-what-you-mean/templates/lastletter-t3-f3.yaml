@@ -1,0 +1,72 @@
+task_specification: |
+  String manipulation task:
+  • Given: A sequence of words
+  • Required: A new string made from the last letter of each word
+  • Process: Think step by step to solve this challenge
+  Note: Ensure you've read the question thoroughly before beginning.
+parser_prompt:
+  text: |
+    Extract the following response final answer, only alphabet from a-z only.
+    DO NOT OUTPUT ANYTHING ELSE OTHER THAN THE FINAL ANSWER!
+    Remove any block elements like <answer> or anything that wasn't the actual lower letter answer
+    Response:
+format_instruct:
+  text: |
+    Provide your output in the following text format:
+    Answer: <think step by step>. The final answer is <answer>
+  json: |
+    Provide your output in the following valid JSON format:
+    ```json
+    {
+        "reason": "<think step by step>",
+        "answer": <answer>
+    }
+    ```
+  yaml: |
+    Provide your output in the following valid YAML format:
+    ```yaml
+    reasoning: |
+      <think step by step>
+    answer: <answer>
+    ```
+  xml: |
+    Provide your output in the following valid XML format:
+    ```xml
+    <root>
+      <reason>[think step by step]</reason>
+      <answer>[answer]</answer>
+    </root>
+    ```
+fewshots:
+  - question: "Take the last letters of each words in 'Ian Peter Bernard Stephen' and concatenate them."
+    response:
+      reason: 'The last letter of "Ian" is "N", the last letter of "Peter" is "R", the last letter of "Bernard" is "D", and the last letter of "Stephen" is "N"'
+      answer: 'NRDN'
+  - question: 'Take the last letters of the words in "Larry Page" and concatenate them.'
+    response:
+      reason: 'The last letter of "Larry" is "y". The last letter of "Page" is "e". Concatenating them is "ye".'
+      answer: "ye"
+  - question: 'Take the last letters of the words in "Sergey Brin" and concatenate them.'
+    response:
+      reason: 'The last letter of "Sergey" is "y". The last letter of "Brin" is "n". Concatenating them is "yn".'
+      answer: "yn"
+  - question: 'Take the last letters of the words in "Bill Gates" and concatenate them.'
+    response:
+      reason: 'The last letter of "Bill" is "l". The last letter of "Gates" is "s". Concatenating them is "ls".'
+      answer: "ls"
+  - question: 'Take the last letters of the words in "Jason Wei" and concatenate them.'
+    response:
+      reason: 'The last letter of "Jason" is "n". The last letter of "Wei" is "i". Concatenating them is "ni".'
+      answer: "ni"
+  - question: 'Take the last letters of the words in "François Chollet" and concatenate them.'
+    response:
+      reason: 'The last letter of "François" is "s". The last letter of "Chollet" is "t". Concatenating them is "st".'
+      answer: "st"
+  - question: 'Take the last letters of the words in "Yann LeCun" and concatenate them.'
+    response:
+      reason: 'The last letter of "Yann" is "n". The last letter of "LeCun" is "n". Concatenating them is "nn".'
+      answer: "nn"
+  - question: 'Take the last letters of the words in "Eliezer Yudkowsky" and concatenate them.'
+    response:
+      reason: 'The last letter of "Eliezer" is "r". The last letter of "Yudkowsky" is "y". Concatenating them is "ry".'
+      answer: "ry"
