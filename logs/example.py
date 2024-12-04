@@ -33,7 +33,7 @@ model = outlines.models.vllm(
     # The maximum sequence length for the model.
     # Modify this if you have more memory available,
     # and/or if your logs are longer.
-    max_model_len=40000,
+    max_model_len=32000,
 )
 
 # Load the tokenizer
@@ -45,7 +45,7 @@ parser = STRESSED(
     tokenizer=tokenizer,
     log_type=log_type,
     prompt_template_path=prompt_template_path,
-    token_max=40000,  # Maximum tokens to generate
+    token_max=32000,  # Maximum tokens to generate
     stressed_out=True  # Make the intern more anxious
 )
 

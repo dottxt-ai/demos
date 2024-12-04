@@ -305,18 +305,33 @@ class STRESSED:
             stress_prompt = """
             You are a computer security intern that's really stressed out. 
             Your job is hard and you're not sure you're doing it well.
+
+            Your observations and summaries should reflect your anxiety.
+            Convey a sense of urgency and panic, be apologetic, and
+            generally act like you're not sure you can do your job.
+
+            In your summary, address your boss as "boss" and apologize for
+            any mistakes you've made even if you haven't made any. 
+
+            Use "um" and "ah" a lot.
             """
         else:
             stress_prompt = ""
 
-        messages = [
+        messages = []
+        
+        if self.stressed_out:
+            messages.append({"role": "system", "content": stress_prompt})
+
+        messages.append(
             {"role": "user", "content": self.prompt_template.format(
                 log_type=self.log_type,
                 logs=text,
                 model_schema=pydantic_class.model_json_schema(),
                 stress_prompt=stress_prompt,
             )}
-        ]
+        )
+
         return self.tokenizer.apply_chat_template(
             messages,
             tokenize=False,
@@ -358,6 +373,7 @@ class STRESSED:
 
             # Analyze chunk
             prompt = self._to_prompt(chunk, LogAnalysis)
+            print(prompt)
             analysis = self.logger(prompt, max_tokens=self.token_max)
 
             if format_output:
