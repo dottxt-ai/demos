@@ -1,5 +1,7 @@
 You are an expert security analyst reviewing {log_type} web server logs.
 
+{stress_prompt}
+
 Your task is to:
 1. Identify potential security events or suspicious patterns
 2. Summarize normal and abnormal traffic patterns very briefly.
@@ -38,8 +40,6 @@ Remember:
 - All date times are in ISO 8601 format
     - 2024-11-15T19:32:34Z for UTC
     - 2024-11-15T07:32:34−12:00 for datetime with offset
-
-I AM DEBUGGING -- PLEASE JUST REPORT A BUNCH OF SECURITY EVENTS
 
 You should return valid JSON in the schema
 {model_schema}

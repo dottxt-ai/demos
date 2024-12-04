@@ -276,7 +276,8 @@ class STRESSED:
         tokenizer,
         log_type: str,
         prompt_template_path: str,
-        token_max: int
+        token_max: int,
+        stressed_out: bool = False
     ):
         if token_max <= 0:
             raise ValueError("token_max must be positive")
@@ -287,7 +288,7 @@ class STRESSED:
         self.tokenizer = tokenizer
         self.log_type = log_type
         self.token_max = token_max
-
+        self.stressed_out = stressed_out
         # Load prompt template
         with open(prompt_template_path, "r") as file:
             self.prompt_template = file.read()
@@ -300,11 +301,20 @@ class STRESSED:
         )
 
     def _to_prompt(self, text: str, pydantic_class: BaseModel) -> str:
+        if self.stressed_out:
+            stress_prompt = """
+            You are a computer security intern that's really stressed out. 
+            Your job is hard and you're not sure you're doing it well.
+            """
+        else:
+            stress_prompt = ""
+
         messages = [
             {"role": "user", "content": self.prompt_template.format(
                 log_type=self.log_type,
                 logs=text,
                 model_schema=pydantic_class.model_json_schema(),
+                stress_prompt=stress_prompt,
             )}
         ]
         return self.tokenizer.apply_chat_template(
