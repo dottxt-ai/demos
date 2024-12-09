@@ -14,12 +14,7 @@ else:
     import termios
 import signal  # Add at the top with other imports
 
-# model_name = "NousResearch/Hermes-3-Llama-3.1-8B"
-# model_name = "Qwen/Qwen2.5-14B"
-# model_name = "google/gemma-1.1-2b-it"
-# model_name = "HuggingFaceTB/SmolLM2-1.7B-Instruct"
 model_name = "HuggingFaceTB/SmolLM-135M-Instruct"
-# model_name = "microsoft/Phi-3-mini-128k-instruct"
 model = outlines.models.transformers(
     model_name,
     device="auto",
@@ -303,54 +298,27 @@ class SantaGame:
                     sampler=outlines.samplers.multinomial(top_k=3)
                 )
 
-                    # Helpful information:
-                    # {self.get_distances_description()}
-                prompt = f"""
-                    # Instructions
+                # Load prompt template
+                with open("prompts/santa-baby.txt", "r") as f:
+                    prompt_template = f.read()
 
-                    You are Santa ({self.santa_char}). You pick up gifts and 
-                    deliver them to houses. Move to a gift ({self.gift_char})
-                    to pick it up, or to a house ({self.house_char}) to deliver
-                    your gifts. You get 1 point for each gift delivered. 
+                # Format the prompt with current game state + 
+                # game info.
+                prompt = prompt_template.format(
+                    valid_moves=valid_moves,
+                    inventory=self.inventory,
+                    score=self.score,
+                    game_state=self.get_game_state(),
+                    santa_char=self.santa_char,
+                    gift_char=self.gift_char,
+                    house_char=self.house_char,
+                )
 
-                    Moving to a house when you have no gifts is a waste of time.
-
-                    # Example
-
-                    Board state:
-
-                    Score: 0 | Gifts: 1
-                    row 0 |  🎁      
-                    row 1 |          
-                    row 2 |🏠        
-                    row 3 |    🎅    
-                    row 4 |🎁🏠🎁  🏠
-                    
-                    Choice: down
-
-                    New board state:
-
-                    Score: 0 | Gifts: 2
-                    row 0 |  🎁      
-                    row 1 |          
-                    row 2 |🏠      🎁 
-                    row 3 |        
-                    row 4 |🎁🏠🎅  🏠
-
-                    # Current board
-
-                    You currently have {self.inventory} gifts and a score of {self.score}.
-                    
-                    Current board:
-                    {self.get_game_state()}
-
-                    Your move, choose from ({valid_moves}) or q to quit:
-                """
+                # Call the language model to choose a move
                 move = choose_direction(template(prompt))
 
                 # First character is the number, the rest is the move. 
                 # Add n times the move to the moves list
-                print(move)
                 moves.append(move)
 
             # Update game state
