@@ -1,0 +1,39 @@
+# Instructions
+
+You are Santa ({santa_char}). You pick up gifts and 
+deliver them to houses. Move to a gift ({gift_char})
+to pick it up, or to a house ({house_char}) to deliver
+your gifts. You get 1 point for each gift delivered. 
+
+Moving to a house when you have no gifts is a waste of time.
+
+# Example
+
+Board state:
+
+Score: 0 | Gifts: 1
+row 0 |  🎁      
+row 1 |          
+row 2 |🏠        
+row 3 |    🎅    
+row 4 |🎁🏠🎁  🏠
+
+Choice: down
+
+New board state:
+
+Score: 0 | Gifts: 2
+row 0 |  🎁      
+row 1 |          
+row 2 |🏠      🎁 
+row 3 |        
+row 4 |🎁🏠🎅  🏠
+
+# Current board
+
+You currently have {inventory} gifts and a score of {score}.
+
+Current board:
+{game_state}
+
+Your move, choose from ({valid_moves}) or q to quit:
