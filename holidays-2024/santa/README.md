@@ -1,10 +1,10 @@
-# Santa's Gift Delivery Game 🎅
+# Robot Santa Game 🤖🎅
 
-A simple text-based game where you play as Santa Claus, delivering gifts to houses across a grid-based board.
+A simple terminal game where you play as Santa Claus, delivering gifts to houses across a grid-based board.
 
-But more importantly, it's a game where you can watch a language model attempt to play Santa.
+But more importantly, it's a game where you can watch a language model attempt to play Santa. Typically they do not do this very well.
 
-The lanugage model uses Outlines and structured generation to determine a set of valid moves that the model must choose from.
+The lanugage model uses [Outlines](https://github.com/dottxt-ai/outlines) and structured generation to determine a set of valid moves that the model must choose from.
 
 ![Gameplay](./santa-demo.gif)
 
