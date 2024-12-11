@@ -7,3 +7,5 @@ lore-generator/slides_files/
 *.lock
 */.pyron/
 .pyron
+*.env
+*.log

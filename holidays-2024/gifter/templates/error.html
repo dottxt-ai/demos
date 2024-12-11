@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Error</title>
+    <style>
+        body { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            font-family: monospace;
+            background-color: #fff;
+            color: #333;
+        }
+        .container {
+            border: 1px solid #333;
+            padding: 2rem;
+        }
+        .error { 
+            color: #333;
+            padding: 20px;
+            border: 1px solid #333;
+            margin: 20px 0;
+        }
+        .error::before {
+            content: "ERROR: ";
+            font-weight: bold;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            border: 1px solid #333;
+        }
+        .back-link:hover {
+            background: #333;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>An Error Occurred</h1>
+        <div class="error">
+            <p>{{ error }}</p>
+        </div>
+        <a href="/" class="back-link">Return to Home</a>
+    </div>
+</body>
+</html>

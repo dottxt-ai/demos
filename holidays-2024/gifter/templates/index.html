@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>The .txt gift generator</title>
+    <style>
+        body { 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            font-family: monospace;
+            font-size: 16px;
+            background-color: #fff;
+            color: #333;
+            line-height: 1.5;
+        }
+        .container {
+            border: 1px solid #333;
+            padding: 2rem;
+            background: #fff;
+        }
+        textarea { 
+            width: 100%; 
+            height: 150px; 
+            margin: 20px 0;
+            padding: 12px;
+            border: 1px solid #333;
+            font-family: monospace;
+            font-size: 16px;
+            background: #fff;
+            box-sizing: border-box;
+        }
+        textarea:focus {
+            outline: none;
+            border-color: #000;
+        }
+        button { 
+            padding: 10px 20px;
+            background: #fff;
+            color: #000;
+            border: 1px solid #333;
+            font-family: monospace;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #333;
+            color: #fff;
+        }
+        button:disabled {
+            border-color: #999;
+            color: #999;
+        }
+        a {
+            color: #000;
+            text-decoration: underline;
+        }
+        a:hover {
+            background: #333;
+            color: #fff;
+        }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-top: 4px;
+            border: 1px solid #333;
+            font-family: monospace;
+            font-size: 16px;
+        }
+        .loading-indicator {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #333;
+            font-family: monospace;
+            text-align: left;
+            background: #fff;
+        }
+        @keyframes dots {
+            0% { content: "   "; }
+            25% { content: ".  "; }
+            50% { content: ".. "; }
+            75% { content: "..."; }
+            100% { content: "   "; }
+        }
+        .loading-text::after {
+            content: "";
+            animation: dots 1.5s steps(1) infinite;
+            display: inline-block;
+            width: 24px;
+        }
+        code {
+            background: #f5f5f5;
+            padding: 2px 4px;
+            border: 1px solid #333;
+        }
+        h1 { 
+            text-align: center; 
+            color: #333;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 10px 0;
+        }
+        input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+        }
+        .fullscreen-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            color: #333;
+            display: none;
+            z-index: 1000;
+            font-family: monospace;
+            padding: 2rem;
+            box-sizing: border-box;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        .ascii-art {
+            white-space: pre;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+        .thinking-text {
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            line-height: 1.5;
+        }
+        .progress-bar {
+            background: #fff;
+            border: 1px solid #333;
+            width: 100%;
+            height: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            background: #333;
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        @keyframes indeterminateProgress {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .progress-indeterminate {
+            position: absolute;
+            height: 100%;
+            width: 50%;
+            background: #333;
+            animation: indeterminateProgress 2s infinite;
+        }
+        @keyframes spin {
+            0% { content: "⠋"; }
+            10% { content: "⠙"; }
+            20% { content: "⠹"; }
+            30% { content: "⠸"; }
+            40% { content: "⠼"; }
+            50% { content: "⠴"; }
+            60% { content: "⠦"; }
+            70% { content: "⠧"; }
+            80% { content: "⠇"; }
+            90% { content: "⠏"; }
+            100% { content: "⠋"; }
+        }
+
+        .spinner::after {
+            content: "⠋";
+            animation: spin 1s steps(10) infinite;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>The .txt gift generator</h1>
+        <p>Are you a terrible gift giver? No longer! Through the power of AI, you can move
+            from a bad gift giver to a mediocre one.</p>
+        <pre style="text-align: center;">
+⠀⠀⠀⠀⠀⢀⠤⣀⡀⠀⠀⠀⠀⠀⠀⢀⡠⠔⠲⣄⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣰⢧⡀⠀⠈⠲⡀⠀⠀⠀⡰⠉⠀⣴⠞⠉⢦⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⡇⠀⠉⠓⢄⠀⠘⡄⠀⢠⠁⢀⠞⠀⠀⣠⠏⠀⠀⠀⠀⠀
+⠠⣄⡀⠀⠈⢒⣄⡀⠀⠑⢄⠘⡍⡸⡠⠊⣀⡤⢎⣁⠀⠀⠀⠀⠀⠀
+⡦⢌⣆⠀⠉⠉⠉⠉⠑⠒⣠⡬⠟⢻⡶⣚⣒⠠⠶⠈⣉⣁⣒⣠⡤⣄
+⠃⠀⠀⠉⠛⠿⠍⣉⠭⠑⠒⠈⠁⠈⠁⠒⠤⢀⠉⢙⣭⠩⠑⠂⠉⡸
+⠸⡤⣀⡀⠀⠀⠀⡇⠈⠁⠒⠠⠄⠤⠄⠐⠂⠈⡇⠀⢸⠀⠀⠀⣀⡧
+⠀⡇⠀⠈⠙⡀⠀⣇⡀⠀⠀⠀⡀⠀⠀⠀⠀⠀⡇⠀⢸⠔⠒⠉⠁⠁
+⠀⢿⠀⠀⠀⡇⠀⡇⠈⠑⠲⠤⣇⠤⠤⠒⠊⠉⠁⠀⢸⠀⠀⠀⢰⠀
+⠀⢸⠀⠀⠀⠁⠀⡇⠀⠀⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⢸⠀⠀⠀⢸⠀
+⠀⢸⠀⠀⠀⢸⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡀⠀⠀⠀⢸⠀
+⠀⣼⠀⠀⠀⢸⠀⢰⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⠀⠀⡇⠀⠀⠀⢸⠀
+⠀⠓⠦⠤⣀⣸⠀⢸⠀⠀⠀⠀⠐⠀⠀⠀⠀⢸⠀⠀⠇⣀⣀⠤⠜⠀
+⠀⠀⠀⠀⠀⠈⠑⠒⠤⣀⠀⠀⠀⠀⠀⣀⡤⠼⠒⠊⠉⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠓⠶⠚⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</pre>
+        
+    <form id="giftForm" method="POST">
+        <label for="person_description">Describe the person you want to give a gift to:</label><br>
+        <textarea name="person_description" required></textarea><br>
+        
+        <div class="checkbox-label">
+            <input type="checkbox" name="enable_search" id="enable_search">
+            <label for="enable_search">Enable web search for better recommendations</label>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="max_ideas">Maximum number of gift ideas:</label><br>
+            <input type="number" name="max_ideas" id="max_ideas" 
+                min="1" max="10" value="5" style="width: 100px;">
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <label for="min_ideas">Minimum number of gift ideas:</label><br>
+            <input type="number" name="min_ideas" id="min_ideas" 
+                min="0" max="10" value="0" style="width: 100px;">
+        </div>
+        
+        <div id="api_key_section" style="display: none; margin-bottom: 20px;">
+            <label for="exa_api_key">Exa API Key (optional):</label><br>
+            <input type="text" name="exa_api_key" id="exa_api_key" 
+                placeholder="Leave blank to use the EXA_API_KEY environment variable">
+        </div>
+        
+        <div id="loadingIndicator" style="display: none;">
+            <div class="loading-indicator">
+                > Initializing gift generator<br>
+                > Loading language model<br>
+                > Generating ideas<span class="loading-text"></span>
+            </div>
+        </div>
+        
+        <button type="submit">Generate Gift Ideas</button>
+    </form>
+
+    <hr style="margin-top: 20px; margin-bottom: 20px;" />
+        
+        <p>The .txt gift generator is a tool that helps you generate gift ideas for your friends and family.
+        It uses language models + <a href="https://github.com/dottxt-ai/outlines">structured generation</a> 
+        to generate gift ideas based on a description of the person you want to give a gift to.
+        The more detailed the description, the better the results.</p>
+        
+        <p>You may optionally enable web search via <a href="https://exa.ai">Exa</a> to find more gift ideas. 
+        Web search will be used to search for additional information and links to gift ideas. You will
+        need to provide an API key either in the form field below or by setting the <code>EXA_API_KEY</code> environment variable
+        when running the inference server.</p>
+
+        <p>Currently using <code>{{ model_string }}</code>. Change it in the <code>gifting.py</code> file.</p>
+
+        <p>Made with ❤️ by <a href="https://dottxt.co">.txt</a></p>
+
+        <div style="text-align: center; margin-top: 20px; padding-top: 20px;">
+            <a href="https://dottxt.co">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="logo" style="width: 100px; height: 100px;">
+            </a>
+        </div>
+        
+        <div id="fullscreenLoading" class="fullscreen-loading">
+            <div class="thinking-text">
+                We're generating gifts for<br>
+                <blockquote>
+                    <span id="personDescription"></span>
+                </blockquote>
+            </div>
+            <div class="ascii-art">
+┌────────────────────────────────────┐
+│    THE MODEL IS <span class="spinner"></span>THINKING<span class="spinner"></span>         │
+│    PLEASE MAINTAIN SILENCE         │
+│                                    │
+│    DO NOT DISTURB THE NEURONS      │
+└────────────────────────────────────┘
+            </div>
+        </div>
+        
+        <script>
+        document.getElementById('giftForm').addEventListener('submit', function(e) {
+            const description = document.querySelector('[name="person_description"]').value;
+            document.getElementById('personDescription').textContent = description;
+            document.getElementById('fullscreenLoading').style.display = 'block';
+            document.getElementById('loadingIndicator').style.display = 'none';
+            document.querySelector('button[type="submit"]').disabled = true;
+
+            // Animate progress bar
+            const progressFill = document.querySelector('.progress-fill');
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 15;
+                if (progress > 90) {
+                    progress = 90 + Math.random() * 9; // Slow down at the end
+                }
+                progressFill.style.width = Math.min(progress, 99) + '%';
+            }, 100);
+        });
+        document.getElementById('enable_search').addEventListener('change', function() {
+            document.getElementById('api_key_section').style.display = 
+                this.checked ? 'block' : 'none';
+        });
+        </script>
+    </div>
+</body>
+</html>
