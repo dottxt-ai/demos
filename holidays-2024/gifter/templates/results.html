@@ -97,10 +97,14 @@
             <p><strong>Reason:</strong> {{ gift.reason }}</p>
             <p><strong>Card Message:</strong> {{ gift.card_message }}</p>
             
+            {% if enable_search and gift.search_query and gift.search_query != "" %}
+            <p><strong>Search Query:</strong> {{ gift.search_query }}</p>
+            {% endif %}
+            
             {% if search_results and gift.name in search_results and search_results[gift.name] %}
             <h4>Search Results:</h4>
             <ul class="search-results">
-            {% for result in search_results[gift.name] %}
+                {% for result in search_results[gift.name]['results'] %}
                 <li>
                     <p><strong>{{ result.title }}</strong></p>
                     <p>{{ result.highlights[0] }}</p>

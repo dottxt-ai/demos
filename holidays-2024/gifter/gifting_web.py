@@ -24,7 +24,7 @@ def index():
         enable_search = request.form.get('enable_search') == 'on'
         exa_api_key = request.form.get('exa_api_key')
         max_ideas = int(request.form.get('max_ideas', 5))
-        min_ideas = int(request.form.get('min_ideas', 0))
+        min_ideas = int(request.form.get('min_ideas', 1))
         client_ip = request.remote_addr
 
         # If max_ideas is smaller than min_ideas, throw an error
@@ -58,17 +58,14 @@ def index():
                     try:
                         results = gift.search(api_key=exa_api_key).results
 
-                        # Sometime there are blank titles, so we need to add them
-                        for result in results:
-                            if not result.title:
-                                result.title = result.highlights[0]
-
-                        search_results[gift.name] = results
+                        search_results[gift.name] = {
+                            'results': results,
+                            'search_query': gift.search_query
+                        }
                         app.logger.debug(f"Found {len(results)} results for {gift.name}")
                     except Exception as e:
                         app.logger.error(f"Error searching for gift {gift.name}: {str(e)}")
                         search_results[gift.name] = []
-            
             processing_time = time.time() - start_time
             app.logger.info(f"Request processed successfully in {processing_time:.2f} seconds")
             
@@ -79,6 +76,7 @@ def index():
                                            person_description=user_input,
                                            ideas=ideas, 
                                            search_results=search_results,
+                                           enable_search=enable_search,
                                            model_string=MODEL_STRING)
                 app.logger.info("Template rendered successfully")
                 return rendered
