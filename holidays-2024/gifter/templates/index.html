@@ -214,21 +214,21 @@
         <label for="person_description">Describe the person you want to give a gift to:</label><br>
         <textarea name="person_description" required></textarea><br>
         
-        <div class="checkbox-label">
-            <input type="checkbox" name="enable_search" id="enable_search">
-            <label for="enable_search">Enable web search for better recommendations</label>
+        <div style="margin-bottom: 20px;">
+            <label for="min_ideas">Minimum number of gift ideas:</label><br>
+            <input type="number" name="min_ideas" id="min_ideas" 
+            min="0" max="10" value="1" style="width: 100px;">
         </div>
         
         <div style="margin-bottom: 20px;">
             <label for="max_ideas">Maximum number of gift ideas:</label><br>
             <input type="number" name="max_ideas" id="max_ideas" 
-                min="1" max="10" value="5" style="width: 100px;">
+            min="1" max="10" value="5" style="width: 100px;">
         </div>
         
-        <div style="margin-bottom: 20px;">
-            <label for="min_ideas">Minimum number of gift ideas:</label><br>
-            <input type="number" name="min_ideas" id="min_ideas" 
-                min="0" max="10" value="0" style="width: 100px;">
+        <div class="checkbox-label">
+            <input type="checkbox" name="enable_search" id="enable_search">
+            <label for="enable_search">Enable web search for better recommendations</label>
         </div>
         
         <div id="api_key_section" style="display: none; margin-bottom: 20px;">
