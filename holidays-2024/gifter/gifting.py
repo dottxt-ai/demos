@@ -33,11 +33,12 @@ load_dotenv()
 MODEL_OPTIONS = {
     "tiny": "HuggingFaceTB/SmolLM2-135M-Instruct",    # Minimal resources
     "small": "HuggingFaceTB/SmolLM2-1.7B-Instruct",   # Balanced choice
-    "medium": "NousResearch/Hermes-3-Llama-3.1-8B",    # Better quality
-    "large": "meta-llama/Llama-3.3-70B-Instruct"       # Best quality
+    'medium': 'microsoft/Phi-3.5-mini-instruct',
+    "large": "NousResearch/Hermes-3-Llama-3.1-8B",    # Better quality
+    "big": "meta-llama/Llama-3.3-70B-Instruct"       # Best quality
 }
 
-MODEL_STRING = MODEL_OPTIONS["tiny"]  # Default to balanced option
+MODEL_STRING = MODEL_OPTIONS["tibny"]  # Default to balanced option
 
 # Logging Configuration
 logging.basicConfig(
