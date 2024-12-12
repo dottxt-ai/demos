@@ -37,7 +37,7 @@ MODEL_OPTIONS = {
     "large": "meta-llama/Llama-3.3-70B-Instruct"       # Best quality
 }
 
-MODEL_STRING = MODEL_OPTIONS["small"]  # Default to balanced option
+MODEL_STRING = MODEL_OPTIONS["tiny"]  # Default to balanced option
 
 # Logging Configuration
 logging.basicConfig(
@@ -120,7 +120,10 @@ class Gift(BaseModel):
             logger.error(f"Error in search for {self.name}: {str(e)}")
             raise
 
-def DynamicGiftIdeas(max_gift_ideas: int = 5, min_gift_ideas: int = 0):
+def DynamicGiftIdeas(
+    max_gift_ideas: int = 5, 
+    min_gift_ideas: int = 0
+):
     """
     Factory function demonstrating dynamic Pydantic model creation.
     Shows how to create models with runtime-configured validation.
