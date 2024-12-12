@@ -1,6 +1,6 @@
 # .gifter
 
-A Python tool that generates personalized gift ideas using AI language models.
+A Python tool that generates personalized gift ideas using structured generation with language models! Powered by holiday cheer and [.txt](https://dottxt.co)!
 
 ## Description
 
