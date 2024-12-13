@@ -37,6 +37,8 @@ A gift has the following fields:
   about the gift. We will taket his query, use it, and then
   return the results to the user, so make sure it's a good query
   that will help them understand more about the gift or where to buy it.
+  Your search query must be as precise as possible to return relevant results
+  to the user.
 
 Here is the description of the person you're buying for:
 {input}

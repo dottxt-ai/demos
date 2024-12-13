@@ -38,7 +38,7 @@ MODEL_OPTIONS = {
     "big": "meta-llama/Llama-3.3-70B-Instruct"       # Best quality
 }
 
-MODEL_STRING = MODEL_OPTIONS["tibny"]  # Default to balanced option
+MODEL_STRING = MODEL_OPTIONS["tiny"]  # Default to balanced option
 
 # Logging Configuration
 logging.basicConfig(
