@@ -124,7 +124,7 @@ STRESSED can print out the analysis in a human-readable format.
 
 The report has several sections:
 
-- Summary, a natural language summary of what occured in the chunk of logs reviewed.
+- Summary, a natural language summary of what occurred in the chunk of logs reviewed.
 - Key observations, a list of things that STRESSED notices. This resembles a chain-of-thought type process.
 - Security events, a list of potential security events. This is followed by a list of log entries related to the possible event.
 - Traffic patterns, a list of URLs and how they are being accessed. This is used to understand common access patterns for web servers.
