@@ -169,12 +169,21 @@ def setup_model():
 MODEL, TOKENIZER = setup_model()
 logger.debug("Model and tokenizer loaded successfully")
 
-def template(prompt: str, tokenizer) -> str:
+def template(
+        prompt: str, 
+        tokenizer, 
+        system_prompt: str = "You are a helpful assistant that generates gift ideas for a recipient."
+    ) -> str:
     """
     Prompt templating demonstrating proper LLM input formatting.
     """
+    messages = []
+    if system_prompt:
+        messages.append({"role": "system", "content": system_prompt})
+    messages.append({"role": "user", "content": prompt})
+    
     templated = tokenizer.apply_chat_template(
-        [{"role": "user", "content": prompt}],
+        messages,
         tokenize=False,
         add_generation_prompt=True,
     )
