@@ -373,11 +373,9 @@ class STRESSED:
 
             # Analyze chunk
             prompt = self._to_prompt(chunk, LogAnalysis)
-            print(prompt)
             analysis = self.logger(prompt, max_tokens=self.token_max)
 
             if format_output:
-                # print(analysis)
                 format_log_analysis(analysis, logs_with_ids)
 
             results.append(analysis)
